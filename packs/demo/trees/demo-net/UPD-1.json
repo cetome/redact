@@ -1,0 +1,57 @@
+{
+  "schema": "redact.tree/1",
+  "standard": "demo-net",
+  "requirement": "UPD-1",
+  "clause": "D.2",
+  "figure": "Demo tree 2",
+  "title": "Software updates (demo)",
+  "scope": "For the product",
+  "start": "DN-1",
+  "nodes": [
+    {
+      "id": "DN-1",
+      "kind": "decision",
+      "text": "Can the product's software be changed after it is sold?",
+      "branches": [
+        {
+          "label": "No",
+          "to": "R-NA"
+        },
+        {
+          "label": "Yes",
+          "to": "DN-2"
+        }
+      ]
+    },
+    {
+      "id": "DN-2",
+      "kind": "decision",
+      "text": "Does the product check where an update comes from before installing it?",
+      "branches": [
+        {
+          "label": "Yes",
+          "to": "R-PASS"
+        },
+        {
+          "label": "No",
+          "to": "R-FAIL"
+        }
+      ]
+    },
+    {
+      "id": "R-NA",
+      "kind": "result",
+      "result": "NOT APPLICABLE"
+    },
+    {
+      "id": "R-PASS",
+      "kind": "result",
+      "result": "PASS"
+    },
+    {
+      "id": "R-FAIL",
+      "kind": "result",
+      "result": "FAIL"
+    }
+  ]
+}

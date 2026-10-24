@@ -1,0 +1,39 @@
+/* ------------------------------------------------------------------------------------------------
+   Plans and billing (App\Billing, views plans/*, billing/*, products/upgrade, team hint).
+   Dense, icon first, quiet: no coloured edges, states as badges and alerts of the kit.
+   ------------------------------------------------------------------------------------------------ */
+@layer components {
+  /* "Free plan · 1 of 1 product · 37 AI units left · Talk to us to upgrade" */
+  .a-plan-line { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.4rem; margin: 0; font-size: var(--text-label); color: var(--c-ink-muted); }
+  .a-plan-line > svg { width: 0.95rem; height: 0.95rem; flex-shrink: 0; color: var(--c-ink-subtle); }
+  .a-plan-line-name { font-weight: 700; color: var(--c-ink); }
+  .a-plan-line-sep { color: var(--c-ink-subtle); }
+  /* Inside lists that style their links as rows (.a-checklist on the account page): stay a text link. */
+  .a-plan-line a.a-link-btn { display: inline; padding: 0; font-size: inherit; font-weight: 700; color: var(--c-link); background: none; }
+  .a-plan-line a.a-link-btn:hover { background: none; text-decoration: underline; }
+  .a-plan-foot { margin-top: 0.75rem; border-top: 1px solid var(--c-line); padding-top: 0.6rem; }
+  .a-plan-orgs { display: flex; flex-direction: column; gap: 0.35rem; }
+
+  /* Icon + sentence (limit reached, free seats left). */
+  .a-plan-hint { display: flex; align-items: flex-start; gap: 0.5rem; margin: 0; font-size: var(--text-sm); color: var(--c-ink); }
+  .a-plan-hint > svg { width: 1rem; height: 1rem; margin-top: 0.15rem; flex-shrink: 0; color: var(--c-ink-subtle); }
+
+  /* "Each additional product includes" */
+  .a-plan-features { margin: 0; list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: var(--text-sm); }
+  .a-plan-features > li { display: flex; align-items: flex-start; gap: 0.5rem; }
+  .a-plan-features svg { width: 1rem; height: 1rem; margin-top: 0.15rem; flex-shrink: 0; color: var(--c-primary); }
+
+  /* Invoices (billing page aside). */
+  .a-plan-invoices { margin: 0; padding: 0; list-style: none; }
+  .a-plan-invoices > li { display: flex; align-items: center; gap: 0.75rem; padding: 0.45rem 1rem; font-size: var(--text-sm); }
+  .a-plan-invoices > li + li { border-top: 1px solid var(--c-line); }
+  .a-plan-invoices > li > :first-child { flex: 1 1 auto; min-width: 0; }
+  .a-plan-invoice-total { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+  /* Upgrade hint replacing "New product" on the dashboard at the limit. */
+  .a-plan-upgrade { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 0.25rem 0.75rem; }
+  .a-plan-upgrade .a-help { max-width: 22rem; text-align: right; }
+
+  /* Console: plan form. */
+  .a-plan-form { display: grid; gap: 0.75rem 1rem; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); }
+}

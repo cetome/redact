@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoftwareIdentity xmlns="http://standards.iso.org/iso/19770/-2/2015/schema.xsd"
+    name="BusyBox" tagId="example.com-busybox-1.36.1" version="1.36.1" versionScheme="multipartnumeric">
+  <Entity name="BusyBox project" regid="busybox.net" role="softwareCreator"/>
+  <Entity name="Emotec Ltd" regid="example.com" role="tagCreator"/>
+  <Meta product="BusyBox" summary="Tiny versions of many common UNIX utilities"/>
+</SoftwareIdentity>

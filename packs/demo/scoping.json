@@ -1,0 +1,189 @@
+{
+  "sections": [
+    {
+      "key": "applicability",
+      "step": "scoping",
+      "title": {
+        "en": "What the product does",
+        "fr": "Ce que fait le produit"
+      },
+      "intro": {
+        "en": "Tick what is true for the product (demo questionnaire).",
+        "fr": "Cochez ce qui est vrai pour le produit (questionnaire de démonstration)."
+      },
+      "groups": [
+        {
+          "key": "network",
+          "title": {
+            "en": "Network",
+            "fr": "Réseau"
+          },
+          "questions": [
+            {
+              "key": "connected",
+              "type": "boolean",
+              "articles": [
+                "3.3d"
+              ],
+              "label": {
+                "en": "The product talks to a network or to other devices by radio",
+                "fr": "Le produit communique avec un réseau ou d’autres appareils par radio"
+              },
+              "statement": {
+                "en": "Any radio link counts, even a local one.",
+                "fr": "Toute liaison radio compte, même locale."
+              },
+              "example": {
+                "en": "Wi-Fi, Bluetooth, a phone app",
+                "fr": "Wi-Fi, Bluetooth, une application mobile"
+              }
+            },
+            {
+              "key": "updates",
+              "type": "boolean",
+              "articles": [
+                "3.3d"
+              ],
+              "label": {
+                "en": "The product's software can be changed after it is sold",
+                "fr": "Le logiciel du produit peut être modifié après la vente"
+              },
+              "statement": {
+                "en": "Updates over the air, by cable or from a memory card.",
+                "fr": "Mises à jour par radio, par câble ou par carte mémoire."
+              }
+            }
+          ]
+        },
+        {
+          "key": "people",
+          "title": {
+            "en": "People",
+            "fr": "Personnes"
+          },
+          "questions": [
+            {
+              "key": "personal_data",
+              "type": "boolean",
+              "articles": [
+                "3.3e"
+              ],
+              "label": {
+                "en": "The product handles information about people",
+                "fr": "Le produit traite des informations sur des personnes"
+              },
+              "example": {
+                "en": "names, recordings, location, habits",
+                "fr": "noms, enregistrements, localisation, habitudes"
+              }
+            }
+          ]
+        },
+        {
+          "key": "money",
+          "title": {
+            "en": "Money",
+            "fr": "Argent"
+          },
+          "questions": [
+            {
+              "key": "payments",
+              "type": "boolean",
+              "articles": [
+                "3.3f"
+              ],
+              "label": {
+                "en": "The product lets its user pay or move money",
+                "fr": "Le produit permet à son utilisateur de payer ou de transférer de l’argent"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "restrictions",
+      "step": "conformity",
+      "title": {
+        "en": "Demo restrictions",
+        "fr": "Restrictions de démonstration"
+      },
+      "groups": [
+        {
+          "key": "defaults",
+          "title": {
+            "en": "Default passwords (demo)",
+            "fr": "Mots de passe par défaut (démo)"
+          },
+          "lead": {
+            "en": "Asked because the product talks to a network.",
+            "fr": "Demandé car le produit communique avec un réseau."
+          },
+          "questions": [
+            {
+              "key": "own_password",
+              "type": "boolean",
+              "show_if": {
+                "article": "3.3d"
+              },
+              "label": {
+                "en": "Each unit has its own password, or none until the user sets one",
+                "fr": "Chaque appareil a son propre mot de passe, ou aucun tant que l’utilisateur n’en a pas choisi"
+              }
+            }
+          ]
+        },
+        {
+          "key": "update_checks",
+          "title": {
+            "en": "Update checks (demo)",
+            "fr": "Contrôle des mises à jour (démo)"
+          },
+          "lead": {
+            "en": "Asked because the product's software can be changed.",
+            "fr": "Demandé car le logiciel du produit peut être modifié."
+          },
+          "questions": [
+            {
+              "key": "has_updates",
+              "type": "boolean",
+              "show_if": {
+                "article": "3.3d"
+              },
+              "label": {
+                "en": "The product installs software updates",
+                "fr": "Le produit installe des mises à jour logicielles"
+              }
+            },
+            {
+              "key": "checked_updates",
+              "type": "boolean",
+              "show_if": {
+                "question": "has_updates",
+                "equals": true
+              },
+              "label": {
+                "en": "It checks where each update comes from before installing it",
+                "fr": "Il vérifie la provenance de chaque mise à jour avant de l’installer"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "restriction_labels": {
+    "en18031": {
+      "en": "Every decision tree walked, no FAIL (demo)",
+      "fr": "Tous les arbres de décision parcourus, aucun FAIL (démo)"
+    },
+    "defaults": {
+      "en": "Default passwords (demo)",
+      "fr": "Mots de passe par défaut (démo)"
+    },
+    "update_checks": {
+      "en": "Update checks (demo)",
+      "fr": "Contrôle des mises à jour (démo)"
+    }
+  }
+}

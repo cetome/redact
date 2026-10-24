@@ -1,0 +1,25 @@
+{
+  "schema": "redact.catalogue/1",
+  "notes": "Test fixture only: invented items to exercise the engine. 'later_q' stands for a question of a later step (not asked at scoping).",
+  "ranking": {
+    "notes": "Test fixture: the full ranking, so the tests exercise every key.",
+    "order": ["tier", "yes", "presence", "parts"],
+    "presence": { "typical": 2, "common": 1 }
+  },
+  "groups": {
+    "assets": [
+      { "key": "secrets", "name": { "en": "Sample secrets", "fr": "Secrets d’exemple" }, "match": { "type": "security" }, "source": "test fixture" },
+      { "key": "data", "name": { "en": "Sample data group", "fr": "Groupe de données d’exemple" }, "match": { "type": "data" }, "source": "test fixture" }
+    ]
+  },
+  "lists": {
+    "assets": [
+      { "name": "Sample key", "attributes": { "type": "security", "stored": true }, "standards": ["demo-1"], "presence": "typical", "source": "test fixture" },
+      { "name": "Sample update data", "attributes": { "type": "data" }, "standards": ["demo-1"], "suggest_when": ["updates"], "suggest_note": "Only when the product receives updates.", "source": "test fixture" },
+      { "name": "Sample incomplete", "attributes": {}, "standards": ["demo-1"], "source": "test fixture" },
+      { "name": "Sample secret", "attributes": { "type": "security", "stored": true }, "standards": ["demo-1"], "presence": "common", "source": "test fixture" },
+      { "name": "Sample log", "attributes": { "type": "data" }, "standards": ["demo-1"], "presence": "typical", "suggest_when": ["updates"], "suggest_note": "Logs of updates.", "source": "test fixture" },
+      { "name": "Sample later", "attributes": { "type": "data", "stored": true }, "standards": ["demo-1"], "suggest_when": ["later_q"], "suggest_note": "Asked at a later step.", "source": "test fixture" }
+    ]
+  }
+}

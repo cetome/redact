@@ -1,0 +1,250 @@
+{
+  "lists": [
+    {
+      "key": "assets",
+      "label": {
+        "en": "Assets",
+        "fr": "Actifs"
+      },
+      "singular": {
+        "en": "Asset",
+        "fr": "Actif"
+      },
+      "code_prefix": "AS-",
+      "help": {
+        "en": "What is worth protecting on the product (demo list).",
+        "fr": "Ce qui mérite d’être protégé sur le produit (liste de démonstration)."
+      },
+      "fields": [
+        {
+          "key": "type",
+          "label": {
+            "en": "Type",
+            "fr": "Type"
+          },
+          "type": "select",
+          "required": true,
+          "options": [
+            {
+              "value": "secret",
+              "label": {
+                "en": "Secret",
+                "fr": "Secret"
+              },
+              "help": {
+                "en": "Passwords, keys, tokens",
+                "fr": "Mots de passe, clés, jetons"
+              },
+              "standards": [
+                "demo-net",
+                "demo-pay"
+              ]
+            },
+            {
+              "value": "personal",
+              "label": {
+                "en": "Personal data",
+                "fr": "Données personnelles"
+              },
+              "help": {
+                "en": "Information about a person",
+                "fr": "Informations sur une personne"
+              },
+              "standards": [
+                "demo-priv"
+              ]
+            },
+            {
+              "value": "payment",
+              "label": {
+                "en": "Payment data",
+                "fr": "Données de paiement"
+              },
+              "help": {
+                "en": "Anything that moves money",
+                "fr": "Tout ce qui déplace de l’argent"
+              },
+              "standards": [
+                "demo-pay"
+              ]
+            },
+            {
+              "value": "operational",
+              "label": {
+                "en": "Operational data",
+                "fr": "Données de fonctionnement"
+              },
+              "help": {
+                "en": "Settings, logs, statistics",
+                "fr": "Réglages, journaux, statistiques"
+              }
+            }
+          ]
+        },
+        {
+          "key": "stored",
+          "label": {
+            "en": "Stored on the product",
+            "fr": "Stocké sur le produit"
+          },
+          "type": "boolean"
+        },
+        {
+          "key": "reach",
+          "label": {
+            "en": "Who can reach it",
+            "fr": "Qui peut y accéder"
+          },
+          "type": "multiselect",
+          "options": [
+            {
+              "value": "owner",
+              "label": {
+                "en": "The owner",
+                "fr": "Le propriétaire"
+              }
+            },
+            {
+              "value": "service",
+              "label": {
+                "en": "A remote service",
+                "fr": "Un service distant"
+              }
+            },
+            {
+              "value": "anyone",
+              "label": {
+                "en": "Anyone nearby",
+                "fr": "Toute personne à proximité"
+              }
+            }
+          ]
+        },
+        {
+          "key": "notes",
+          "label": {
+            "en": "Notes",
+            "fr": "Notes"
+          },
+          "type": "textarea",
+          "help": {
+            "en": "Anything a reviewer should know.",
+            "fr": "Tout ce qu’un relecteur doit savoir."
+          }
+        }
+      ]
+    },
+    {
+      "key": "interfaces",
+      "label": {
+        "en": "Interfaces",
+        "fr": "Interfaces"
+      },
+      "singular": {
+        "en": "Interface",
+        "fr": "Interface"
+      },
+      "code_prefix": "IF-",
+      "help": {
+        "en": "Ways to reach the product (demo list).",
+        "fr": "Moyens d’atteindre le produit (liste de démonstration)."
+      },
+      "fields": [
+        {
+          "key": "kind",
+          "label": {
+            "en": "Kind",
+            "fr": "Nature"
+          },
+          "type": "select",
+          "required": true,
+          "options": [
+            {
+              "value": "network",
+              "label": {
+                "en": "Network",
+                "fr": "Réseau"
+              }
+            },
+            {
+              "value": "local",
+              "label": {
+                "en": "Local port",
+                "fr": "Port local"
+              }
+            },
+            {
+              "value": "user",
+              "label": {
+                "en": "User interface",
+                "fr": "Interface utilisateur"
+              }
+            }
+          ]
+        },
+        {
+          "key": "external",
+          "label": {
+            "en": "Reachable without opening the product",
+            "fr": "Accessible sans ouvrir le produit"
+          },
+          "type": "yesno"
+        }
+      ]
+    },
+    {
+      "key": "software",
+      "label": {
+        "en": "Software",
+        "fr": "Logiciels"
+      },
+      "singular": {
+        "en": "Software",
+        "fr": "Logiciel"
+      },
+      "code_prefix": "SW-",
+      "help": {
+        "en": "Software running on the product (demo list).",
+        "fr": "Logiciels exécutés sur le produit (liste de démonstration)."
+      },
+      "fields": [
+        {
+          "key": "version",
+          "label": {
+            "en": "Version",
+            "fr": "Version"
+          },
+          "type": "text"
+        },
+        {
+          "key": "updatable",
+          "label": {
+            "en": "Can be updated",
+            "fr": "Peut être mis à jour"
+          },
+          "type": "boolean"
+        }
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "key": "asset_interface",
+      "from": "assets",
+      "to": "interfaces",
+      "label": {
+        "en": "Reachable through",
+        "fr": "Accessible par"
+      }
+    },
+    {
+      "key": "software_asset",
+      "from": "software",
+      "to": "assets",
+      "label": {
+        "en": "Handles",
+        "fr": "Traite"
+      }
+    }
+  ]
+}

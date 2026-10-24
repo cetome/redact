@@ -1,0 +1,19 @@
+{
+  "schema": "redact.einfo-prefill/1",
+  "notes": "Demo pack: the interfaces linked to an asset pre-fill its access text, the asset's description its harm text.",
+  "rules": [
+    {
+      "ids": [
+        "E.Info.ACC-1.Access"
+      ],
+      "from": "links",
+      "list": "interfaces"
+    },
+    {
+      "ids": [
+        "E.Info.ACC-1.Harm"
+      ],
+      "from": "description"
+    }
+  ]
+}

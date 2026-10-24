@@ -1,0 +1,54 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "sample-lock-firmware",
+  "documentNamespace": "https://example.com/spdx/sample-lock-2.4.1",
+  "creationInfo": { "created": "2026-10-01T09:00:00Z", "creators": ["Tool: example-sbom-tool-1.0"] },
+  "documentDescribes": ["SPDXRef-firmware"],
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-firmware",
+      "name": "Sample lock firmware",
+      "versionInfo": "2.4.1",
+      "supplier": "Organization: Emotec Ltd (security@example.com)",
+      "downloadLocation": "NOASSERTION",
+      "licenseConcluded": "NOASSERTION",
+      "primaryPackagePurpose": "FIRMWARE"
+    },
+    {
+      "SPDXID": "SPDXRef-zlib",
+      "name": "zlib",
+      "versionInfo": "1.2.13",
+      "supplier": "Organization: zlib",
+      "downloadLocation": "https://zlib.net",
+      "licenseConcluded": "Zlib",
+      "externalRefs": [
+        { "referenceCategory": "PACKAGE-MANAGER", "referenceType": "purl", "referenceLocator": "pkg:generic/zlib@1.2.13" },
+        { "referenceCategory": "SECURITY", "referenceType": "cpe23Type", "referenceLocator": "cpe:2.3:a:zlib:zlib:1.2.13:*:*:*:*:*:*:*" }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-requests",
+      "name": "requests",
+      "versionInfo": "2.31.0",
+      "originator": "Person: Kenneth Reitz",
+      "downloadLocation": "NOASSERTION",
+      "licenseDeclared": "Apache-2.0",
+      "externalRefs": [
+        { "referenceCategory": "PACKAGE_MANAGER", "referenceType": "purl", "referenceLocator": "pkg:pypi/requests@2.31.0" }
+      ]
+    },
+    {
+      "SPDXID": "SPDXRef-radio",
+      "name": "Example radio module",
+      "versionInfo": "M3",
+      "supplier": "Organization: Example Radio Co",
+      "downloadLocation": "NOASSERTION",
+      "primaryPackagePurpose": "DEVICE"
+    }
+  ],
+  "relationships": [
+    { "spdxElementId": "SPDXRef-firmware", "relationshipType": "CONTAINS", "relatedSpdxElement": "SPDXRef-zlib" }
+  ]
+}

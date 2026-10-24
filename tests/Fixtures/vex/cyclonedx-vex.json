@@ -1,0 +1,29 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:3e671687-395b-41f5-a30f-a58921a69b80",
+  "version": 1,
+  "vulnerabilities": [
+    {
+      "id": "CVE-2020-28500",
+      "source": { "name": "NVD", "url": "https://nvd.nist.gov/vuln/detail/CVE-2020-28500" },
+      "references": [ { "id": "GHSA-29mw-wpgm-hmr9", "source": { "name": "GitHub" } } ],
+      "analysis": {
+        "state": "not_affected",
+        "justification": "code_not_reachable",
+        "detail": "The firmware never calls toNumber, trim or trimEnd on untrusted input."
+      },
+      "affects": [ { "ref": "pkg:npm/lodash@4.17.20" } ]
+    },
+    {
+      "id": "CVE-2023-0286",
+      "analysis": {
+        "state": "exploitable",
+        "response": [ "update" ],
+        "detail": "X.400 address type confusion reachable through certificate parsing."
+      },
+      "recommendation": "Update to OpenSSL 3.0.8.",
+      "affects": [ { "ref": "urn:cdx:3e671687-395b-41f5-a30f-a58921a69b79/1#openssl" } ]
+    }
+  ]
+}

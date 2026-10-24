@@ -1,0 +1,70 @@
+<?php
+
+// The exact import of cetome REDact workbooks (no AI), through the one upload of the Documents column.
+// British English, no semicolons in UI copy (cetome house style).
+return [
+    'panel_help' => 'Up to :files files at once. cetome REDact workbooks are imported exactly, without AI, after a preview.',
+    'locked' => 'Create an account to import',
+
+    'title' => 'Import from your workbooks',
+    'intro' => 'What your workbooks would create or change in this version. Tick the parts to apply. Nothing is written before you apply, and every imported text is marked “Imported from your workbook”.',
+    'files' => 'Workbooks read',
+    'apply' => 'Apply the ticked parts',
+    'cancel' => 'Cancel the import',
+    'cancelled' => 'Import cancelled. Nothing was changed.',
+    'nothing' => 'No file could be used.',
+    'nothing_to_apply' => 'Nothing to import in this part.',
+    'warnings' => 'Values the import could not read',
+    'file_errors' => 'Files not read',
+    'documents_added' => '{1} :count document was added for the AI.|[2,*] :count documents were added for the AI.',
+    'applied' => '{0} Nothing was imported.|{1} :count change was imported from your workbooks.|[2,*] :count changes were imported from your workbooks.',
+    'skipped' => '{1} :count line was left out (not evaluated in REDact or not placed).|[2,*] :count lines were left out (not evaluated in REDact or not placed).',
+    'current' => 'In REDact now',
+    'new' => 'From the workbook',
+    'item' => 'Item',
+    'parts' => [
+        'fields' => 'Product and version',
+        'scoping' => 'Scoping answers',
+        'inventory' => 'Assets, interfaces, entities and other items',
+        'links' => 'Relations between items',
+        'walks' => 'Decision trees (node, verdict, justification)',
+        'einfo' => 'E.Info texts',
+        'risks' => 'Risk register',
+        'matrix' => 'Risk matrix',
+    ],
+    'status' => [
+        'new' => 'New',
+        'change' => 'Changes',
+        'same' => 'Same',
+        'conflict' => 'Replaces',
+        'skip' => 'Left out',
+    ],
+    'counts' => ':new new, :change changed, :same unchanged',
+    'fields' => [
+        'version_author_name' => 'Author',
+        'version_completion_date' => 'Completion date',
+        'product_description' => 'Product description',
+    ],
+    'description_changed' => 'Description',
+    'justification_only' => 'Justification',
+    'with_justification' => 'with justification',
+    'not_walked' => 'REDact does not use this tree for this item',
+    'einfo_unplaced' => 'E.Info not identified',
+    'level' => 'Level :rank',
+    'matrix_cells' => 'Matrix cells',
+    'cells_changed' => '{0} No cell changes|{1} :count cell changes|[2,*] :count cells change',
+    'walks_note' => 'Decision-tree results are recorded where REDact evaluates the requirement for the item, in every standard in scope, as the last node and verdict (no path).',
+
+    'errors' => [
+        'encrypted' => 'This file is protected with a password to open (or is an old .xls file). Remove the password to open, or save it as .xlsx, then try again.',
+        'not_xlsx' => 'This file is not an Excel workbook REDact can read.',
+        'too_large' => 'This workbook is too large to be read.',
+        'unknown_workbook' => 'This workbook is not one of the cetome REDact workbooks.',
+        'guest_documents' => 'Documents for the AI need an account.',
+    ],
+    'warnings_list' => [
+        'unknown_value' => '“:value” in :cell is not a value of the dropdown',
+        'unknown_einfo' => ':code is not an E.Info item of the standards',
+        'unknown_node' => '“:value” in :cell is not a decision node',
+    ],
+];

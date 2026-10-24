@@ -1,0 +1,20 @@
+{
+  "schema": "redact.einfo-variants/1",
+  "notes": "Test fixture: an id printed for one kind of sample asset is also read for the other kind.",
+  "variants": [
+    {
+      "pattern": "/^(.*?)(?<v>Key|Data)(Assets?)$/",
+      "values": [
+        "Key",
+        "Data"
+      ]
+    },
+    {
+      "pattern": "/^(?<v>UserPort|NetworkPort)$/",
+      "values": [
+        "UserPort",
+        "NetworkPort"
+      ]
+    }
+  ]
+}

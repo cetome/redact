@@ -1,0 +1,30 @@
+{
+  "requirement": "UPD-1",
+  "standard": "demo-1",
+  "clause": "1.2.4",
+  "objective": { "en": "Sample objective: show that the product can be updated (invented text)." },
+  "implementation_categories": null,
+  "required_information": [
+    { "id": "E.Info.UPD-1.Product", "text": { "en": "Sample: how updates are delivered." }, "condition": null, "parent": null }
+  ],
+  "justification": [
+    { "node": "DN-1", "outcome": "FAIL", "based_on": ["E.Info.UPD-1.Product"], "match": "any", "text": { "en": "Sample rule: a product without updates is justified by the update description." } },
+    { "node": "DN-1", "outcome": "PASS", "based_on": ["E.Info.ACC-1.Asset"], "match": "any", "text": { "en": "Sample rule: an asset description the product does not have (needs a human check)." } }
+  ],
+  "cases": [
+    {
+      "key": "conceptual", "clause": "1.2.4.1",
+      "purpose": { "en": "Sample purpose: check the documented decision." },
+      "preconditions": { "en": "None (sample)." },
+      "units": { "en": "- Sample unit" },
+      "verdict": { "PASS": { "en": "Sample: the path ends PASS." }, "FAIL": { "en": "Sample: the path ends FAIL." } }
+    },
+    {
+      "key": "functional_completeness", "clause": "1.2.4.2",
+      "purpose": { "en": "Sample purpose: check every update channel." },
+      "preconditions": { "en": "Sample: the product is available." },
+      "units": { "en": "- Sample unit" },
+      "verdict": { "PASS": { "en": "Sample: every channel is covered." }, "FAIL": { "en": "Sample: a channel is missing." }, "NOT APPLICABLE": { "en": "Sample: no channel." } }
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bom xmlns="http://cyclonedx.org/schema/bom/1.5" serialNumber="urn:uuid:1b2c3d4e-0000-4000-8000-000000000001" version="1">
+  <metadata>
+    <component type="device" bom-ref="board">
+      <name>Sample lock main board</name>
+      <version>rev C</version>
+    </component>
+  </metadata>
+  <components>
+    <component type="device" bom-ref="mcu">
+      <manufacturer><name>Example Semiconductors</name></manufacturer>
+      <name>Example MCU</name>
+      <version>A1</version>
+      <description>Main microcontroller</description>
+    </component>
+    <component type="device" bom-ref="se">
+      <name>Example secure element</name>
+      <version>1.2</version>
+      <supplier><name>Example Secure Chips</name></supplier>
+    </component>
+    <component type="firmware" bom-ref="ble-fw">
+      <supplier><name>Example Semiconductors</name></supplier>
+      <name>BLE stack</name>
+      <version>5.1.0</version>
+      <licenses><license><id>LicenseRef-Proprietary</id></license></licenses>
+      <cpe>cpe:/a:example:ble_stack:5.1.0</cpe>
+    </component>
+  </components>
+</bom>

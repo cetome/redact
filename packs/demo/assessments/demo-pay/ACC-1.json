@@ -1,0 +1,157 @@
+{
+  "requirement": "ACC-1",
+  "standard": "demo-pay",
+  "clause": "D.1.4",
+  "objective": {
+    "en": "Demo objective: show, for each asset, who can reach it and whether the product checks them."
+  },
+  "implementation_categories": {
+    "en": "- Demo category: a check the product makes\n- Demo category: a design choice\n  - Demo sub-category"
+  },
+  "required_information": [
+    {
+      "id": "E.Info.ACC-1.Access",
+      "text": {
+        "en": "Demo: who can reach the asset and how they are checked."
+      },
+      "condition": null,
+      "parent": null
+    },
+    {
+      "id": "E.Info.ACC-1.Harm",
+      "text": {
+        "en": "Demo: what would happen if someone else read or changed it."
+      },
+      "condition": null,
+      "parent": null
+    },
+    {
+      "id": "E.Info.DT.ACC-1",
+      "text": {
+        "en": "Demo: the path walked through the tree."
+      },
+      "condition": null,
+      "parent": null
+    },
+    {
+      "id": "E.Just.DT.ACC-1",
+      "text": {
+        "en": "Demo: why each answer was given."
+      },
+      "condition": {
+        "en": "Demo: for each decision."
+      },
+      "parent": "E.Info.DT.ACC-1"
+    }
+  ],
+  "justification": [
+    {
+      "node": "DN-1",
+      "outcome": "NOT APPLICABLE",
+      "based_on": [
+        "E.Info.ACC-1.Access"
+      ],
+      "match": "any",
+      "text": {
+        "en": "Demo rule: an unreachable asset is justified by its access text."
+      }
+    },
+    {
+      "node": "DN-2",
+      "outcome": null,
+      "based_on": [
+        "E.Info.DT.ACC-1",
+        "E.Just.DT.ACC-1"
+      ],
+      "match": "all",
+      "text": {
+        "en": "Demo rule: the decision at DN-2 is justified by the walk and its justification."
+      }
+    },
+    {
+      "node": "DN-3",
+      "outcome": "PASS",
+      "based_on": [
+        "E.Info.ACC-1.Harm"
+      ],
+      "match": "any",
+      "text": {
+        "en": "Demo rule: a harmless asset is justified by its harm text."
+      }
+    }
+  ],
+  "cases": [
+    {
+      "key": "conceptual",
+      "clause": "D.1.4.1",
+      "purpose": {
+        "en": "Demo purpose: check the documented decisions."
+      },
+      "preconditions": {
+        "en": "Demo: the product and its documentation are available."
+      },
+      "units": {
+        "en": "- Demo unit: read the documented answer\n- Demo unit: try it on the product"
+      },
+      "verdict": {
+        "PASS": {
+          "en": "Demo: what is documented is what the product does."
+        },
+        "FAIL": {
+          "en": "Demo: the product does something else."
+        },
+        "NOT APPLICABLE": {
+          "en": "Demo: nothing to check for this object."
+        }
+      }
+    },
+    {
+      "key": "functional_completeness",
+      "clause": "D.1.4.2",
+      "purpose": {
+        "en": "Demo purpose: check that no way in is missing."
+      },
+      "preconditions": {
+        "en": "Demo: the product and its documentation are available."
+      },
+      "units": {
+        "en": "- Demo unit: read the documented answer\n- Demo unit: try it on the product"
+      },
+      "verdict": {
+        "PASS": {
+          "en": "Demo: what is documented is what the product does."
+        },
+        "FAIL": {
+          "en": "Demo: the product does something else."
+        },
+        "NOT APPLICABLE": {
+          "en": "Demo: nothing to check for this object."
+        }
+      }
+    },
+    {
+      "key": "functional_sufficiency",
+      "clause": "D.1.4.3",
+      "purpose": {
+        "en": "Demo purpose: try to get in without being checked."
+      },
+      "preconditions": {
+        "en": "Demo: the product and its documentation are available."
+      },
+      "units": {
+        "en": "- Demo unit: read the documented answer\n- Demo unit: try it on the product"
+      },
+      "verdict": {
+        "PASS": {
+          "en": "Demo: what is documented is what the product does."
+        },
+        "FAIL": {
+          "en": "Demo: the product does something else."
+        },
+        "NOT APPLICABLE": {
+          "en": "Demo: nothing to check for this object."
+        }
+      }
+    }
+  ]
+}

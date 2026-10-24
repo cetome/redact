@@ -1,0 +1,3974 @@
+{
+    "bomFormat": "CycloneDX",
+    "specVersion": "1.6",
+    "serialNumber": "urn:uuid:b71202fe-ae3e-5c8b-9fbf-5f43203feb86",
+    "version": 1,
+    "metadata": {
+        "timestamp": "2026-10-24T06:46:21Z",
+        "lifecycles": [
+            {
+                "phase": "build"
+            }
+        ],
+        "tools": {
+            "components": [
+                {
+                    "type": "application",
+                    "name": "scripts/sbom.php",
+                    "group": "cetome",
+                    "version": "1.0.0"
+                }
+            ]
+        },
+        "supplier": {
+            "name": "cetome",
+            "url": [
+                "https://cetome.com"
+            ]
+        },
+        "component": {
+            "type": "application",
+            "bom-ref": "pkg:github/cetome/redact@1.0.0",
+            "supplier": {
+                "name": "cetome",
+                "url": [
+                    "https://cetome.com"
+                ]
+            },
+            "name": "REDact engine",
+            "version": "1.0.0",
+            "description": "RED Assistant for Compliance Toolkit: RED cyber (Delegated Regulation (EU) 2022/30) and EN 18031, the open-source engine.",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "AGPL-3.0-only"
+                    }
+                }
+            ],
+            "purl": "pkg:github/cetome/redact@1.0.0",
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/cetome/redact"
+                },
+                {
+                    "type": "website",
+                    "url": "https://redact.cetome.com"
+                }
+            ]
+        },
+        "licenses": [
+            {
+                "license": {
+                    "id": "CC0-1.0"
+                }
+            }
+        ]
+    },
+    "components": [
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/altcha-org/altcha@2.3.0",
+            "group": "altcha-org",
+            "name": "altcha",
+            "version": "2.3.0",
+            "purl": "pkg:composer/altcha-org/altcha@2.3.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/altcha-org/altcha-lib-php.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/blade-ui-kit/blade-icons@1.10.1",
+            "group": "blade-ui-kit",
+            "name": "blade-icons",
+            "version": "1.10.1",
+            "purl": "pkg:composer/blade-ui-kit/blade-icons@1.10.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/driesvints/blade-icons.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/driesvints/blade-icons"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/brick/math@1.0.0",
+            "group": "brick",
+            "name": "math",
+            "version": "1.0.0",
+            "purl": "pkg:composer/brick/math@1.0.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/brick/math.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/carbonphp/carbon-doctrine-types@3.2.1",
+            "group": "carbonphp",
+            "name": "carbon-doctrine-types",
+            "version": "3.2.1",
+            "purl": "pkg:composer/carbonphp/carbon-doctrine-types@3.2.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/CarbonPHP/carbon-doctrine-types.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/composer/pcre@3.4.0",
+            "group": "composer",
+            "name": "pcre",
+            "version": "3.4.0",
+            "purl": "pkg:composer/composer/pcre@3.4.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/composer/pcre.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/dflydev/dot-access-data@3.0.3",
+            "group": "dflydev",
+            "name": "dot-access-data",
+            "version": "3.0.3",
+            "purl": "pkg:composer/dflydev/dot-access-data@3.0.3",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/dflydev/dflydev-dot-access-data.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/dflydev/dflydev-dot-access-data"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/deprecations@1.1.6",
+            "group": "doctrine",
+            "name": "deprecations",
+            "version": "1.1.6",
+            "purl": "pkg:composer/doctrine/deprecations@1.1.6",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/doctrine/deprecations.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://www.doctrine-project.org/"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/inflector@2.1.0",
+            "group": "doctrine",
+            "name": "inflector",
+            "version": "2.1.0",
+            "purl": "pkg:composer/doctrine/inflector@2.1.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/doctrine/inflector.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://www.doctrine-project.org/projects/inflector.html"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/doctrine/lexer@3.0.3",
+            "group": "doctrine",
+            "name": "lexer",
+            "version": "3.0.3",
+            "purl": "pkg:composer/doctrine/lexer@3.0.3",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/doctrine/lexer.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://www.doctrine-project.org/projects/lexer.html"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/dompdf/dompdf@3.1.6",
+            "group": "dompdf",
+            "name": "dompdf",
+            "version": "3.1.6",
+            "purl": "pkg:composer/dompdf/dompdf@3.1.6",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "LGPL-2.1"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/dompdf/dompdf.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/dompdf/dompdf"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/dompdf/php-font-lib@1.0.2",
+            "group": "dompdf",
+            "name": "php-font-lib",
+            "version": "1.0.2",
+            "purl": "pkg:composer/dompdf/php-font-lib@1.0.2",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "LGPL-2.1-or-later"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/dompdf/php-font-lib.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/dompdf/php-font-lib"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/dompdf/php-svg-lib@1.0.2",
+            "group": "dompdf",
+            "name": "php-svg-lib",
+            "version": "1.0.2",
+            "purl": "pkg:composer/dompdf/php-svg-lib@1.0.2",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "LGPL-3.0-or-later"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/dompdf/php-svg-lib.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/dompdf/php-svg-lib"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/dragonmantank/cron-expression@3.6.1",
+            "group": "dragonmantank",
+            "name": "cron-expression",
+            "version": "3.6.1",
+            "purl": "pkg:composer/dragonmantank/cron-expression@3.6.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/dragonmantank/cron-expression.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/egulias/email-validator@4.0.4",
+            "group": "egulias",
+            "name": "email-validator",
+            "version": "4.0.4",
+            "purl": "pkg:composer/egulias/email-validator@4.0.4",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/egulias/EmailValidator.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/egulias/EmailValidator"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/fruitcake/php-cors@1.4.0",
+            "group": "fruitcake",
+            "name": "php-cors",
+            "version": "1.4.0",
+            "purl": "pkg:composer/fruitcake/php-cors@1.4.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/fruitcake/php-cors.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/fruitcake/php-cors"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/graham-campbell/result-type@1.2.0",
+            "group": "graham-campbell",
+            "name": "result-type",
+            "version": "1.2.0",
+            "purl": "pkg:composer/graham-campbell/result-type@1.2.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/GrahamCampbell/Result-Type.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/guzzlehttp/guzzle@8.3.0",
+            "group": "guzzlehttp",
+            "name": "guzzle",
+            "version": "8.3.0",
+            "purl": "pkg:composer/guzzlehttp/guzzle@8.3.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/guzzle/guzzle.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/guzzlehttp/promises@3.1.0",
+            "group": "guzzlehttp",
+            "name": "promises",
+            "version": "3.1.0",
+            "purl": "pkg:composer/guzzlehttp/promises@3.1.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/guzzle/promises.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/guzzlehttp/psr7@3.2.0",
+            "group": "guzzlehttp",
+            "name": "psr7",
+            "version": "3.2.0",
+            "purl": "pkg:composer/guzzlehttp/psr7@3.2.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/guzzle/psr7.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/guzzlehttp/uri-template@2.0.1",
+            "group": "guzzlehttp",
+            "name": "uri-template",
+            "version": "2.0.1",
+            "purl": "pkg:composer/guzzlehttp/uri-template@2.0.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/guzzle/uri-template.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/laravel/cashier@16.9.0",
+            "group": "laravel",
+            "name": "cashier",
+            "version": "16.9.0",
+            "purl": "pkg:composer/laravel/cashier@16.9.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/laravel/cashier-stripe.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/laravel/framework@13.38.0",
+            "group": "laravel",
+            "name": "framework",
+            "version": "13.38.0",
+            "purl": "pkg:composer/laravel/framework@13.38.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/laravel/framework.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://laravel.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/laravel/passkeys@0.2.1",
+            "group": "laravel",
+            "name": "passkeys",
+            "version": "0.2.1",
+            "purl": "pkg:composer/laravel/passkeys@0.2.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/laravel/passkeys-server.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/laravel/passkeys-server"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/laravel/prompts@0.3.26",
+            "group": "laravel",
+            "name": "prompts",
+            "version": "0.3.26",
+            "purl": "pkg:composer/laravel/prompts@0.3.26",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/laravel/prompts.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/laravel/serializable-closure@2.1.0",
+            "group": "laravel",
+            "name": "serializable-closure",
+            "version": "2.1.0",
+            "purl": "pkg:composer/laravel/serializable-closure@2.1.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/laravel/serializable-closure.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/laravel/tinker@3.0.2",
+            "group": "laravel",
+            "name": "tinker",
+            "version": "3.0.2",
+            "purl": "pkg:composer/laravel/tinker@3.0.2",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/laravel/tinker.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/league/commonmark@2.10.4",
+            "group": "league",
+            "name": "commonmark",
+            "version": "2.10.4",
+            "purl": "pkg:composer/league/commonmark@2.10.4",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "BSD-3-Clause"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/thephpleague/commonmark.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://commonmark.thephpleague.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/league/config@1.2.0",
+            "group": "league",
+            "name": "config",
+            "version": "1.2.0",
+            "purl": "pkg:composer/league/config@1.2.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "BSD-3-Clause"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/thephpleague/config.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://config.thephpleague.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/league/flysystem-local@3.35.3",
+            "group": "league",
+            "name": "flysystem-local",
+            "version": "3.35.3",
+            "purl": "pkg:composer/league/flysystem-local@3.35.3",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/thephpleague/flysystem-local.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/league/flysystem@3.36.0",
+            "group": "league",
+            "name": "flysystem",
+            "version": "3.36.0",
+            "purl": "pkg:composer/league/flysystem@3.36.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/thephpleague/flysystem.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/league/mime-type-detection@1.17.0",
+            "group": "league",
+            "name": "mime-type-detection",
+            "version": "1.17.0",
+            "purl": "pkg:composer/league/mime-type-detection@1.17.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/thephpleague/mime-type-detection.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/league/uri-interfaces@7.9.0",
+            "group": "league",
+            "name": "uri-interfaces",
+            "version": "7.9.0",
+            "purl": "pkg:composer/league/uri-interfaces@7.9.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/thephpleague/uri-interfaces.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://uri.thephpleague.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/league/uri@7.9.0",
+            "group": "league",
+            "name": "uri",
+            "version": "7.9.0",
+            "purl": "pkg:composer/league/uri@7.9.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/thephpleague/uri.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://uri.thephpleague.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/maennchen/zipstream-php@3.2.2",
+            "group": "maennchen",
+            "name": "zipstream-php",
+            "version": "3.2.2",
+            "purl": "pkg:composer/maennchen/zipstream-php@3.2.2",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/maennchen/ZipStream-PHP.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/mallardduck/blade-lucide-icons@2.0.33",
+            "group": "mallardduck",
+            "name": "blade-lucide-icons",
+            "version": "2.0.33",
+            "purl": "pkg:composer/mallardduck/blade-lucide-icons@2.0.33",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/mallardduck/blade-lucide-icons.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/mallardduck/blade-lucide-icons"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/markbaker/complex@3.0.2",
+            "group": "markbaker",
+            "name": "complex",
+            "version": "3.0.2",
+            "purl": "pkg:composer/markbaker/complex@3.0.2",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/MarkBaker/PHPComplex.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/MarkBaker/PHPComplex"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/markbaker/matrix@3.0.1",
+            "group": "markbaker",
+            "name": "matrix",
+            "version": "3.0.1",
+            "purl": "pkg:composer/markbaker/matrix@3.0.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/MarkBaker/PHPMatrix.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/MarkBaker/PHPMatrix"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/masterminds/html5@2.11.0",
+            "group": "masterminds",
+            "name": "html5",
+            "version": "2.11.0",
+            "purl": "pkg:composer/masterminds/html5@2.11.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/Masterminds/html5-php.git"
+                },
+                {
+                    "type": "website",
+                    "url": "http://masterminds.github.io/html5-php"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/moneyphp/money@4.9.0",
+            "group": "moneyphp",
+            "name": "money",
+            "version": "4.9.0",
+            "purl": "pkg:composer/moneyphp/money@4.9.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/moneyphp/money.git"
+                },
+                {
+                    "type": "website",
+                    "url": "http://moneyphp.org"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/monolog/monolog@3.12.1",
+            "group": "monolog",
+            "name": "monolog",
+            "version": "3.12.1",
+            "purl": "pkg:composer/monolog/monolog@3.12.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/Seldaek/monolog.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/Seldaek/monolog"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/nesbot/carbon@3.15.0",
+            "group": "nesbot",
+            "name": "carbon",
+            "version": "3.15.0",
+            "purl": "pkg:composer/nesbot/carbon@3.15.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/CarbonPHP/carbon.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://carbonphp.github.io/carbon/"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/nette/schema@1.4.0",
+            "group": "nette",
+            "name": "schema",
+            "version": "1.4.0",
+            "purl": "pkg:composer/nette/schema@1.4.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "BSD-3-Clause"
+                    }
+                },
+                {
+                    "license": {
+                        "id": "GPL-2.0-only"
+                    }
+                },
+                {
+                    "license": {
+                        "id": "GPL-3.0-only"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/nette/schema.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://doc.nette.org/schema"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/nette/utils@4.1.6",
+            "group": "nette",
+            "name": "utils",
+            "version": "4.1.6",
+            "purl": "pkg:composer/nette/utils@4.1.6",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "BSD-3-Clause"
+                    }
+                },
+                {
+                    "license": {
+                        "id": "GPL-2.0-only"
+                    }
+                },
+                {
+                    "license": {
+                        "id": "GPL-3.0-only"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/nette/utils.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://nette.org"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/nikic/php-parser@5.9.0",
+            "group": "nikic",
+            "name": "php-parser",
+            "version": "5.9.0",
+            "purl": "pkg:composer/nikic/php-parser@5.9.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "BSD-3-Clause"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/nikic/PHP-Parser.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/nunomaduro/termwind@2.4.0",
+            "group": "nunomaduro",
+            "name": "termwind",
+            "version": "2.4.0",
+            "purl": "pkg:composer/nunomaduro/termwind@2.4.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/nunomaduro/termwind.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/paragonie/constant_time_encoding@3.1.3",
+            "group": "paragonie",
+            "name": "constant_time_encoding",
+            "version": "3.1.3",
+            "purl": "pkg:composer/paragonie/constant_time_encoding@3.1.3",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/paragonie/constant_time_encoding.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpdocumentor/reflection-common@2.2.1",
+            "group": "phpdocumentor",
+            "name": "reflection-common",
+            "version": "2.2.1",
+            "purl": "pkg:composer/phpdocumentor/reflection-common@2.2.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/phpDocumentor/ReflectionCommon.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://www.phpdoc.org"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpdocumentor/reflection-docblock@6.0.3",
+            "group": "phpdocumentor",
+            "name": "reflection-docblock",
+            "version": "6.0.3",
+            "purl": "pkg:composer/phpdocumentor/reflection-docblock@6.0.3",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpdocumentor/type-resolver@2.1.0",
+            "group": "phpdocumentor",
+            "name": "type-resolver",
+            "version": "2.1.0",
+            "purl": "pkg:composer/phpdocumentor/type-resolver@2.1.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/phpDocumentor/TypeResolver.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpoffice/math@0.3.0",
+            "group": "phpoffice",
+            "name": "math",
+            "version": "0.3.0",
+            "purl": "pkg:composer/phpoffice/math@0.3.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/PHPOffice/Math.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://phpoffice.github.io/Math/"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpoffice/phpspreadsheet@5.10.0",
+            "group": "phpoffice",
+            "name": "phpspreadsheet",
+            "version": "5.10.0",
+            "purl": "pkg:composer/phpoffice/phpspreadsheet@5.10.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/PHPOffice/PhpSpreadsheet.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/PHPOffice/PhpSpreadsheet"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpoffice/phpword@1.4.0",
+            "group": "phpoffice",
+            "name": "phpword",
+            "version": "1.4.0",
+            "purl": "pkg:composer/phpoffice/phpword@1.4.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "LGPL-3.0-only"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/PHPOffice/PHPWord.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://phpoffice.github.io/PHPWord/"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpoption/phpoption@1.10.0",
+            "group": "phpoption",
+            "name": "phpoption",
+            "version": "1.10.0",
+            "purl": "pkg:composer/phpoption/phpoption@1.10.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "Apache-2.0"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/schmittjoh/php-option.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/phpstan/phpdoc-parser@2.3.6",
+            "group": "phpstan",
+            "name": "phpdoc-parser",
+            "version": "2.3.6",
+            "purl": "pkg:composer/phpstan/phpdoc-parser@2.3.6",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/phpstan/phpdoc-parser.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/prism-php/prism@0.102.0",
+            "group": "prism-php",
+            "name": "prism",
+            "version": "0.102.0",
+            "purl": "pkg:composer/prism-php/prism@0.102.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/prism-php/prism.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/clock@1.0.0",
+            "group": "psr",
+            "name": "clock",
+            "version": "1.0.0",
+            "purl": "pkg:composer/psr/clock@1.0.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/php-fig/clock.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/php-fig/clock"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/container@2.0.2",
+            "group": "psr",
+            "name": "container",
+            "version": "2.0.2",
+            "purl": "pkg:composer/psr/container@2.0.2",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/php-fig/container.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/php-fig/container"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/event-dispatcher@1.0.0",
+            "group": "psr",
+            "name": "event-dispatcher",
+            "version": "1.0.0",
+            "purl": "pkg:composer/psr/event-dispatcher@1.0.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/php-fig/event-dispatcher.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/http-client@1.0.3",
+            "group": "psr",
+            "name": "http-client",
+            "version": "1.0.3",
+            "purl": "pkg:composer/psr/http-client@1.0.3",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/php-fig/http-client.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/php-fig/http-client"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/http-factory@1.1.0",
+            "group": "psr",
+            "name": "http-factory",
+            "version": "1.1.0",
+            "purl": "pkg:composer/psr/http-factory@1.1.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/php-fig/http-factory.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/http-message@2.0",
+            "group": "psr",
+            "name": "http-message",
+            "version": "2.0",
+            "purl": "pkg:composer/psr/http-message@2.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/php-fig/http-message.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/php-fig/http-message"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/log@3.0.2",
+            "group": "psr",
+            "name": "log",
+            "version": "3.0.2",
+            "purl": "pkg:composer/psr/log@3.0.2",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/php-fig/log.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/php-fig/log"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psr/simple-cache@3.0.0",
+            "group": "psr",
+            "name": "simple-cache",
+            "version": "3.0.0",
+            "purl": "pkg:composer/psr/simple-cache@3.0.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/php-fig/simple-cache.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/psy/psysh@0.12.24",
+            "group": "psy",
+            "name": "psysh",
+            "version": "0.12.24",
+            "purl": "pkg:composer/psy/psysh@0.12.24",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/bobthecow/psysh.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://psysh.org"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/ramsey/collection@2.1.1",
+            "group": "ramsey",
+            "name": "collection",
+            "version": "2.1.1",
+            "purl": "pkg:composer/ramsey/collection@2.1.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/ramsey/collection.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/ramsey/uuid@4.9.4",
+            "group": "ramsey",
+            "name": "uuid",
+            "version": "4.9.4",
+            "purl": "pkg:composer/ramsey/uuid@4.9.4",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/ramsey/uuid.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/sabberworm/php-css-parser@9.5.0",
+            "group": "sabberworm",
+            "name": "php-css-parser",
+            "version": "9.5.0",
+            "purl": "pkg:composer/sabberworm/php-css-parser@9.5.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/MyIntervals/PHP-CSS-Parser.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://www.sabberworm.com/blog/2010/6/10/php-css-parser"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/smalot/pdfparser@2.13.1",
+            "group": "smalot",
+            "name": "pdfparser",
+            "version": "2.13.1",
+            "purl": "pkg:composer/smalot/pdfparser@2.13.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "LGPL-3.0"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/smalot/pdfparser.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://www.pdfparser.org"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/spatie/laravel-activitylog@5.1.3",
+            "group": "spatie",
+            "name": "laravel-activitylog",
+            "version": "5.1.3",
+            "purl": "pkg:composer/spatie/laravel-activitylog@5.1.3",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/spatie/laravel-activitylog.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/spatie/laravel-activitylog"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/spatie/laravel-csp@3.30.0",
+            "group": "spatie",
+            "name": "laravel-csp",
+            "version": "3.30.0",
+            "purl": "pkg:composer/spatie/laravel-csp@3.30.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/spatie/laravel-csp.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/spatie/laravel-csp"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/spatie/laravel-package-tools@1.93.3",
+            "group": "spatie",
+            "name": "laravel-package-tools",
+            "version": "1.93.3",
+            "purl": "pkg:composer/spatie/laravel-package-tools@1.93.3",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/spatie/laravel-package-tools.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/spatie/laravel-package-tools"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/spatie/laravel-permission@8.3.2",
+            "group": "spatie",
+            "name": "laravel-permission",
+            "version": "8.3.2",
+            "purl": "pkg:composer/spatie/laravel-permission@8.3.2",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/spatie/laravel-permission.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/spatie/laravel-permission"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/spomky-labs/cbor-php@3.4.2",
+            "group": "spomky-labs",
+            "name": "cbor-php",
+            "version": "3.4.2",
+            "purl": "pkg:composer/spomky-labs/cbor-php@3.4.2",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/Spomky-Labs/cbor-php.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/spomky-labs/pki-framework@1.6.3",
+            "group": "spomky-labs",
+            "name": "pki-framework",
+            "version": "1.6.3",
+            "purl": "pkg:composer/spomky-labs/pki-framework@1.6.3",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/Spomky-Labs/pki-framework.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/spomky-labs/pki-framework"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/stripe/stripe-php@21.3.2",
+            "group": "stripe",
+            "name": "stripe-php",
+            "version": "21.3.2",
+            "purl": "pkg:composer/stripe/stripe-php@21.3.2",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/stripe/stripe-php.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://stripe.com/"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/clock@8.1.9",
+            "group": "symfony",
+            "name": "clock",
+            "version": "8.1.9",
+            "purl": "pkg:composer/symfony/clock@8.1.9",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/clock.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/console@8.1.9",
+            "group": "symfony",
+            "name": "console",
+            "version": "8.1.9",
+            "purl": "pkg:composer/symfony/console@8.1.9",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/console.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/css-selector@8.1.6",
+            "group": "symfony",
+            "name": "css-selector",
+            "version": "8.1.6",
+            "purl": "pkg:composer/symfony/css-selector@8.1.6",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/css-selector.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/deprecation-contracts@3.7.1",
+            "group": "symfony",
+            "name": "deprecation-contracts",
+            "version": "3.7.1",
+            "purl": "pkg:composer/symfony/deprecation-contracts@3.7.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/deprecation-contracts.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/error-handler@8.1.8",
+            "group": "symfony",
+            "name": "error-handler",
+            "version": "8.1.8",
+            "purl": "pkg:composer/symfony/error-handler@8.1.8",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/error-handler.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/event-dispatcher-contracts@3.7.1",
+            "group": "symfony",
+            "name": "event-dispatcher-contracts",
+            "version": "3.7.1",
+            "purl": "pkg:composer/symfony/event-dispatcher-contracts@3.7.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/event-dispatcher-contracts.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/event-dispatcher@8.1.5",
+            "group": "symfony",
+            "name": "event-dispatcher",
+            "version": "8.1.5",
+            "purl": "pkg:composer/symfony/event-dispatcher@8.1.5",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/event-dispatcher.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/finder@8.1.8",
+            "group": "symfony",
+            "name": "finder",
+            "version": "8.1.8",
+            "purl": "pkg:composer/symfony/finder@8.1.8",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/finder.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/http-foundation@8.1.9",
+            "group": "symfony",
+            "name": "http-foundation",
+            "version": "8.1.9",
+            "purl": "pkg:composer/symfony/http-foundation@8.1.9",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/http-foundation.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/http-kernel@8.1.9",
+            "group": "symfony",
+            "name": "http-kernel",
+            "version": "8.1.9",
+            "purl": "pkg:composer/symfony/http-kernel@8.1.9",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/http-kernel.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/mailer@8.1.7",
+            "group": "symfony",
+            "name": "mailer",
+            "version": "8.1.7",
+            "purl": "pkg:composer/symfony/mailer@8.1.7",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/mailer.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/mime@8.1.7",
+            "group": "symfony",
+            "name": "mime",
+            "version": "8.1.7",
+            "purl": "pkg:composer/symfony/mime@8.1.7",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/mime.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-ctype@1.37.0",
+            "group": "symfony",
+            "name": "polyfill-ctype",
+            "version": "1.37.0",
+            "purl": "pkg:composer/symfony/polyfill-ctype@1.37.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/polyfill-ctype.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-intl-grapheme@1.43.0",
+            "group": "symfony",
+            "name": "polyfill-intl-grapheme",
+            "version": "1.43.0",
+            "purl": "pkg:composer/symfony/polyfill-intl-grapheme@1.43.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/polyfill-intl-grapheme.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-intl-icu@1.43.0",
+            "group": "symfony",
+            "name": "polyfill-intl-icu",
+            "version": "1.43.0",
+            "purl": "pkg:composer/symfony/polyfill-intl-icu@1.43.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/polyfill-intl-icu.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-intl-idn@1.43.0",
+            "group": "symfony",
+            "name": "polyfill-intl-idn",
+            "version": "1.43.0",
+            "purl": "pkg:composer/symfony/polyfill-intl-idn@1.43.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/polyfill-intl-idn.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-intl-normalizer@1.43.0",
+            "group": "symfony",
+            "name": "polyfill-intl-normalizer",
+            "version": "1.43.0",
+            "purl": "pkg:composer/symfony/polyfill-intl-normalizer@1.43.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/polyfill-intl-normalizer.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-mbstring@1.43.0",
+            "group": "symfony",
+            "name": "polyfill-mbstring",
+            "version": "1.43.0",
+            "purl": "pkg:composer/symfony/polyfill-mbstring@1.43.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/polyfill-mbstring.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-php80@1.43.0",
+            "group": "symfony",
+            "name": "polyfill-php80",
+            "version": "1.43.0",
+            "purl": "pkg:composer/symfony/polyfill-php80@1.43.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/polyfill-php80.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-php81@1.38.1",
+            "group": "symfony",
+            "name": "polyfill-php81",
+            "version": "1.38.1",
+            "purl": "pkg:composer/symfony/polyfill-php81@1.38.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/polyfill-php81.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-php82@1.43.0",
+            "group": "symfony",
+            "name": "polyfill-php82",
+            "version": "1.43.0",
+            "purl": "pkg:composer/symfony/polyfill-php82@1.43.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/polyfill-php82.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-php84@1.43.0",
+            "group": "symfony",
+            "name": "polyfill-php84",
+            "version": "1.43.0",
+            "purl": "pkg:composer/symfony/polyfill-php84@1.43.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/polyfill-php84.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-php85@1.43.0",
+            "group": "symfony",
+            "name": "polyfill-php85",
+            "version": "1.43.0",
+            "purl": "pkg:composer/symfony/polyfill-php85@1.43.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/polyfill-php85.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-php86@1.43.0",
+            "group": "symfony",
+            "name": "polyfill-php86",
+            "version": "1.43.0",
+            "purl": "pkg:composer/symfony/polyfill-php86@1.43.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/polyfill-php86.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-time@1.42.0",
+            "group": "symfony",
+            "name": "polyfill-time",
+            "version": "1.42.0",
+            "purl": "pkg:composer/symfony/polyfill-time@1.42.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/polyfill-time.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/polyfill-uuid@1.43.0",
+            "group": "symfony",
+            "name": "polyfill-uuid",
+            "version": "1.43.0",
+            "purl": "pkg:composer/symfony/polyfill-uuid@1.43.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/polyfill-uuid.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/process@8.1.9",
+            "group": "symfony",
+            "name": "process",
+            "version": "8.1.9",
+            "purl": "pkg:composer/symfony/process@8.1.9",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/process.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/property-access@8.1.4",
+            "group": "symfony",
+            "name": "property-access",
+            "version": "8.1.4",
+            "purl": "pkg:composer/symfony/property-access@8.1.4",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/property-access.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/property-info@8.1.8",
+            "group": "symfony",
+            "name": "property-info",
+            "version": "8.1.8",
+            "purl": "pkg:composer/symfony/property-info@8.1.8",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/property-info.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/routing@8.1.9",
+            "group": "symfony",
+            "name": "routing",
+            "version": "8.1.9",
+            "purl": "pkg:composer/symfony/routing@8.1.9",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/routing.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/serializer@8.1.9",
+            "group": "symfony",
+            "name": "serializer",
+            "version": "8.1.9",
+            "purl": "pkg:composer/symfony/serializer@8.1.9",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/serializer.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/service-contracts@3.7.3",
+            "group": "symfony",
+            "name": "service-contracts",
+            "version": "3.7.3",
+            "purl": "pkg:composer/symfony/service-contracts@3.7.3",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/service-contracts.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/string@8.1.9",
+            "group": "symfony",
+            "name": "string",
+            "version": "8.1.9",
+            "purl": "pkg:composer/symfony/string@8.1.9",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/string.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/translation-contracts@3.7.1",
+            "group": "symfony",
+            "name": "translation-contracts",
+            "version": "3.7.1",
+            "purl": "pkg:composer/symfony/translation-contracts@3.7.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/translation-contracts.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/translation@8.1.5",
+            "group": "symfony",
+            "name": "translation",
+            "version": "8.1.5",
+            "purl": "pkg:composer/symfony/translation@8.1.5",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/translation.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/type-info@8.1.8",
+            "group": "symfony",
+            "name": "type-info",
+            "version": "8.1.8",
+            "purl": "pkg:composer/symfony/type-info@8.1.8",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/type-info.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/uid@8.1.9",
+            "group": "symfony",
+            "name": "uid",
+            "version": "8.1.9",
+            "purl": "pkg:composer/symfony/uid@8.1.9",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/uid.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/symfony/var-dumper@8.1.9",
+            "group": "symfony",
+            "name": "var-dumper",
+            "version": "8.1.9",
+            "purl": "pkg:composer/symfony/var-dumper@8.1.9",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/symfony/var-dumper.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://symfony.com"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/tijsverkoyen/css-to-inline-styles@2.4.0",
+            "group": "tijsverkoyen",
+            "name": "css-to-inline-styles",
+            "version": "2.4.0",
+            "purl": "pkg:composer/tijsverkoyen/css-to-inline-styles@2.4.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "BSD-3-Clause"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/tijsverkoyen/CssToInlineStyles.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/tijsverkoyen/CssToInlineStyles"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/vlucas/phpdotenv@5.7.0",
+            "group": "vlucas",
+            "name": "phpdotenv",
+            "version": "5.7.0",
+            "purl": "pkg:composer/vlucas/phpdotenv@5.7.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "BSD-3-Clause"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/phpdotenv/phpdotenv.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/voku/portable-ascii@2.1.1",
+            "group": "voku",
+            "name": "portable-ascii",
+            "version": "2.1.1",
+            "purl": "pkg:composer/voku/portable-ascii@2.1.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/voku/portable-ascii.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/voku/portable-ascii"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/web-auth/cose-lib@4.8.2",
+            "group": "web-auth",
+            "name": "cose-lib",
+            "version": "4.8.2",
+            "purl": "pkg:composer/web-auth/cose-lib@4.8.2",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/web-auth/cose-lib.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/web-auth"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/web-auth/webauthn-lib@5.3.9",
+            "group": "web-auth",
+            "name": "webauthn-lib",
+            "version": "5.3.9",
+            "purl": "pkg:composer/web-auth/webauthn-lib@5.3.9",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/web-auth/webauthn-lib.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/web-auth"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/webmozart/assert@2.5.0",
+            "group": "webmozart",
+            "name": "assert",
+            "version": "2.5.0",
+            "purl": "pkg:composer/webmozart/assert@2.5.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/webmozarts/assert.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:npm/%40alpinejs/csp@3.17.5",
+            "group": "@alpinejs",
+            "name": "csp",
+            "version": "3.17.5",
+            "purl": "pkg:npm/%40alpinejs/csp@3.17.5",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "hashes": [
+                {
+                    "alg": "SHA-512",
+                    "content": "edee65620cc924bd9e67b7ac9f1f84ef0b71c2cf950ecf5e9bdcedb6d67e0100181278366c0047169d925206b4c2df384727cbee173a07e4bf4468255ec3dfeb"
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "https://registry.npmjs.org/@alpinejs/csp/-/csp-3.17.5.tgz"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:npm/%40kurkle/color@0.3.4",
+            "group": "@kurkle",
+            "name": "color",
+            "version": "0.3.4",
+            "purl": "pkg:npm/%40kurkle/color@0.3.4",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "hashes": [
+                {
+                    "alg": "SHA-512",
+                    "content": "3395249d93c746edc31035a88a953ab04f0f76467a67f4bebf8743f8a7bc21a365a5d4906a1e74973d4ab5c1416b6bec74e9f06db9f127054ce30b72eae740e7"
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "https://registry.npmjs.org/@kurkle/color/-/color-0.3.4.tgz"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:npm/%40laravel/passkeys@0.4.0",
+            "group": "@laravel",
+            "name": "passkeys",
+            "version": "0.4.0",
+            "purl": "pkg:npm/%40laravel/passkeys@0.4.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "hashes": [
+                {
+                    "alg": "SHA-512",
+                    "content": "e7d50724764fac84fc7f9845409511d445e16b35994e0dc370979fc527c0dda463eb1bb8d08fe5603bde518e282f6fe1fdcaeaf638e9b522b29190c3a2577b68"
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "https://registry.npmjs.org/@laravel/passkeys/-/passkeys-0.4.0.tgz"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:npm/%40simplewebauthn/browser@13.3.0",
+            "group": "@simplewebauthn",
+            "name": "browser",
+            "version": "13.3.0",
+            "purl": "pkg:npm/%40simplewebauthn/browser@13.3.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "hashes": [
+                {
+                    "alg": "SHA-512",
+                    "content": "044fd45afe85393a0075593412893392a4100ce5ad372758958ebe3ab9a26794823666f8d557a1b6d6e84deb543374ff7ebe840056155e3cf8332db0836df4ad"
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "https://registry.npmjs.org/@simplewebauthn/browser/-/browser-13.3.0.tgz"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:npm/%40vue/reactivity@3.5.44",
+            "group": "@vue",
+            "name": "reactivity",
+            "version": "3.5.44",
+            "purl": "pkg:npm/%40vue/reactivity@3.5.44",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "hashes": [
+                {
+                    "alg": "SHA-512",
+                    "content": "bbe40974a78104400390f75ebec2fee84d764256157c10fc65cc39aa30d02ad6a623a975e0acaa6b324ca1b84229e96158de73a722948840e84f21c4f7772a5b"
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "https://registry.npmjs.org/@vue/reactivity/-/reactivity-3.5.44.tgz"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:npm/%40vue/shared@3.5.44",
+            "group": "@vue",
+            "name": "shared",
+            "version": "3.5.44",
+            "purl": "pkg:npm/%40vue/shared@3.5.44",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "hashes": [
+                {
+                    "alg": "SHA-512",
+                    "content": "1fcd972c7d038e648e75b1303b5e71dd04e8d5fe4f584b6fdb7ede2e960a7349aa2eef81f219ead7a9455a6b8198dbab91e886df0afea0cd4584e965fd854546"
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "https://registry.npmjs.org/@vue/shared/-/shared-3.5.44.tgz"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:npm/altcha@3.5.0",
+            "name": "altcha",
+            "version": "3.5.0",
+            "purl": "pkg:npm/altcha@3.5.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "hashes": [
+                {
+                    "alg": "SHA-512",
+                    "content": "c015cd2b56c1796b3f5d33998b2137250bd13440a014a60426a70fc455bbb4577b12b1badb242632545ab32819af36b7cf23534eea27dc17cc17f3dc05c7a973"
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "https://registry.npmjs.org/altcha/-/altcha-3.5.0.tgz"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:npm/chart.js@4.5.1",
+            "name": "chart.js",
+            "version": "4.5.1",
+            "purl": "pkg:npm/chart.js@4.5.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "hashes": [
+                {
+                    "alg": "SHA-512",
+                    "content": "1888df893f5d6e61d18988ba365db2142abb924c1d929d56fe5a7627df6b5f4ca8f6d8091a7de5290013ced2236f9b55b5ebdc06d21d202356aa5ab9f84f3f3f"
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "https://registry.npmjs.org/chart.js/-/chart.js-4.5.1.tgz"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:npm/hash-wasm@4.12.0",
+            "name": "hash-wasm",
+            "version": "4.12.0",
+            "purl": "pkg:npm/hash-wasm@4.12.0",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "hashes": [
+                {
+                    "alg": "SHA-512",
+                    "content": "fbfd81dab60b6f8f08fdebdd38884ff8afc30f671ad9f8018e9e8ef860449c20e4d9ee2ba5e5c82bc1af23244f8d37b38265a7f6098ac244238f1e81b6a0c755"
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "https://registry.npmjs.org/hash-wasm/-/hash-wasm-4.12.0.tgz"
+                }
+            ]
+        }
+    ],
+    "dependencies": [
+        {
+            "ref": "pkg:github/cetome/redact@1.0.0",
+            "dependsOn": [
+                "pkg:composer/altcha-org/altcha@2.3.0",
+                "pkg:composer/dompdf/dompdf@3.1.6",
+                "pkg:composer/laravel/cashier@16.9.0",
+                "pkg:composer/laravel/framework@13.38.0",
+                "pkg:composer/laravel/passkeys@0.2.1",
+                "pkg:composer/laravel/tinker@3.0.2",
+                "pkg:composer/mallardduck/blade-lucide-icons@2.0.33",
+                "pkg:composer/phpoffice/phpspreadsheet@5.10.0",
+                "pkg:composer/phpoffice/phpword@1.4.0",
+                "pkg:composer/prism-php/prism@0.102.0",
+                "pkg:composer/smalot/pdfparser@2.13.1",
+                "pkg:composer/spatie/laravel-activitylog@5.1.3",
+                "pkg:composer/spatie/laravel-csp@3.30.0",
+                "pkg:composer/spatie/laravel-permission@8.3.2",
+                "pkg:npm/%40alpinejs/csp@3.17.5",
+                "pkg:npm/%40laravel/passkeys@0.4.0",
+                "pkg:npm/altcha@3.5.0",
+                "pkg:npm/chart.js@4.5.1"
+            ]
+        },
+        {
+            "ref": "pkg:composer/altcha-org/altcha@2.3.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/blade-ui-kit/blade-icons@1.10.1",
+            "dependsOn": [
+                "pkg:composer/symfony/console@8.1.9",
+                "pkg:composer/symfony/finder@8.1.8"
+            ]
+        },
+        {
+            "ref": "pkg:composer/brick/math@1.0.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/carbonphp/carbon-doctrine-types@3.2.1",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/composer/pcre@3.4.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/dflydev/dot-access-data@3.0.3",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/doctrine/deprecations@1.1.6",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/doctrine/inflector@2.1.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/doctrine/lexer@3.0.3",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/dompdf/dompdf@3.1.6",
+            "dependsOn": [
+                "pkg:composer/dompdf/php-font-lib@1.0.2",
+                "pkg:composer/dompdf/php-svg-lib@1.0.2",
+                "pkg:composer/masterminds/html5@2.11.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/dompdf/php-font-lib@1.0.2",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/dompdf/php-svg-lib@1.0.2",
+            "dependsOn": [
+                "pkg:composer/sabberworm/php-css-parser@9.5.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/dragonmantank/cron-expression@3.6.1",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/egulias/email-validator@4.0.4",
+            "dependsOn": [
+                "pkg:composer/doctrine/lexer@3.0.3",
+                "pkg:composer/symfony/polyfill-intl-idn@1.43.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/fruitcake/php-cors@1.4.0",
+            "dependsOn": [
+                "pkg:composer/symfony/http-foundation@8.1.9"
+            ]
+        },
+        {
+            "ref": "pkg:composer/graham-campbell/result-type@1.2.0",
+            "dependsOn": [
+                "pkg:composer/phpoption/phpoption@1.10.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/guzzlehttp/guzzle@8.3.0",
+            "dependsOn": [
+                "pkg:composer/guzzlehttp/promises@3.1.0",
+                "pkg:composer/guzzlehttp/psr7@3.2.0",
+                "pkg:composer/psr/http-client@1.0.3",
+                "pkg:composer/psr/http-factory@1.1.0",
+                "pkg:composer/symfony/polyfill-php80@1.43.0",
+                "pkg:composer/symfony/polyfill-php82@1.43.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/guzzlehttp/promises@3.1.0",
+            "dependsOn": [
+                "pkg:composer/symfony/deprecation-contracts@3.7.1"
+            ]
+        },
+        {
+            "ref": "pkg:composer/guzzlehttp/psr7@3.2.0",
+            "dependsOn": [
+                "pkg:composer/psr/http-factory@1.1.0",
+                "pkg:composer/psr/http-message@2.0",
+                "pkg:composer/symfony/polyfill-php80@1.43.0",
+                "pkg:composer/symfony/polyfill-php82@1.43.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/guzzlehttp/uri-template@2.0.1",
+            "dependsOn": [
+                "pkg:composer/symfony/polyfill-php80@1.43.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/laravel/cashier@16.9.0",
+            "dependsOn": [
+                "pkg:composer/moneyphp/money@4.9.0",
+                "pkg:composer/nesbot/carbon@3.15.0",
+                "pkg:composer/stripe/stripe-php@21.3.2",
+                "pkg:composer/symfony/console@8.1.9",
+                "pkg:composer/symfony/http-kernel@8.1.9",
+                "pkg:composer/symfony/polyfill-intl-icu@1.43.0",
+                "pkg:composer/symfony/polyfill-php84@1.43.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/laravel/framework@13.38.0",
+            "dependsOn": [
+                "pkg:composer/brick/math@1.0.0",
+                "pkg:composer/doctrine/inflector@2.1.0",
+                "pkg:composer/dragonmantank/cron-expression@3.6.1",
+                "pkg:composer/egulias/email-validator@4.0.4",
+                "pkg:composer/fruitcake/php-cors@1.4.0",
+                "pkg:composer/guzzlehttp/guzzle@8.3.0",
+                "pkg:composer/guzzlehttp/promises@3.1.0",
+                "pkg:composer/guzzlehttp/psr7@3.2.0",
+                "pkg:composer/guzzlehttp/uri-template@2.0.1",
+                "pkg:composer/laravel/prompts@0.3.26",
+                "pkg:composer/laravel/serializable-closure@2.1.0",
+                "pkg:composer/league/commonmark@2.10.4",
+                "pkg:composer/league/flysystem@3.36.0",
+                "pkg:composer/league/flysystem-local@3.35.3",
+                "pkg:composer/league/uri@7.9.0",
+                "pkg:composer/monolog/monolog@3.12.1",
+                "pkg:composer/nesbot/carbon@3.15.0",
+                "pkg:composer/nunomaduro/termwind@2.4.0",
+                "pkg:composer/psr/container@2.0.2",
+                "pkg:composer/psr/http-message@2.0",
+                "pkg:composer/psr/log@3.0.2",
+                "pkg:composer/psr/simple-cache@3.0.0",
+                "pkg:composer/ramsey/uuid@4.9.4",
+                "pkg:composer/symfony/console@8.1.9",
+                "pkg:composer/symfony/error-handler@8.1.8",
+                "pkg:composer/symfony/finder@8.1.8",
+                "pkg:composer/symfony/http-foundation@8.1.9",
+                "pkg:composer/symfony/http-kernel@8.1.9",
+                "pkg:composer/symfony/mailer@8.1.7",
+                "pkg:composer/symfony/mime@8.1.7",
+                "pkg:composer/symfony/polyfill-php84@1.43.0",
+                "pkg:composer/symfony/polyfill-php85@1.43.0",
+                "pkg:composer/symfony/polyfill-php86@1.43.0",
+                "pkg:composer/symfony/process@8.1.9",
+                "pkg:composer/symfony/routing@8.1.9",
+                "pkg:composer/symfony/uid@8.1.9",
+                "pkg:composer/symfony/var-dumper@8.1.9",
+                "pkg:composer/tijsverkoyen/css-to-inline-styles@2.4.0",
+                "pkg:composer/vlucas/phpdotenv@5.7.0",
+                "pkg:composer/voku/portable-ascii@2.1.1"
+            ]
+        },
+        {
+            "ref": "pkg:composer/laravel/passkeys@0.2.1",
+            "dependsOn": [
+                "pkg:composer/web-auth/webauthn-lib@5.3.9"
+            ]
+        },
+        {
+            "ref": "pkg:composer/laravel/prompts@0.3.26",
+            "dependsOn": [
+                "pkg:composer/symfony/console@8.1.9"
+            ]
+        },
+        {
+            "ref": "pkg:composer/laravel/serializable-closure@2.1.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/laravel/tinker@3.0.2",
+            "dependsOn": [
+                "pkg:composer/psy/psysh@0.12.24",
+                "pkg:composer/symfony/var-dumper@8.1.9"
+            ]
+        },
+        {
+            "ref": "pkg:composer/league/commonmark@2.10.4",
+            "dependsOn": [
+                "pkg:composer/league/config@1.2.0",
+                "pkg:composer/psr/event-dispatcher@1.0.0",
+                "pkg:composer/symfony/deprecation-contracts@3.7.1",
+                "pkg:composer/symfony/polyfill-php80@1.43.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/league/config@1.2.0",
+            "dependsOn": [
+                "pkg:composer/dflydev/dot-access-data@3.0.3",
+                "pkg:composer/nette/schema@1.4.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/league/flysystem-local@3.35.3",
+            "dependsOn": [
+                "pkg:composer/league/flysystem@3.36.0",
+                "pkg:composer/league/mime-type-detection@1.17.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/league/flysystem@3.36.0",
+            "dependsOn": [
+                "pkg:composer/league/flysystem-local@3.35.3",
+                "pkg:composer/league/mime-type-detection@1.17.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/league/mime-type-detection@1.17.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/league/uri-interfaces@7.9.0",
+            "dependsOn": [
+                "pkg:composer/psr/http-message@2.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/league/uri@7.9.0",
+            "dependsOn": [
+                "pkg:composer/league/uri-interfaces@7.9.0",
+                "pkg:composer/psr/http-factory@1.1.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/maennchen/zipstream-php@3.2.2",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/mallardduck/blade-lucide-icons@2.0.33",
+            "dependsOn": [
+                "pkg:composer/blade-ui-kit/blade-icons@1.10.1"
+            ]
+        },
+        {
+            "ref": "pkg:composer/markbaker/complex@3.0.2",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/markbaker/matrix@3.0.1",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/masterminds/html5@2.11.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/moneyphp/money@4.9.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/monolog/monolog@3.12.1",
+            "dependsOn": [
+                "pkg:composer/psr/log@3.0.2"
+            ]
+        },
+        {
+            "ref": "pkg:composer/nesbot/carbon@3.15.0",
+            "dependsOn": [
+                "pkg:composer/carbonphp/carbon-doctrine-types@3.2.1",
+                "pkg:composer/psr/clock@1.0.0",
+                "pkg:composer/symfony/clock@8.1.9",
+                "pkg:composer/symfony/polyfill-mbstring@1.43.0",
+                "pkg:composer/symfony/polyfill-time@1.42.0",
+                "pkg:composer/symfony/translation@8.1.5"
+            ]
+        },
+        {
+            "ref": "pkg:composer/nette/schema@1.4.0",
+            "dependsOn": [
+                "pkg:composer/nette/utils@4.1.6"
+            ]
+        },
+        {
+            "ref": "pkg:composer/nette/utils@4.1.6",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/nikic/php-parser@5.9.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/nunomaduro/termwind@2.4.0",
+            "dependsOn": [
+                "pkg:composer/symfony/console@8.1.9"
+            ]
+        },
+        {
+            "ref": "pkg:composer/paragonie/constant_time_encoding@3.1.3",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/phpdocumentor/reflection-common@2.2.1",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/phpdocumentor/reflection-docblock@6.0.3",
+            "dependsOn": [
+                "pkg:composer/doctrine/deprecations@1.1.6",
+                "pkg:composer/phpdocumentor/reflection-common@2.2.1",
+                "pkg:composer/phpdocumentor/type-resolver@2.1.0",
+                "pkg:composer/phpstan/phpdoc-parser@2.3.6",
+                "pkg:composer/webmozart/assert@2.5.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/phpdocumentor/type-resolver@2.1.0",
+            "dependsOn": [
+                "pkg:composer/doctrine/deprecations@1.1.6",
+                "pkg:composer/phpdocumentor/reflection-common@2.2.1",
+                "pkg:composer/phpstan/phpdoc-parser@2.3.6"
+            ]
+        },
+        {
+            "ref": "pkg:composer/phpoffice/math@0.3.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/phpoffice/phpspreadsheet@5.10.0",
+            "dependsOn": [
+                "pkg:composer/composer/pcre@3.4.0",
+                "pkg:composer/maennchen/zipstream-php@3.2.2",
+                "pkg:composer/markbaker/complex@3.0.2",
+                "pkg:composer/markbaker/matrix@3.0.1",
+                "pkg:composer/psr/simple-cache@3.0.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/phpoffice/phpword@1.4.0",
+            "dependsOn": [
+                "pkg:composer/phpoffice/math@0.3.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/phpoption/phpoption@1.10.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/phpstan/phpdoc-parser@2.3.6",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/prism-php/prism@0.102.0",
+            "dependsOn": [
+                "pkg:composer/laravel/framework@13.38.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/psr/clock@1.0.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/psr/container@2.0.2",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/psr/event-dispatcher@1.0.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/psr/http-client@1.0.3",
+            "dependsOn": [
+                "pkg:composer/psr/http-message@2.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/psr/http-factory@1.1.0",
+            "dependsOn": [
+                "pkg:composer/psr/http-message@2.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/psr/http-message@2.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/psr/log@3.0.2",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/psr/simple-cache@3.0.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/psy/psysh@0.12.24",
+            "dependsOn": [
+                "pkg:composer/nikic/php-parser@5.9.0",
+                "pkg:composer/symfony/console@8.1.9",
+                "pkg:composer/symfony/var-dumper@8.1.9"
+            ]
+        },
+        {
+            "ref": "pkg:composer/ramsey/collection@2.1.1",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/ramsey/uuid@4.9.4",
+            "dependsOn": [
+                "pkg:composer/brick/math@1.0.0",
+                "pkg:composer/ramsey/collection@2.1.1"
+            ]
+        },
+        {
+            "ref": "pkg:composer/sabberworm/php-css-parser@9.5.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/smalot/pdfparser@2.13.1",
+            "dependsOn": [
+                "pkg:composer/symfony/polyfill-mbstring@1.43.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/spatie/laravel-activitylog@5.1.3",
+            "dependsOn": [
+                "pkg:composer/spatie/laravel-package-tools@1.93.3"
+            ]
+        },
+        {
+            "ref": "pkg:composer/spatie/laravel-csp@3.30.0",
+            "dependsOn": [
+                "pkg:composer/spatie/laravel-package-tools@1.93.3"
+            ]
+        },
+        {
+            "ref": "pkg:composer/spatie/laravel-package-tools@1.93.3",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/spatie/laravel-permission@8.3.2",
+            "dependsOn": [
+                "pkg:composer/spatie/laravel-package-tools@1.93.3"
+            ]
+        },
+        {
+            "ref": "pkg:composer/spomky-labs/cbor-php@3.4.2",
+            "dependsOn": [
+                "pkg:composer/brick/math@1.0.0",
+                "pkg:composer/symfony/polyfill-php81@1.38.1"
+            ]
+        },
+        {
+            "ref": "pkg:composer/spomky-labs/pki-framework@1.6.3",
+            "dependsOn": [
+                "pkg:composer/brick/math@1.0.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/stripe/stripe-php@21.3.2",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/clock@8.1.9",
+            "dependsOn": [
+                "pkg:composer/psr/clock@1.0.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/console@8.1.9",
+            "dependsOn": [
+                "pkg:composer/symfony/deprecation-contracts@3.7.1",
+                "pkg:composer/symfony/polyfill-mbstring@1.43.0",
+                "pkg:composer/symfony/polyfill-php85@1.43.0",
+                "pkg:composer/symfony/service-contracts@3.7.3",
+                "pkg:composer/symfony/string@8.1.9"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/css-selector@8.1.6",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/deprecation-contracts@3.7.1",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/error-handler@8.1.8",
+            "dependsOn": [
+                "pkg:composer/psr/log@3.0.2",
+                "pkg:composer/symfony/polyfill-php85@1.43.0",
+                "pkg:composer/symfony/var-dumper@8.1.9"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/event-dispatcher-contracts@3.7.1",
+            "dependsOn": [
+                "pkg:composer/psr/event-dispatcher@1.0.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/event-dispatcher@8.1.5",
+            "dependsOn": [
+                "pkg:composer/symfony/deprecation-contracts@3.7.1",
+                "pkg:composer/symfony/event-dispatcher-contracts@3.7.1"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/finder@8.1.8",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/http-foundation@8.1.9",
+            "dependsOn": [
+                "pkg:composer/symfony/deprecation-contracts@3.7.1",
+                "pkg:composer/symfony/polyfill-mbstring@1.43.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/http-kernel@8.1.9",
+            "dependsOn": [
+                "pkg:composer/psr/log@3.0.2",
+                "pkg:composer/symfony/deprecation-contracts@3.7.1",
+                "pkg:composer/symfony/error-handler@8.1.8",
+                "pkg:composer/symfony/event-dispatcher@8.1.5",
+                "pkg:composer/symfony/http-foundation@8.1.9",
+                "pkg:composer/symfony/polyfill-ctype@1.37.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/mailer@8.1.7",
+            "dependsOn": [
+                "pkg:composer/egulias/email-validator@4.0.4",
+                "pkg:composer/psr/event-dispatcher@1.0.0",
+                "pkg:composer/psr/log@3.0.2",
+                "pkg:composer/symfony/event-dispatcher@8.1.5",
+                "pkg:composer/symfony/mime@8.1.7",
+                "pkg:composer/symfony/service-contracts@3.7.3"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/mime@8.1.7",
+            "dependsOn": [
+                "pkg:composer/symfony/polyfill-intl-idn@1.43.0",
+                "pkg:composer/symfony/polyfill-mbstring@1.43.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/polyfill-ctype@1.37.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/polyfill-intl-grapheme@1.43.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/polyfill-intl-icu@1.43.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/polyfill-intl-idn@1.43.0",
+            "dependsOn": [
+                "pkg:composer/symfony/polyfill-intl-normalizer@1.43.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/polyfill-intl-normalizer@1.43.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/polyfill-mbstring@1.43.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/polyfill-php80@1.43.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/polyfill-php81@1.38.1",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/polyfill-php82@1.43.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/polyfill-php84@1.43.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/polyfill-php85@1.43.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/polyfill-php86@1.43.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/polyfill-time@1.42.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/polyfill-uuid@1.43.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/process@8.1.9",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/property-access@8.1.4",
+            "dependsOn": [
+                "pkg:composer/symfony/property-info@8.1.8"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/property-info@8.1.8",
+            "dependsOn": [
+                "pkg:composer/symfony/string@8.1.9",
+                "pkg:composer/symfony/type-info@8.1.8"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/routing@8.1.9",
+            "dependsOn": [
+                "pkg:composer/symfony/deprecation-contracts@3.7.1"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/serializer@8.1.9",
+            "dependsOn": [
+                "pkg:composer/symfony/deprecation-contracts@3.7.1",
+                "pkg:composer/symfony/polyfill-ctype@1.37.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/service-contracts@3.7.3",
+            "dependsOn": [
+                "pkg:composer/psr/container@2.0.2",
+                "pkg:composer/symfony/deprecation-contracts@3.7.1"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/string@8.1.9",
+            "dependsOn": [
+                "pkg:composer/symfony/polyfill-ctype@1.37.0",
+                "pkg:composer/symfony/polyfill-intl-grapheme@1.43.0",
+                "pkg:composer/symfony/polyfill-intl-normalizer@1.43.0",
+                "pkg:composer/symfony/polyfill-mbstring@1.43.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/translation-contracts@3.7.1",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/symfony/translation@8.1.5",
+            "dependsOn": [
+                "pkg:composer/symfony/polyfill-mbstring@1.43.0",
+                "pkg:composer/symfony/translation-contracts@3.7.1"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/type-info@8.1.8",
+            "dependsOn": [
+                "pkg:composer/psr/container@2.0.2"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/uid@8.1.9",
+            "dependsOn": [
+                "pkg:composer/symfony/polyfill-uuid@1.43.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/symfony/var-dumper@8.1.9",
+            "dependsOn": [
+                "pkg:composer/symfony/polyfill-mbstring@1.43.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/tijsverkoyen/css-to-inline-styles@2.4.0",
+            "dependsOn": [
+                "pkg:composer/symfony/css-selector@8.1.6"
+            ]
+        },
+        {
+            "ref": "pkg:composer/vlucas/phpdotenv@5.7.0",
+            "dependsOn": [
+                "pkg:composer/graham-campbell/result-type@1.2.0",
+                "pkg:composer/phpoption/phpoption@1.10.0",
+                "pkg:composer/symfony/polyfill-ctype@1.37.0",
+                "pkg:composer/symfony/polyfill-mbstring@1.43.0",
+                "pkg:composer/symfony/polyfill-php80@1.43.0"
+            ]
+        },
+        {
+            "ref": "pkg:composer/voku/portable-ascii@2.1.1",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/web-auth/cose-lib@4.8.2",
+            "dependsOn": [
+                "pkg:composer/brick/math@1.0.0",
+                "pkg:composer/spomky-labs/pki-framework@1.6.3"
+            ]
+        },
+        {
+            "ref": "pkg:composer/web-auth/webauthn-lib@5.3.9",
+            "dependsOn": [
+                "pkg:composer/paragonie/constant_time_encoding@3.1.3",
+                "pkg:composer/phpdocumentor/reflection-docblock@6.0.3",
+                "pkg:composer/psr/clock@1.0.0",
+                "pkg:composer/psr/event-dispatcher@1.0.0",
+                "pkg:composer/psr/log@3.0.2",
+                "pkg:composer/spomky-labs/cbor-php@3.4.2",
+                "pkg:composer/spomky-labs/pki-framework@1.6.3",
+                "pkg:composer/symfony/clock@8.1.9",
+                "pkg:composer/symfony/deprecation-contracts@3.7.1",
+                "pkg:composer/symfony/property-access@8.1.4",
+                "pkg:composer/symfony/property-info@8.1.8",
+                "pkg:composer/symfony/serializer@8.1.9",
+                "pkg:composer/symfony/uid@8.1.9",
+                "pkg:composer/web-auth/cose-lib@4.8.2"
+            ]
+        },
+        {
+            "ref": "pkg:composer/webmozart/assert@2.5.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:npm/%40alpinejs/csp@3.17.5",
+            "dependsOn": [
+                "pkg:npm/%40vue/reactivity@3.5.44"
+            ]
+        },
+        {
+            "ref": "pkg:npm/%40kurkle/color@0.3.4",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:npm/%40laravel/passkeys@0.4.0",
+            "dependsOn": [
+                "pkg:npm/%40simplewebauthn/browser@13.3.0"
+            ]
+        },
+        {
+            "ref": "pkg:npm/%40simplewebauthn/browser@13.3.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:npm/%40vue/reactivity@3.5.44",
+            "dependsOn": [
+                "pkg:npm/%40vue/shared@3.5.44"
+            ]
+        },
+        {
+            "ref": "pkg:npm/%40vue/shared@3.5.44",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:npm/altcha@3.5.0",
+            "dependsOn": [
+                "pkg:npm/hash-wasm@4.12.0"
+            ]
+        },
+        {
+            "ref": "pkg:npm/chart.js@4.5.1",
+            "dependsOn": [
+                "pkg:npm/%40kurkle/color@0.3.4"
+            ]
+        },
+        {
+            "ref": "pkg:npm/hash-wasm@4.12.0",
+            "dependsOn": []
+        }
+    ]
+}

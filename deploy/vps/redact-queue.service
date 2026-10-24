@@ -1,0 +1,19 @@
+[Unit]
+Description=REDact queue worker (AI drafts, e-mails)
+After=network.target mariadb.service
+
+[Service]
+User=redact
+Group=redact
+WorkingDirectory=/srv/redact/app
+ExecStart=/usr/bin/php artisan queue:work database --sleep=3 --tries=3 --max-time=3600 --timeout=180
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/srv/redact/app/storage /srv/redact/app/bootstrap/cache
+
+[Install]
+WantedBy=multi-user.target

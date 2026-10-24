@@ -1,0 +1,48 @@
+{
+  "scale": [1, 2, 3, 4, 5],
+  "levels": [
+    { "rank": 1, "name": "Very high", "color": "#DC2626" },
+    { "rank": 2, "name": "High", "color": "#EA580C" },
+    { "rank": 3, "name": "Medium", "color": "#CA8A04" },
+    { "rank": 4, "name": "Low", "color": "#16A34A" },
+    { "rank": 5, "name": "Very low", "color": "#0284C7" }
+  ],
+  "matrix": {
+    "5": [3, 2, 2, 1, 1],
+    "4": [4, 3, 2, 2, 1],
+    "3": [4, 3, 3, 2, 2],
+    "2": [5, 4, 3, 3, 2],
+    "1": [5, 5, 4, 4, 3]
+  },
+  "stride": {
+    "S": "Spoofing",
+    "T": "Tampering",
+    "R": "Repudiation",
+    "I": "Information disclosure",
+    "D": "Denial of service",
+    "E": "Elevation of privilege"
+  },
+  "threats": [
+    {
+      "threat": "Sample threat",
+      "description": "An invented example threat for the demo pack.",
+      "stride": ["T"],
+      "articles": ["A1"],
+      "requirements": ["UPD-1"]
+    },
+    {
+      "threat": "Sample update threat",
+      "description": "Linked to the updates answer.",
+      "stride": ["T"],
+      "articles": ["A1"],
+      "suggest_when": ["updates"],
+      "requirements": ["UPD-1"]
+    },
+    {
+      "threat": "Sample threat of another article",
+      "description": "Its article is never in scope.",
+      "stride": ["I"],
+      "articles": ["B9"]
+    }
+  ]
+}

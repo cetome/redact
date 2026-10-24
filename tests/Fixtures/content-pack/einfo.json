@@ -1,0 +1,4 @@
+[
+  { "code": "E.Info.ACC-1.Asset", "requirement": "ACC-1", "standards": ["demo-1"], "list": "assets", "label": "Describe how access to the asset is controlled (sample)." },
+  { "code": "E.Info.UPD-1.Product", "requirement": "UPD-1", "standards": ["demo-1"], "list": null, "label": "Describe how updates are delivered (sample)." }
+]

@@ -1,0 +1,831 @@
+@import 'tailwindcss';
+@import './cetome.css';
+@import './app-ui.css';
+@import './app-plans.css';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+/* REDact on top of the cetome.com style: the green of the REDact logo and a few product pieces. */
+@theme {
+    --color-redact-green: #10cf9b;
+}
+
+@layer components {
+    /* The REDact logo has two lines: give it a little more width than the cetome logo. */
+    .c-nav-logo .c-logo-redact {
+        width: 10.5rem;
+        @media (width >= 64rem) {
+            width: 13rem;
+        }
+    }
+
+    /* Secondary button on the blue hero: white outline, fills white on hover. */
+    .c-btn-outline-on-dark {
+        border-color: var(--color-white);
+        background-color: transparent;
+        color: var(--color-white);
+        &:hover:not(:disabled, [aria-disabled='true']) {
+            @media (hover: hover) {
+                background-color: var(--color-white);
+                color: var(--color-brand-blue);
+            }
+        }
+    }
+
+    /* Full-width band (hero, coloured sections) inside a page whose content is centred. */
+    .r-bleed {
+        width: 100%;
+    }
+
+}
+
+@layer components {
+    /* Home: the searchable second line of the title ("for the RED Delegated Act and EN 18031"). */
+    .c-hero-title-tail {
+        display: block;
+        margin-top: 0.9rem;
+        font-size: var(--text-xl);
+        line-height: 1.3;
+        font-weight: 600;
+        text-transform: none;
+        color: #d6e4ff; /* pale blue of the sharing image: readable on the brand blue */
+        @media (width >= 64rem) {
+            font-size: var(--text-2xl);
+        }
+    }
+
+    /* Home FAQ: native disclosure, one question per line. */
+    .c-faq {
+        border: 1px solid var(--c-line);
+        border-radius: var(--radius-lg);
+        background-color: var(--c-surface);
+        padding: 0.9rem 1.1rem;
+        & > summary {
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--c-ink);
+        }
+        & > summary:focus-visible {
+            outline: 3px solid var(--color-brand-blue-light);
+            outline-offset: 3px;
+        }
+        & > p {
+            margin-top: 0.6rem;
+        }
+    }
+}
+
+/* ---- Home tool --------------------------------------------------------------------------------
+   Home: the cetome hero (title, lead, Try REDact, Free templates, Learn more), the RED scoping tool
+   in its own section at #start (public/_tool: numbered actions, cards, live result, Start), then
+   "What happens next" as the /about slider (public/_slider). Also the invisible-ALTCHA start state
+   shared with /try (guest/_altcha-auto, sandbox-start.js) and the /about tour and hosting cards. */
+@layer components {
+
+    /* The tool (#start), read 1 -> 2 -> 3: name and cards on the left, the live result beside them,
+       Start as a full-width action row at the bottom. One column on phones, in the same order. */
+    .r-start {
+        scroll-margin-top: 5rem;
+        padding-block: 2rem 1rem;
+        @media (width >= 64rem) {
+            padding-block: 2.5rem 1.25rem;
+        }
+    }
+    .r-tool {
+        display: grid;
+        grid-template-areas: "name" "tick" "result" "action";
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+        border: 1px solid var(--c-line);
+        border-radius: var(--radius-2xl);
+        background-color: var(--c-surface);
+        padding: 0.9rem;
+        color: var(--c-ink);
+        @media (width >= 48rem) {
+            padding: 1.25rem;
+        }
+        @media (width >= 64rem) {
+            grid-template-columns: minmax(0, 1fr) 20rem;
+            grid-template-areas: "name result" "tick result" "action action";
+            gap: 1rem 1.5rem;
+        }
+    }
+    .r-tool-name {
+        grid-area: name;
+        margin: 0;
+        max-width: 26rem;
+    }
+    .r-tool-tick {
+        grid-area: tick;
+        display: grid;
+        gap: 0.6rem;
+        min-width: 0;
+    }
+    .r-tool-result {
+        grid-area: result;
+        align-self: start;
+        margin: 0;
+    }
+    /* The live result needs Alpine: without script only the cards and Start are shown. */
+    .r-tool:not([data-live]) .r-tool-result {
+        display: none;
+    }
+    /* A divider, not a box: no radius (owner rule on partial borders). */
+    .r-tool-action {
+        grid-area: action;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem 1rem;
+        border-top: 1px solid var(--c-line);
+        padding-top: 1rem;
+        & .r-start-btn {
+            min-width: 16rem;
+        }
+        @media (width < 40rem) {
+            & .r-start-btn {
+                min-width: 0;
+                flex: 1;
+            }
+        }
+    }
+    .r-tool-notes {
+        display: grid;
+        gap: 0.2rem;
+        min-width: 0;
+        flex: 1 1 16rem;
+    }
+    .r-tool-reassure {
+        margin: 0;
+        font-size: var(--text-label);
+        color: var(--c-ink-muted);
+    }
+    /* The three numbered actions: 1 name (optional), 2 tick, 3 start. */
+    .r-step {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        margin: 0;
+        font-size: var(--text-sm);
+        font-weight: 800;
+        color: var(--c-ink);
+    }
+    .r-step-no {
+        display: inline-grid;
+        flex-shrink: 0;
+        place-items: center;
+        width: 1.35rem;
+        height: 1.35rem;
+        border-radius: 999px;
+        background-color: var(--c-primary);
+        font-size: 0.75rem;
+        font-weight: 900;
+        line-height: 1;
+        color: var(--c-surface);
+    }
+
+    /* A card that is a button ("See a demo" for an account posts a form): left-aligned and full
+       width like the link cards (buttons centre their text by default). */
+    button.c-hero-card {
+        width: 100%;
+        text-align: start;
+        font: inherit;
+        cursor: pointer;
+    }
+
+    /* Home hero: Try, See a demo and Free templates always the same width: three in a row when they
+       fit, otherwise equal columns down to one full-width column on a phone. */
+    .r-home-hero .c-btn-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+        max-width: 46rem;
+    }
+    .r-home-hero .c-btn-lg {
+        padding-inline: 1rem;
+    }
+
+    /* Start: a spinner while the proof is solved or the form is on its way. */
+    .r-start-btn.a-btn {
+        min-height: 2.75rem;
+    }
+    .a-drawer-foot .r-start-btn.a-btn {
+        min-height: 0;
+    }
+    .r-start-btn .r-start-spinner {
+        display: none;
+    }
+    .r-start-btn.is-busy {
+        cursor: progress;
+        & .r-start-spinner {
+            display: inline-block;
+            animation: r-spin 0.8s linear infinite;
+        }
+        & .r-start-icon {
+            display: none;
+        }
+    }
+    .c-btn.r-start-btn {
+        gap: 0.5rem;
+        & svg {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+    @keyframes r-spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .r-start-btn.is-busy .r-start-spinner {
+            animation-duration: 2.4s;
+        }
+    }
+    /* The state of the invisible anti-spam check, said in words (role="status"). */
+    .r-start-status {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        margin: 0;
+        font-size: var(--text-label);
+        color: var(--c-ink-muted);
+        & svg {
+            width: 0.9rem;
+            height: 0.9rem;
+            flex-shrink: 0;
+        }
+        &:not([data-state]) {
+            display: none;
+        }
+        &[data-state="ready"] svg {
+            color: var(--a-ok-ink);
+        }
+        &[data-state="failed"] {
+            color: var(--a-bad-ink);
+        }
+        /* While sending, the button already says it: the line stays for screen readers only. */
+        &[data-state="preparing"] {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+        }
+    }
+    .r-start-error {
+        margin: 0;
+    }
+    .r-try-form {
+        display: grid;
+        gap: 0.75rem;
+    }
+
+    /* The slider pictures (light or dark picture with the theme). */
+    .r-tour-figure {
+        margin: 0.5rem 0 0;
+        /* No display here: c-only-light / c-only-dark choose the picture of the theme. */
+        & img {
+            width: 100%;
+            height: auto;
+            border: 1px solid var(--c-line);
+            border-radius: var(--radius-lg);
+        }
+    }
+    /* /about "Everything in one place": vertical slider (cetome.com vortex-tabs, richer). Numbered tabs
+       left, the active one expanded and tinted with a full border (no one-sided edge), the screen right.
+       Phones: the tabs become a grid of numbers above the picture, the panel carries its own title. */
+    /* A deep link (/about#risks) lands with the section title clear of the sticky header. */
+    #tour {
+        scroll-margin-top: 5.5rem;
+    }
+    .r-slider {
+        display: grid;
+        gap: 1.25rem;
+        margin-top: 2rem;
+        @media (width >= 64rem) {
+            grid-template-columns: 22rem minmax(0, 1fr);
+            align-items: start;
+            gap: 2rem;
+        }
+    }
+    .r-slider-tabs {
+        display: grid;
+        gap: 0.4rem;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        @media (width >= 64rem) {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+    .r-slider-tab {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: baseline;
+        gap: 0 0.75rem;
+        border: 1px solid var(--c-line);
+        border-radius: var(--radius-lg);
+        background-color: var(--c-surface);
+        padding: 0.55rem 0.75rem;
+        color: var(--c-ink);
+        text-align: left;
+        cursor: pointer;
+        transition: border-color 150ms, background-color 150ms;
+        @media (hover: hover) {
+            &:hover {
+                border-color: var(--c-primary);
+            }
+        }
+        &:focus-visible {
+            outline: 3px solid var(--a-focus);
+            outline-offset: 2px;
+        }
+        &[aria-selected="true"] {
+            border-color: var(--c-primary);
+            background-color: color-mix(in oklab, var(--c-primary) 7%, var(--c-surface));
+        }
+        @media (width < 64rem) {
+            justify-items: center;
+            grid-template-columns: minmax(0, 1fr);
+            padding: 0.5rem 0.25rem;
+        }
+    }
+    .r-slider-no {
+        font-size: 1.6rem;
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -0.02em;
+        color: var(--c-ink-subtle);
+        transition: color 150ms;
+        [aria-selected="true"] > & {
+            color: var(--c-primary);
+        }
+        @media (width >= 64rem) {
+            grid-row: span 3;
+            min-width: 2.4rem;
+            font-size: 2rem;
+        }
+    }
+    .r-slider-name {
+        font-size: var(--text-base);
+        font-weight: 800;
+        line-height: 1.3;
+        color: var(--c-ink);
+    }
+    .r-slider-line {
+        display: none;
+        margin-top: 0.15rem;
+        font-size: var(--text-sm);
+        line-height: 1.4;
+        color: var(--c-ink-muted);
+        [aria-selected="true"] > & {
+            display: block;
+        }
+    }
+    /* Autoplay: a thin progress bar under the text of the active step (a bar, not an edge). */
+    .r-slider-progress {
+        display: none;
+        margin-top: 0.5rem;
+        height: 3px;
+        border-radius: 999px;
+        background-color: var(--c-line);
+        overflow: hidden;
+        & > span {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            background-color: var(--c-primary);
+            transform-origin: left;
+            transform: scaleX(0);
+        }
+        .is-playing [aria-selected="true"] > & {
+            display: block;
+        }
+        .is-playing [aria-selected="true"] > & > span {
+            animation: r-slider-progress 6s linear forwards;
+        }
+    }
+    @keyframes r-slider-progress {
+        to {
+            transform: scaleX(1);
+        }
+    }
+    /* Phones: numbers only (name and line stay for screen readers); the panel shows its own title. */
+    @media (width < 64rem) {
+        .r-slider-name,
+        .r-slider-line,
+        .r-slider-progress {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+        }
+    }
+    .r-slider-panels {
+        min-width: 0;
+    }
+    .r-slider-panel {
+        scroll-margin-top: 6rem;
+        & + & {
+            margin-top: 2rem;
+        }
+        &[hidden] {
+            display: none;
+        }
+        & .r-tour-figure {
+            margin: 0;
+        }
+        & .r-tour-figure img {
+            box-shadow: var(--shadow-card);
+        }
+    }
+    .r-slider.is-ready .r-slider-panel + .r-slider-panel {
+        margin-top: 0;
+    }
+    .r-slider-head {
+        display: flex;
+        align-items: baseline;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+        @media (width >= 64rem) {
+            .r-slider.is-ready & {
+                display: none;
+            }
+        }
+    }
+    .r-slider-head-no {
+        margin: 0;
+        font-size: 1.6rem;
+        font-weight: 900;
+        line-height: 1;
+        color: var(--c-primary);
+    }
+    .r-slider-head-name {
+        margin: 0;
+        font-size: var(--text-lg);
+        font-weight: 800;
+        color: var(--c-ink);
+    }
+    .r-slider-head-line {
+        margin: 0.15rem 0 0;
+        font-size: var(--text-sm);
+        color: var(--c-ink-muted);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .r-slider-tab,
+        .r-slider-no {
+            transition: none;
+        }
+    }
+
+    /* Full screen of a slider picture: corner button (on hover/focus, always on touch), a native
+       <dialog> filling the screen, the picture contained (never cropped) under a slim bar. */
+    .r-slider-shot {
+        position: relative;
+        & .r-tour-figure img {
+            cursor: zoom-in;
+        }
+    }
+    .r-zoom-open {
+        position: absolute;
+        top: 0.6rem;
+        right: 0.6rem;
+        display: grid;
+        place-items: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        border: 1px solid var(--c-line);
+        border-radius: var(--radius-md);
+        background-color: color-mix(in oklab, var(--c-surface) 92%, transparent);
+        color: var(--c-ink);
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 150ms;
+        & svg {
+            width: 1.1rem;
+            height: 1.1rem;
+        }
+        .r-slider-shot:hover &,
+        &:focus-visible {
+            opacity: 1;
+        }
+        &:focus-visible {
+            outline: 3px solid var(--a-focus);
+            outline-offset: 2px;
+        }
+        @media (hover: none) {
+            opacity: 1;
+        }
+        .r-slider:not(.is-ready) & {
+            display: none;
+        }
+    }
+    .r-zoom {
+        width: 100dvw;
+        height: 100dvh;
+        max-width: none;
+        max-height: none;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background-color: rgb(2 6 23 / 0.96);
+        color: var(--color-white);
+        &::backdrop {
+            background-color: rgb(2 6 23 / 0.6);
+        }
+        &[open] {
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr);
+        }
+    }
+    .r-zoom-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+    }
+    .r-zoom-title {
+        flex: 1;
+        min-width: 0;
+        margin: 0;
+        overflow: hidden;
+        font-size: var(--text-sm);
+        font-weight: 700;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .r-zoom-no {
+        margin-right: 0.4rem;
+        font-weight: 900;
+        color: var(--color-brand-blue-night);
+    }
+    .r-zoom-btn {
+        display: grid;
+        flex-shrink: 0;
+        place-items: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        border: 1px solid rgb(255 255 255 / 0.25);
+        border-radius: var(--radius-md);
+        background-color: transparent;
+        color: var(--color-white);
+        cursor: pointer;
+        & svg {
+            width: 1.1rem;
+            height: 1.1rem;
+        }
+        @media (hover: hover) {
+            &:hover {
+                background-color: rgb(255 255 255 / 0.1);
+            }
+        }
+        &:focus-visible {
+            outline: 3px solid var(--color-brand-blue-light);
+            outline-offset: 2px;
+        }
+    }
+    .r-zoom-stage {
+        display: grid;
+        place-items: center;
+        min-height: 0;
+        padding: 0 0.5rem 0.5rem;
+        touch-action: pan-y;
+        /* Contained, never cropped: the screen minus the bar. */
+        & img {
+            max-width: calc(100dvw - 1rem);
+            max-height: calc(100dvh - 3.75rem);
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .r-zoom-open {
+            transition: none;
+        }
+    }
+
+    /* /pricing: open source, Free, Paid (highlighted with a full border and a tint), self-hosted. */
+    .r-hero-short {
+        @media (width >= 64rem) {
+            padding-block: 3rem;
+        }
+        & .c-hero-title {
+            margin-bottom: 1.25rem;
+        }
+    }
+    .r-plans {
+        display: grid;
+        gap: 1rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        @media (width >= 48rem) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        @media (width >= 80rem) {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+    }
+    .r-plan {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        border: 1px solid var(--c-line);
+        border-radius: var(--radius-xl);
+        background-color: var(--c-surface);
+        padding: 1.25rem;
+        &.is-featured {
+            border: 2px solid var(--c-primary);
+            background-color: color-mix(in oklab, var(--c-primary) 6%, var(--c-surface));
+        }
+    }
+    .r-plan-tag {
+        margin: 0;
+        font-size: var(--text-micro);
+        font-weight: 900;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--c-primary);
+    }
+    .r-plan-name {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0;
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: var(--c-ink);
+    }
+    .r-plan-icon {
+        width: 1.25rem;
+        height: 1.25rem;
+        flex-shrink: 0;
+        color: var(--c-primary);
+    }
+    .r-plan-price {
+        margin: 0.25rem 0 0.25rem;
+        font-size: 2rem;
+        font-weight: 900;
+        line-height: 1.1;
+        color: var(--c-ink);
+    }
+    .r-plan-from {
+        font-size: var(--text-sm);
+        font-weight: 700;
+        color: var(--c-ink-muted);
+    }
+    .r-plan-unit {
+        display: block;
+        margin-top: 0.25rem;
+        font-size: var(--text-label);
+        font-weight: 600;
+        color: var(--c-ink-muted);
+    }
+    .r-plan-points {
+        display: grid;
+        gap: 0.4rem;
+        margin: 0 0 0.75rem;
+        padding: 0;
+        list-style: none;
+        font-size: var(--text-sm);
+        color: var(--c-ink);
+        & li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.45rem;
+        }
+        & svg {
+            width: 1rem;
+            height: 1rem;
+            margin-top: 0.15rem;
+            flex-shrink: 0;
+            color: var(--c-primary);
+        }
+        & li.is-off {
+            color: var(--c-ink-muted);
+        }
+        & li.is-off svg {
+            color: var(--c-ink-subtle);
+        }
+    }
+    .r-plan-cta {
+        margin-top: auto;
+        justify-content: center;
+    }
+    /* Phones: the table scrolls inside its box, the row names stay in view. */
+    .r-compare {
+        min-width: 44rem;
+        & th[scope="row"] {
+            position: sticky;
+            left: 0;
+            z-index: 1;
+            background-color: var(--c-surface);
+            font-weight: 700;
+            color: var(--c-ink);
+            white-space: nowrap;
+        }
+        & td,
+        & th[scope="row"] {
+            vertical-align: middle;
+        }
+        & td {
+            text-align: center;
+        }
+        & thead th:not(:first-child) {
+            text-align: center;
+        }
+        & thead th:first-child {
+            left: 0;
+            z-index: 3;
+        }
+    }
+    .r-yes {
+        display: inline-block;
+        width: 1.1rem;
+        height: 1.1rem;
+        color: var(--c-primary);
+    }
+    .r-no {
+        color: var(--c-ink-subtle);
+    }
+
+    /* About: the ways to use REDact. */
+    .r-way {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .r-way-icon {
+        width: 2rem;
+        height: 2rem;
+        flex-shrink: 0;
+        color: var(--color-brand-blue);
+    }
+    .dark .r-way-icon {
+        color: var(--color-brand-blue-night);
+    }
+    .r-way-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        margin-top: 0.75rem;
+        font-weight: 700;
+        & svg {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+
+    /* Terms and legal notice: publisher facts as label / value rows, then the numbered terms. */
+    .r-legal {
+        & > h2 {
+            margin: 2.5rem 0 1rem;
+            font-size: var(--text-2xl);
+        }
+        & section {
+            margin-top: 1.25rem;
+        }
+        & section p + p {
+            margin-top: 0.5rem;
+        }
+    }
+    .r-legal-dl {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        gap: 0.35rem 1.5rem;
+        & dt {
+            font-weight: 700;
+        }
+        @media (width < 40rem) {
+            grid-template-columns: 1fr;
+            gap: 0;
+            & dd {
+                margin-bottom: 0.5rem;
+            }
+        }
+    }
+}
+
+/* A Try or Dashboard link opening the sandbox (x-try-link, sandbox-start.js). */
+@layer components {
+    a.is-opening { cursor: progress; opacity: 0.75; }
+}
+
+/* The ALTCHA anti-spam box (sign-up, contact, sandbox fallback) in REDact blue, light and dark. */
+altcha-widget {
+    --altcha-color-primary: var(--color-brand-blue, #0046ad);
+    --altcha-color-primary-content: #ffffff;
+    --altcha-checkbox-outline-color: var(--color-brand-blue, #0046ad);
+    /* The ticked "Verified" box uses the success colour (green by default): cetome blue too. */
+    --altcha-color-success: var(--color-brand-blue, #0046ad);
+    --altcha-color-success-content: #ffffff;
+}
+.dark altcha-widget {
+    --altcha-color-primary: var(--color-brand-blue-night, #4d8dff);
+    --altcha-checkbox-outline-color: var(--color-brand-blue-night, #4d8dff);
+    --altcha-color-success: var(--color-brand-blue-night, #4d8dff);
+}

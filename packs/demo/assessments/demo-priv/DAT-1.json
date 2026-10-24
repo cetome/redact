@@ -1,0 +1,60 @@
+{
+  "requirement": "DAT-1",
+  "standard": "demo-priv",
+  "clause": "D.3.4",
+  "objective": {
+    "en": "Demo objective: show how personal data leaves the product when the person wants it to."
+  },
+  "implementation_categories": {
+    "en": "- Demo category: a check the product makes\n- Demo category: a design choice\n  - Demo sub-category"
+  },
+  "required_information": [
+    {
+      "id": "E.Info.DAT-1.Erase",
+      "text": {
+        "en": "Demo: how the data is erased."
+      },
+      "condition": null,
+      "parent": null
+    }
+  ],
+  "justification": [
+    {
+      "node": "DN-1",
+      "outcome": "PASS",
+      "based_on": [
+        "E.Info.DAT-1.Erase"
+      ],
+      "match": "any",
+      "text": {
+        "en": "Demo rule: erasing by the person is justified by the erase text."
+      }
+    }
+  ],
+  "cases": [
+    {
+      "key": "conceptual",
+      "clause": "D.3.4.1",
+      "purpose": {
+        "en": "Demo purpose: check the documented erase function."
+      },
+      "preconditions": {
+        "en": "Demo: the product and its documentation are available."
+      },
+      "units": {
+        "en": "- Demo unit: read the documented answer\n- Demo unit: try it on the product"
+      },
+      "verdict": {
+        "PASS": {
+          "en": "Demo: what is documented is what the product does."
+        },
+        "FAIL": {
+          "en": "Demo: the product does something else."
+        },
+        "NOT APPLICABLE": {
+          "en": "Demo: nothing to check for this object."
+        }
+      }
+    }
+  ]
+}

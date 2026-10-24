@@ -1,0 +1,41 @@
+[
+  {
+    "code": "ACC-1",
+    "family": "ACC",
+    "title": {
+      "en": "Access to an asset (demo)",
+      "fr": "Accès à un actif (démo)"
+    },
+    "standards": [
+      "demo-net",
+      "demo-priv",
+      "demo-pay"
+    ],
+    "list": "assets"
+  },
+  {
+    "code": "UPD-1",
+    "family": "UPD",
+    "title": {
+      "en": "Software updates (demo)",
+      "fr": "Mises à jour logicielles (démo)"
+    },
+    "standards": [
+      "demo-net"
+    ],
+    "list": null
+  },
+  {
+    "code": "DAT-1",
+    "family": "DAT",
+    "title": {
+      "en": "Erasing personal data (demo)",
+      "fr": "Effacement des données personnelles (démo)"
+    },
+    "standards": [
+      "demo-priv"
+    ],
+    "list": "assets",
+    "scope_note": "Demo rules: walked only for assets of type personal (see src/DemoRules.php)."
+  }
+]

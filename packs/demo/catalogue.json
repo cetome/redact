@@ -1,0 +1,318 @@
+{
+  "schema": "redact.catalogue/1",
+  "notes": "Demo pack: invented, common-sense examples to show the picker. Each item names its (invented) source.",
+  "ranking": {
+    "order": [
+      "tier",
+      "presence"
+    ],
+    "presence": {
+      "typical": 2,
+      "common": 1
+    }
+  },
+  "groups": {
+    "assets": [
+      {
+        "key": "secrets",
+        "name": {
+          "en": "Secrets",
+          "fr": "Secrets"
+        },
+        "match": {
+          "type": "secret",
+          "stored": true
+        },
+        "source": "invented for the REDact demo pack"
+      },
+      {
+        "key": "personal",
+        "name": {
+          "en": "Personal data",
+          "fr": "Données personnelles"
+        },
+        "match": {
+          "type": "personal",
+          "stored": true
+        },
+        "source": "invented for the REDact demo pack"
+      }
+    ]
+  },
+  "lists": {
+    "assets": [
+      {
+        "name": {
+          "en": "Owner account password",
+          "fr": "Mot de passe du compte propriétaire"
+        },
+        "description": {
+          "en": "The password the owner signs in with.",
+          "fr": "Le mot de passe avec lequel le propriétaire se connecte."
+        },
+        "attributes": {
+          "type": "secret",
+          "stored": true,
+          "reach": [
+            "owner"
+          ]
+        },
+        "standards": [
+          "demo-net",
+          "demo-pay"
+        ],
+        "presence": "typical",
+        "suggest_when": [
+          "connected"
+        ],
+        "suggest_note": "Products that talk to a network usually have one.",
+        "source": "invented for the REDact demo pack"
+      },
+      {
+        "name": {
+          "en": "Device key",
+          "fr": "Clé de l’appareil"
+        },
+        "description": {
+          "en": "A secret the product uses to prove who it is to a service.",
+          "fr": "Un secret que le produit utilise pour prouver son identité à un service."
+        },
+        "attributes": {
+          "type": "secret",
+          "stored": true,
+          "reach": [
+            "owner"
+          ]
+        },
+        "standards": [
+          "demo-net",
+          "demo-pay"
+        ],
+        "presence": "common",
+        "suggest_when": [
+          "connected"
+        ],
+        "source": "invented for the REDact demo pack"
+      },
+      {
+        "name": {
+          "en": "Contact list",
+          "fr": "Liste de contacts"
+        },
+        "description": {
+          "en": "Names and numbers the user saved.",
+          "fr": "Noms et numéros enregistrés par l’utilisateur."
+        },
+        "attributes": {
+          "type": "personal",
+          "stored": true,
+          "reach": [
+            "owner"
+          ]
+        },
+        "standards": [
+          "demo-priv"
+        ],
+        "presence": "common",
+        "suggest_when": [
+          "personal_data"
+        ],
+        "source": "invented for the REDact demo pack"
+      },
+      {
+        "name": {
+          "en": "Voice recordings",
+          "fr": "Enregistrements vocaux"
+        },
+        "description": {
+          "en": "Short recordings kept to answer spoken commands.",
+          "fr": "Courts enregistrements conservés pour répondre aux commandes vocales."
+        },
+        "attributes": {
+          "type": "personal",
+          "stored": true,
+          "reach": [
+            "owner"
+          ]
+        },
+        "standards": [
+          "demo-priv"
+        ],
+        "suggest_when": [
+          "personal_data"
+        ],
+        "source": "invented for the REDact demo pack"
+      },
+      {
+        "name": {
+          "en": "Stored payment token",
+          "fr": "Jeton de paiement stocké"
+        },
+        "description": {
+          "en": "A token that lets the product pay on the user's behalf.",
+          "fr": "Un jeton qui permet au produit de payer pour l’utilisateur."
+        },
+        "attributes": {
+          "type": "payment",
+          "stored": true
+        },
+        "standards": [
+          "demo-pay"
+        ],
+        "presence": "typical",
+        "suggest_when": [
+          "payments"
+        ],
+        "source": "invented for the REDact demo pack"
+      },
+      {
+        "name": {
+          "en": "Usage statistics",
+          "fr": "Statistiques d’utilisation"
+        },
+        "description": {
+          "en": "Counters of how the product is used.",
+          "fr": "Compteurs d’utilisation du produit."
+        },
+        "attributes": {
+          "type": "operational"
+        },
+        "standards": [],
+        "source": "invented for the REDact demo pack"
+      }
+    ],
+    "interfaces": [
+      {
+        "name": {
+          "en": "Wi-Fi radio",
+          "fr": "Radio Wi-Fi"
+        },
+        "description": {
+          "en": "Connects the product to a home network.",
+          "fr": "Relie le produit à un réseau domestique."
+        },
+        "attributes": {
+          "kind": "network",
+          "external": "yes"
+        },
+        "standards": [
+          "demo-net",
+          "demo-priv",
+          "demo-pay"
+        ],
+        "presence": "typical",
+        "suggest_when": [
+          "connected"
+        ],
+        "source": "invented for the REDact demo pack"
+      },
+      {
+        "name": {
+          "en": "Bluetooth radio",
+          "fr": "Radio Bluetooth"
+        },
+        "description": {
+          "en": "Pairs the product with a phone.",
+          "fr": "Associe le produit à un téléphone."
+        },
+        "attributes": {
+          "kind": "network",
+          "external": "yes"
+        },
+        "standards": [
+          "demo-net",
+          "demo-priv",
+          "demo-pay"
+        ],
+        "presence": "common",
+        "suggest_when": [
+          "connected"
+        ],
+        "source": "invented for the REDact demo pack"
+      },
+      {
+        "name": {
+          "en": "Service port",
+          "fr": "Port de maintenance"
+        },
+        "description": {
+          "en": "A connector used in the factory or for repairs.",
+          "fr": "Un connecteur utilisé en usine ou pour les réparations."
+        },
+        "attributes": {
+          "kind": "local"
+        },
+        "standards": [
+          "demo-net",
+          "demo-priv",
+          "demo-pay"
+        ],
+        "source": "invented for the REDact demo pack"
+      },
+      {
+        "name": {
+          "en": "Buttons and display",
+          "fr": "Boutons et écran"
+        },
+        "description": {
+          "en": "What the user touches and reads on the product.",
+          "fr": "Ce que l’utilisateur touche et lit sur le produit."
+        },
+        "attributes": {
+          "kind": "user",
+          "external": "yes"
+        },
+        "standards": [
+          "demo-net",
+          "demo-priv",
+          "demo-pay"
+        ],
+        "presence": "typical",
+        "source": "invented for the REDact demo pack"
+      }
+    ],
+    "software": [
+      {
+        "name": {
+          "en": "Main firmware",
+          "fr": "Micrologiciel principal"
+        },
+        "description": {
+          "en": "The software the product runs.",
+          "fr": "Le logiciel exécuté par le produit."
+        },
+        "attributes": {
+          "updatable": true
+        },
+        "standards": [
+          "demo-net"
+        ],
+        "presence": "typical",
+        "suggest_when": [
+          "updates"
+        ],
+        "source": "invented for the REDact demo pack"
+      },
+      {
+        "name": {
+          "en": "Bootloader",
+          "fr": "Chargeur d’amorçage"
+        },
+        "description": {
+          "en": "Starts the product and installs updates.",
+          "fr": "Démarre le produit et installe les mises à jour."
+        },
+        "attributes": {
+          "updatable": false
+        },
+        "standards": [
+          "demo-net"
+        ],
+        "suggest_when": [
+          "updates"
+        ],
+        "source": "invented for the REDact demo pack"
+      }
+    ]
+  }
+}

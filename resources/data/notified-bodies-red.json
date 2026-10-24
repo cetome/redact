@@ -1,0 +1,227 @@
+{
+  "source": "NANDO (European Commission, Single Market Compliance Space): notified bodies for Directive 2014/53/EU (RED), notification active, product scope as filtered by cetome",
+  "url": "https://webgate.ec.europa.eu/single-market-compliance-space/notified-bodies/notified-body-list?filter=notificationStatusId:1,legislationId:154428,productId:160969",
+  "retrieved": "2026-10-23",
+  "bodies": [
+    {
+      "number": "0051",
+      "name": "IMQ ISTITUTO ITALIANO DEL MARCHIO DI QUALITÀ S.P.A.",
+      "country": "Italy"
+    },
+    {
+      "number": "0063",
+      "name": "Kiwa Nederland B.V.",
+      "country": "Netherlands"
+    },
+    {
+      "number": "0071",
+      "name": "Laboratoire National de métrologie et d'Essais (LNE)",
+      "country": "France"
+    },
+    {
+      "number": "0081",
+      "name": "LABORATOIRE CENTRAL DES INDUSTRIES ELECTRIQUES",
+      "country": "France"
+    },
+    {
+      "number": "0123",
+      "name": "TÜV SÜD Product Service GmbH",
+      "country": "Germany"
+    },
+    {
+      "number": "0197",
+      "name": "TÜV Rheinland LGA Products GmbH",
+      "country": "Germany"
+    },
+    {
+      "number": "0200",
+      "name": "FORCE Certification A/S",
+      "country": "Denmark"
+    },
+    {
+      "number": "0366",
+      "name": "VDE Prüf- und Zertifizierungsinstitut GmbH",
+      "country": "Germany"
+    },
+    {
+      "number": "0370",
+      "name": "LGAI TECHNOLOGICAL CENTER, S. A.(Applus+)",
+      "country": "Spain"
+    },
+    {
+      "number": "0402",
+      "name": "RISE Research Institutes of Sweden AB",
+      "country": "Sweden"
+    },
+    {
+      "number": "0408",
+      "name": "TÜV AUSTRIA GMBH",
+      "country": "Austria"
+    },
+    {
+      "number": "0413",
+      "name": "INTERTEK SEMKO AB",
+      "country": "Sweden"
+    },
+    {
+      "number": "0470",
+      "name": "NEMKO Group AS",
+      "country": "Norway"
+    },
+    {
+      "number": "0536",
+      "name": "EMITECH Montigny",
+      "country": "France"
+    },
+    {
+      "number": "0598",
+      "name": "SGS FIMKO OY",
+      "country": "Finland"
+    },
+    {
+      "number": "0681",
+      "name": "Eurofins Product Service GmbH",
+      "country": "Germany"
+    },
+    {
+      "number": "0682",
+      "name": "cetecom advanced GmbH",
+      "country": "Germany"
+    },
+    {
+      "number": "0700",
+      "name": "NMi TESTLAB GMBH",
+      "country": "Germany"
+    },
+    {
+      "number": "0981",
+      "name": "Element Materials Technology Portland - Evergreen Inc.",
+      "country": "United States (MRA)"
+    },
+    {
+      "number": "1008",
+      "name": "TÜV Rheinland InterCert Muszaki Felügyeleti és Tanúsító Korlátolt Felelosségu Társaság",
+      "country": "Hungary"
+    },
+    {
+      "number": "1014",
+      "name": "ELEKTROTECHNICKÝ ZKUŠEBNÍ ÚSTAV, s.p.",
+      "country": "Czech Republic"
+    },
+    {
+      "number": "1177",
+      "name": "IIA Lab Services, LLC",
+      "country": "United States (MRA)"
+    },
+    {
+      "number": "1299",
+      "name": "Technicky skusobny ustav Piestany a.s.",
+      "country": "Slovakia"
+    },
+    {
+      "number": "1304",
+      "name": "SLOVENIAN INSTITUTE OF QUALITY AND METROLOGY - SIQ",
+      "country": "Slovenia"
+    },
+    {
+      "number": "1313",
+      "name": "Bay Area Compliance Laboratories Corp.",
+      "country": "United States (MRA)"
+    },
+    {
+      "number": "1383",
+      "name": "CESKY METROLOGICKY INSTITUT",
+      "country": "Czech Republic"
+    },
+    {
+      "number": "1413",
+      "name": "MATRIX TESTING, INSPECTION AND CERTIFICATION LTD.",
+      "country": "Hungary"
+    },
+    {
+      "number": "1622",
+      "name": "NEMKO NORTH AMERICA INC.",
+      "country": "Canada (CETA)"
+    },
+    {
+      "number": "1909",
+      "name": "DEKRA Testing and Certification, S.A.U.",
+      "country": "Spain"
+    },
+    {
+      "number": "1948",
+      "name": "CSA Group Bayern GmbH",
+      "country": "Germany"
+    },
+    {
+      "number": "2004",
+      "name": "Bureau Veritas Consumer Products Services Germany GmbH",
+      "country": "Germany"
+    },
+    {
+      "number": "2031",
+      "name": "ALTER TECHNOLOGY-TÜV NORD, S.A.U.",
+      "country": "Spain"
+    },
+    {
+      "number": "2037",
+      "name": "CELAB SRL",
+      "country": "Italy"
+    },
+    {
+      "number": "2052",
+      "name": "UL International Italia S.r.l.",
+      "country": "Italy"
+    },
+    {
+      "number": "2280",
+      "name": "MiCOM LABS",
+      "country": "United States (MRA)"
+    },
+    {
+      "number": "2321",
+      "name": "ELETTRA SRL",
+      "country": "Italy"
+    },
+    {
+      "number": "2443",
+      "name": "TÜV SÜD Danmark",
+      "country": "Denmark"
+    },
+    {
+      "number": "2618",
+      "name": "WORLD STANDARDIZATION CERTIFICATION & TESTING POLSKA Sp. z o.o.",
+      "country": "Poland"
+    },
+    {
+      "number": "2703",
+      "name": "ICR Polska Sp. z o.o.",
+      "country": "Poland"
+    },
+    {
+      "number": "2784",
+      "name": "KL-Certification GmbH",
+      "country": "Germany"
+    },
+    {
+      "number": "2797",
+      "name": "BSI Group The Netherlands B.V.",
+      "country": "Netherlands"
+    },
+    {
+      "number": "2806",
+      "name": "CerTrust Kft.",
+      "country": "Hungary"
+    },
+    {
+      "number": "2906",
+      "name": "SGS North America, Inc.",
+      "country": "United States (MRA)"
+    },
+    {
+      "number": "2957",
+      "name": "Intercert Global Sp. z o.o.",
+      "country": "Poland"
+    }
+  ]
+}

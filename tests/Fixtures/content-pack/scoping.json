@@ -1,0 +1,34 @@
+{
+  "sections": [
+    {
+      "key": "applicability",
+      "title": "Applicability",
+      "intro": "Answer a few questions about the product (sample questionnaire).",
+      "groups": [
+        {
+          "key": "connectivity",
+          "title": "Connectivity",
+          "questions": [
+            {
+              "key": "connected",
+              "type": "boolean",
+              "label": "The product connects to a network",
+              "articles": [
+                "A1"
+              ]
+            },
+            {
+              "key": "updates",
+              "type": "boolean",
+              "label": "The product receives software updates",
+              "articles": [
+                "A1"
+              ]
+            }
+          ]
+        }
+      ],
+      "step": "scoping"
+    }
+  ]
+}

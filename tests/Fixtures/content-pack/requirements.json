@@ -1,0 +1,17 @@
+[
+  {
+    "code": "ACC-1",
+    "family": "ACC",
+    "title": "Sample access requirement",
+    "standards": ["demo-1"],
+    "list": "assets"
+  },
+  {
+    "code": "UPD-1",
+    "family": "UPD",
+    "title": "Sample update requirement",
+    "standards": ["demo-1"],
+    "list": null,
+    "follows_from": [{ "requirement": "ACC-1", "verdicts": ["FAIL"] }]
+  }
+]

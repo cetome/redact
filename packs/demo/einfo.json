@@ -1,0 +1,66 @@
+[
+  {
+    "code": "E.Info.ACC-1.Access",
+    "requirement": "ACC-1",
+    "standards": [
+      "demo-net",
+      "demo-priv",
+      "demo-pay"
+    ],
+    "list": "assets",
+    "label": {
+      "en": "Who can reach the asset, through which interfaces, and how the product checks them (demo).",
+      "fr": "Qui peut atteindre l’actif, par quelles interfaces, et comment le produit les contrôle (démo)."
+    }
+  },
+  {
+    "code": "E.Info.ACC-1.Harm",
+    "requirement": "ACC-1",
+    "standards": [
+      "demo-net",
+      "demo-priv",
+      "demo-pay"
+    ],
+    "list": "assets",
+    "label": {
+      "en": "What would happen if someone else read or changed the asset (demo).",
+      "fr": "Ce qui se passerait si quelqu’un d’autre lisait ou modifiait l’actif (démo)."
+    }
+  },
+  {
+    "code": "E.Info.UPD-1.Delivery",
+    "requirement": "UPD-1",
+    "standards": [
+      "demo-net"
+    ],
+    "list": null,
+    "label": {
+      "en": "How updates reach the product (demo).",
+      "fr": "Comment les mises à jour arrivent sur le produit (démo)."
+    }
+  },
+  {
+    "code": "E.Info.UPD-1.Check",
+    "requirement": "UPD-1",
+    "standards": [
+      "demo-net"
+    ],
+    "list": null,
+    "label": {
+      "en": "How the product checks where an update comes from (demo).",
+      "fr": "Comment le produit vérifie la provenance d’une mise à jour (démo)."
+    }
+  },
+  {
+    "code": "E.Info.DAT-1.Erase",
+    "requirement": "DAT-1",
+    "standards": [
+      "demo-priv"
+    ],
+    "list": "assets",
+    "label": {
+      "en": "How the person erases the data, or when it is erased (demo).",
+      "fr": "Comment la personne efface les données, ou quand elles sont effacées (démo)."
+    }
+  }
+]

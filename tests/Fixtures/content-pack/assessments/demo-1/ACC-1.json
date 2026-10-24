@@ -1,0 +1,40 @@
+{
+  "requirement": "ACC-1",
+  "standard": "demo-1",
+  "clause": "1.1.4",
+  "objective": { "en": "Sample objective: show that access to each asset is controlled (invented text)." },
+  "implementation_categories": { "en": "- Sample category one\n- Sample category two\n  - Sample sub-category" },
+  "required_information": [
+    { "id": "E.Info.ACC-1.Asset", "text": { "en": "Sample: how access to the asset is controlled." }, "condition": null, "parent": null },
+    { "id": "E.Info.DT.ACC-1", "text": { "en": "Sample: the path walked through the decision tree." }, "condition": null, "parent": null },
+    { "id": "E.Just.DT.ACC-1", "text": { "en": "Sample: the justification of the path." }, "condition": { "en": "Sample condition: for each decision." }, "parent": "E.Info.DT.ACC-1" }
+  ],
+  "justification": [
+    { "node": "DN-1", "outcome": "NOT APPLICABLE", "based_on": ["E.Info.ACC-1.Asset", "E.Info.UPD-1.Product"], "match": "all", "text": { "en": "Sample rule: a public asset is justified by its access description and the update description." } },
+    { "node": "DN-2", "outcome": "FAIL", "based_on": ["E.Info.ACC-1.Asset", "E.Info.UPD-1.Product"], "match": "any", "text": { "en": "Sample rule: an uncontrolled asset is justified by its access description or the update description." } },
+    { "node": "DN-2", "outcome": null, "based_on": ["E.Info.DT.ACC-1", "E.Just.DT.ACC-1"], "match": "all", "text": { "en": "Sample rule: the decision at DN-2 is justified by the walk and its justification." } }
+  ],
+  "cases": [
+    {
+      "key": "conceptual", "clause": "1.1.4.1",
+      "purpose": { "en": "Sample purpose: check the documented decisions." },
+      "preconditions": { "en": "None (sample)." },
+      "units": { "en": "- Sample unit one\n- Sample unit two\n  - Sample detail" },
+      "verdict": { "PASS": { "en": "Sample: every path ends PASS or NOT APPLICABLE." }, "FAIL": { "en": "Sample: a path ends FAIL." }, "NOT APPLICABLE": { "en": "Sample: every path ends NOT APPLICABLE." } }
+    },
+    {
+      "key": "functional_completeness", "clause": "1.1.4.2",
+      "purpose": { "en": "Sample purpose: check that nothing is missing." },
+      "preconditions": { "en": "Sample: the product is available." },
+      "units": { "en": "- Sample unit" },
+      "verdict": { "PASS": { "en": "Sample: nothing is missing." }, "FAIL": { "en": "Sample: something is missing." }, "NOT APPLICABLE": { "en": "Sample: nothing to check." } }
+    },
+    {
+      "key": "functional_sufficiency", "clause": "1.1.4.3",
+      "purpose": { "en": "Sample purpose: try to bypass the control." },
+      "preconditions": { "en": "Sample: a test set-up." },
+      "units": { "en": "- Sample attack" },
+      "verdict": { "PASS": { "en": "Sample: the control holds." }, "FAIL": { "en": "Sample: the control is bypassed." }, "NOT APPLICABLE": { "en": "Sample: nothing to try." } }
+    }
+  ]
+}

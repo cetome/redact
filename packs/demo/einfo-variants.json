@@ -1,0 +1,14 @@
+{
+  "schema": "redact.einfo-variants/1",
+  "notes": "Demo pack: an id printed for one kind of asset is also read for the other kinds. No demo id uses it yet: it shows the format.",
+  "variants": [
+    {
+      "pattern": "/^(.*?)(?<v>Secret|Personal|Payment)(Assets?)$/",
+      "values": [
+        "Secret",
+        "Personal",
+        "Payment"
+      ]
+    }
+  ]
+}

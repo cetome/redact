@@ -1,0 +1,1431 @@
+/**
+ * cetome look and feel for the REDact app (Tailwind CSS v4).
+ *
+ * Extracted from the cetome.com Hugo source (hugo/assets/css: base/tokens.css, base/brand.css,
+ * base/fonts.css, base/typography.css, components/nav.css, footer.css, hero.css, contact-form.css,
+ * data-table.css, insights.css, card-grid.css, labels.css, premium.css). cetome.com is plain CSS
+ * whose tokens were taken from Tailwind's default theme, so the slate/blue/red/green scales, radii
+ * and type scale below are Tailwind's own and are not redefined here.
+ *
+ * Imported by app.css right after `@import 'tailwindcss';`. See CETOME-STYLE.md for the guide.
+ *
+ *   1. Fonts           @font-face, self-hosted, bundled by Vite
+ *   2. Theme           @theme tokens (utilities: bg-brand-blue, text-label, max-w-site, h-nav ...)
+ *   3. Semantic tokens light and .dark values (utilities: bg-canvas, text-ink, border-line ...)
+ *   4. Base            body, focus, x-cloak
+ *   5. Components      .c-* classes
+ *
+ * Strict CSP: nothing here needs inline styles or scripts. The mobile menu is a <details> element.
+ */
+
+/* ------------------------------------------------------------------------------------------------
+   1. Fonts
+   ------------------------------------------------------------------------------------------------ */
+
+/* Inter variable, weights 300-900, latin subset (Google Fonts build "Inter v20", SIL OFL 1.1:
+   ../fonts/Inter-OFL.txt). Same file and unicode-range as cetome.com. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url('../fonts/inter-latin-variable.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Material Icons subset used by cetome.com (Apache 2.0: ../fonts/MaterialIcons-LICENSE.txt).
+   Only these ligatures exist: arrow_back bar_chart calendar_today cloud enhanced_encryption groups
+   home hub key memory recommend schedule security sell supervised_user_circle. */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('../fonts/material-icons-v145-subset.a09b54da.woff2') format('woff2');
+}
+
+/* `dark:` utilities follow a .dark class on <html>, like the .c-* components below. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------------------------------------
+   2. Theme tokens
+   ------------------------------------------------------------------------------------------------ */
+
+@theme {
+  /* Typeface. --font-brand is what the components use; --font-sans makes `font-sans` Inter too. */
+  --font-brand: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-icons: 'Material Icons';
+
+  /* Brand colours (cetome.com base/brand.css) */
+  --color-brand-blue: #0044aa;         /* cetome blue: buttons, links, the square */
+  --color-brand-blue-deep: #003a8f;    /* the second blue of a run of coloured panels */
+  --color-brand-blue-light: #217aff;   /* accent on dark grounds; hover colour (3.97:1 on white: not for text) */
+  --color-brand-blue-accent: #1565d8;  /* the light blue as text on white (5.41:1) */
+  --color-brand-blue-pale: #a8caff;    /* small blue text on near-black (cetome.com footer labels) */
+  --color-brand-blue-night: #5c9bff;   /* DERIVED: links on the dark theme (6.4:1 on #0f172a) */
+  --color-brand-dark: #0f172a;         /* = slate-900: footer, dark surfaces */
+  --color-brand-midnight: #020617;     /* = slate-950: darkest ground */
+
+  /* cetome.com's own small type steps, between Tailwind's: text-micro, text-label, text-small, text-body */
+  --text-micro: 11px;   /* buttons, breadcrumbs, the copyright line */
+  --text-label: 13px;   /* labels, kickers, tags, nav links */
+  --text-small: 15px;   /* table cells, card summaries, footer links, form fields */
+  --text-body: 17px;    /* prose */
+
+  /* Letter spacing of the uppercase labels */
+  --tracking-nav: 0.14em;      /* header menu links */
+  --tracking-button: 0.2em;    /* .c-btn */
+  --tracking-kicker: 0.3em;    /* hero kicker, footer labels */
+  --tracking-submit: 0.4em;    /* .c-btn-lg, kicker bar */
+  --tracking-section: 0.5em;   /* .c-kicker (section label above an h2) */
+
+  /* Layout */
+  --container-site: 80rem;     /* max-w-site: page container, 1280px */
+  --spacing-nav: 5rem;         /* h-nav, top-nav, scroll-mt-nav: header height */
+
+  /* Shadows */
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.04), 0 14px 28px -18px rgb(15 23 42 / 0.25);   /* card hover lift */
+  --shadow-raised: 0 12px 30px -18px rgb(2 15 41 / 0.55);                                  /* white tile on the blue hero */
+  --shadow-raised-hover: 0 18px 38px -18px rgb(2 15 41 / 0.65);
+  --shadow-panel: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);     /* table box */
+
+  /* Motion */
+  --ease-brand: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ------------------------------------------------------------------------------------------------
+   3. Semantic tokens: what the components paint with. Light is cetome.com; dark is DERIVED
+   (cetome.com is light-only) from midnight/slate, keeping cetome blue for fills and lifting text
+   blues to the paler steps cetome.com itself uses on dark grounds.
+   ------------------------------------------------------------------------------------------------ */
+
+@theme inline {
+  --color-canvas: var(--c-canvas);
+  --color-canvas-subtle: var(--c-canvas-subtle);
+  --color-surface: var(--c-surface);
+  --color-surface-hover: var(--c-surface-hover);
+  --color-ink: var(--c-ink);
+  --color-ink-muted: var(--c-ink-muted);
+  --color-ink-subtle: var(--c-ink-subtle);
+  --color-line: var(--c-line);
+  --color-line-soft: var(--c-line-soft);
+  --color-line-strong: var(--c-line-strong);
+  --color-link: var(--c-link);
+  --color-link-hover: var(--c-link-hover);
+  --color-primary: var(--c-primary);
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --c-canvas: var(--color-white);
+    --c-canvas-subtle: var(--color-slate-50);
+    --c-surface: var(--color-white);
+    --c-surface-hover: var(--color-slate-50);
+    --c-ink: var(--color-slate-900);
+    --c-ink-muted: var(--color-slate-600);
+    --c-ink-subtle: var(--color-slate-500);
+    --c-line: var(--color-slate-200);
+    --c-line-soft: var(--color-slate-100);
+    --c-line-strong: var(--color-slate-300);
+    --c-link: var(--color-brand-blue);
+    --c-link-hover: var(--color-brand-blue-light);
+    --c-accent-text: var(--color-brand-blue-accent);
+    --c-primary: var(--color-brand-blue);
+    --c-primary-hover-bg: var(--color-white);
+    --c-primary-hover-ink: var(--color-brand-blue);
+    --c-table-head: var(--color-brand-blue);
+    --c-table-zebra: color-mix(in oklab, var(--color-slate-50) 50%, transparent);
+    --c-badge-bg: rgb(33 122 255 / 0.12);
+    --c-badge-ink: var(--color-brand-blue);
+    --c-field-bg: transparent;
+    --c-hero-gradient: radial-gradient(at 0% 0%, #1e293b 0, transparent 40%), radial-gradient(at 100% 0%, #020617 0, transparent 40%);
+  }
+
+  .dark {
+    color-scheme: dark;
+    --c-canvas: var(--color-brand-midnight);
+    --c-canvas-subtle: var(--color-brand-dark);
+    --c-surface: var(--color-brand-dark);
+    --c-surface-hover: var(--color-slate-800);
+    --c-ink: var(--color-slate-100);
+    --c-ink-muted: var(--color-slate-400);
+    --c-ink-subtle: var(--color-slate-500);
+    --c-line: var(--color-slate-800);
+    --c-line-soft: rgb(255 255 255 / 0.05);
+    --c-line-strong: var(--color-slate-700);
+    --c-link: var(--color-brand-blue-night);
+    --c-link-hover: var(--color-brand-blue-pale);
+    --c-accent-text: var(--color-brand-blue-pale);
+    --c-primary: var(--color-brand-blue-accent);
+    --c-primary-hover-bg: var(--color-brand-midnight);
+    --c-primary-hover-ink: var(--color-brand-blue-night);
+    --c-table-head: var(--color-brand-blue-deep);
+    --c-table-zebra: rgb(255 255 255 / 0.025);
+    --c-badge-bg: rgb(33 122 255 / 0.18);
+    --c-badge-ink: var(--color-brand-blue-pale);
+    --c-field-bg: transparent;
+  }
+
+  /* ----------------------------------------------------------------------------------------------
+     4. Base (cetome.com base/reset.css)
+     ---------------------------------------------------------------------------------------------- */
+  html {
+    scroll-padding-top: var(--spacing-nav);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background-color: var(--c-canvas);
+    color: var(--c-ink);
+    font-family: var(--font-brand);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+  button, [role="button"], input[type="submit"], input[type="reset"], input[type="button"], summary {
+    cursor: pointer;
+  }
+  button:disabled, input:disabled {
+    cursor: not-allowed;
+  }
+  [x-cloak] {
+    display: none !important;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------------------------------------
+   5. Components
+   ------------------------------------------------------------------------------------------------ */
+
+@layer components {
+
+  /* ---- Layout ---------------------------------------------------------------------------------- */
+
+  /* Page container: 80rem centred, 2rem gutters (cetome.com .article-container, hero grid). */
+  .c-container {
+    margin-inline: auto;
+    width: 100%;
+    max-width: var(--container-site);
+    padding-inline: 2rem;
+  }
+  .c-container-narrow {
+    margin-inline: auto;
+    width: 100%;
+    max-width: var(--container-3xl);
+    padding-inline: 2rem;
+  }
+  /* A section of the page. -band paints it slate-50 (contact section, page band). */
+  .c-section {
+    padding-block: 4rem;
+  }
+  .c-section-band {
+    padding-block: 4rem;
+    background-color: var(--c-canvas-subtle);
+  }
+
+  /* ---- Typography ------------------------------------------------------------------------------ */
+
+  /* The square that ends cetome headings: 0.2em, cetome blue. */
+  .c-h1::after,
+  .c-h2::after,
+  .c-dot::after,
+  .c-dot-end::after {
+    content: "";
+    display: inline-block;
+    margin-left: 0.15em;
+    height: 0.2em;
+    width: 0.2em;
+    background-color: var(--color-brand-blue);
+    vertical-align: baseline;
+  }
+  /* Wrap the last word in .c-dot-end to keep the square from wrapping alone (CSS version of
+     cetome.com's dots.js). */
+  .c-dot-end {
+    white-space: nowrap;
+  }
+  :is(.c-h1, .c-h2, .c-dot):has(.c-dot-end)::after,
+  .c-no-dot::after {
+    content: none;
+  }
+  .dark :is(.c-h1, .c-h2, .c-dot, .c-dot-end)::after {
+    background-color: var(--color-brand-blue-light);
+  }
+
+  /* Page title (the hero title on a white page): black weight, uppercase, tight. */
+  .c-h1 {
+    display: block;
+    margin-bottom: 1.5rem;
+    font-size: 2.25rem;
+    line-height: 0.95;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--c-ink);
+    @media (width >= 48rem) {
+      font-size: 3rem;
+    }
+    @media (width >= 64rem) {
+      font-size: 3.75rem;
+    }
+  }
+  /* Section heading (cetome.com .section-header-main.has-dot). */
+  .c-h2 {
+    display: block;
+    margin-bottom: 1.25rem;
+    font-size: var(--text-4xl);
+    line-height: 1;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--c-ink);
+  }
+  /* Card / entry title (cetome.com .card-title, service row title). Sentence case, no square. */
+  .c-h3 {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: var(--text-xl);
+    line-height: 1.3;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--c-ink);
+  }
+  /* The small uppercase label above a section heading (cetome.com .section-title-blue). */
+  .c-kicker {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: var(--text-label);
+    font-weight: 900;
+    letter-spacing: var(--tracking-section);
+    text-transform: uppercase;
+    color: var(--c-link);
+  }
+  /* Kicker with a light-blue bar on its left (cetome.com mega-menu group heading). */
+  .c-kicker-bar {
+    display: block;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--color-brand-blue-light);
+    padding-left: 1rem;
+    font-size: var(--text-label);
+    font-weight: 900;
+    letter-spacing: var(--tracking-submit);
+    text-transform: uppercase;
+    color: var(--c-accent-text);
+  }
+  /* Small label in sentence case: meta lines, tags, column captions (cetome.com labels.css). */
+  .c-meta {
+    font-size: var(--text-label);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--c-ink-muted);
+  }
+  /* Intro paragraph under a section heading (cetome.com .service-index-lead). */
+  .c-lead {
+    max-width: 40rem;
+    font-size: var(--text-body);
+    line-height: 1.8;
+    color: var(--c-ink-muted);
+  }
+  .c-lead strong {
+    color: var(--c-ink);
+  }
+  /* Body text block (cetome.com .card-content). */
+  .c-text {
+    max-width: 40rem;
+    font-size: var(--text-base);
+    line-height: 1.7;
+    text-wrap: pretty;
+    color: var(--c-ink);
+  }
+
+  /* ---- Links ----------------------------------------------------------------------------------- */
+
+  /* A link in running text: cetome blue, a light rule under it, full rule and lighter blue on hover. */
+  .c-link {
+    color: var(--c-link);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    text-decoration-color: color-mix(in srgb, currentcolor 35%, transparent);
+    overflow-wrap: anywhere;
+    transition: color 150ms var(--ease-brand), text-decoration-color 150ms var(--ease-brand);
+    &:hover {
+      @media (hover: hover) {
+        color: var(--c-link-hover);
+        text-decoration-color: currentcolor;
+      }
+    }
+  }
+  /* "All insights →": a quiet bold link at the foot of a group (cetome.com .mega-more). */
+  .c-link-more {
+    font-size: var(--text-label);
+    font-weight: 700;
+    color: var(--c-link);
+    &:hover {
+      @media (hover: hover) {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+    }
+  }
+  /* Adds cetome.com's "opens elsewhere" arrow after a link, in the link's own colour. */
+  .c-link-external::after {
+    content: "";
+    display: inline-block;
+    width: 1.1em;
+    height: 1.1em;
+    margin-left: 0.25rem;
+    margin-bottom: 0.2em;
+    vertical-align: middle;
+    background-color: currentcolor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='black'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='black'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+
+  /* Keyboard users' first stop: off-screen until focused. */
+  .c-skip-link {
+    position: absolute;
+    top: -100px;
+    left: 1rem;
+    z-index: 3000;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-lg);
+    background-color: var(--color-brand-blue);
+    color: var(--color-white);
+    font-size: var(--text-label);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    &:focus {
+      top: 1rem;
+      outline: 3px solid var(--color-brand-blue-light);
+      outline-offset: 2px;
+    }
+  }
+
+  /* ---- Buttons --------------------------------------------------------------------------------- */
+
+  /* cetome.com .btn-nav: 40px, 2px border, small uppercase letters spaced 0.2em. A filled button
+     inverts under the pointer (white ground, blue letters). */
+  .c-btn {
+    display: inline-flex;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 2px solid transparent;
+    border-radius: var(--radius-lg);
+    padding-inline: 1.5rem;
+    font-family: var(--font-brand);
+    font-size: var(--text-micro);
+    font-weight: 700;
+    letter-spacing: var(--tracking-button);
+    line-height: 1;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 150ms var(--ease-brand), background-color 150ms var(--ease-brand), border-color 150ms var(--ease-brand);
+    &:focus-visible {
+      outline: 3px solid var(--color-brand-blue-light);
+      outline-offset: 2px;
+    }
+    &:active {
+      scale: 0.98;
+    }
+    &:disabled, &[aria-disabled="true"] {
+      cursor: not-allowed;
+      opacity: 0.7;
+      filter: grayscale(0.5);
+      scale: 1;
+    }
+  }
+  .c-btn-primary {
+    border-color: var(--c-primary);
+    background-color: var(--c-primary);
+    color: var(--color-white);
+    &:hover:not(:disabled, [aria-disabled="true"]) {
+      @media (hover: hover) {
+        background-color: var(--c-primary-hover-bg);
+        color: var(--c-primary-hover-ink);
+      }
+    }
+  }
+  /* The primary inverted (cetome.com .btn-nav-outline). */
+  .c-btn-outline {
+    border-color: var(--c-primary);
+    background-color: var(--c-surface);
+    color: var(--c-link);
+    &:hover:not(:disabled, [aria-disabled="true"]) {
+      @media (hover: hover) {
+        background-color: var(--c-primary);
+        color: var(--color-white);
+      }
+    }
+  }
+  /* DERIVED: no border or fill, for tertiary actions (cancel, back). */
+  .c-btn-ghost {
+    background-color: transparent;
+    color: var(--c-link);
+    &:hover:not(:disabled, [aria-disabled="true"]) {
+      @media (hover: hover) {
+        background-color: var(--c-surface-hover);
+        color: var(--c-link-hover);
+      }
+    }
+  }
+  /* DERIVED: destructive action, same inversion as the primary. */
+  .c-btn-danger {
+    border-color: var(--color-red-600);
+    background-color: var(--color-red-600);
+    color: var(--color-white);
+    &:hover:not(:disabled, [aria-disabled="true"]) {
+      @media (hover: hover) {
+        background-color: var(--c-canvas);
+        color: var(--color-red-600);
+      }
+    }
+  }
+  .dark .c-btn-danger:hover:not(:disabled, [aria-disabled="true"]) {
+    @media (hover: hover) {
+      color: var(--color-red-500);
+    }
+  }
+  /* White button on the blue hero or a dark band. */
+  .c-btn-on-dark {
+    border-color: var(--color-white);
+    background-color: var(--color-white);
+    color: var(--color-brand-blue);
+    &:hover:not(:disabled, [aria-disabled="true"]) {
+      @media (hover: hover) {
+        background-color: transparent;
+        color: var(--color-white);
+      }
+    }
+  }
+  /* Sizes: -sm (narrow header), -lg (cetome.com form submit), -block (full width). */
+  .c-btn-sm {
+    height: 32px;
+    padding-inline: 1rem;
+  }
+  .c-btn-lg {
+    height: 52px;
+    border-radius: var(--radius-xl);
+    padding-inline: 3rem;
+    font-weight: 900;
+    letter-spacing: var(--tracking-submit);
+  }
+  .c-btn-block {
+    width: 100%;
+  }
+  /* Buttons side by side. */
+  .c-btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* ---- Cards ----------------------------------------------------------------------------------- */
+
+  /* cetome.com insight card: 1rem radius, slate-200 hairline, white. */
+  .c-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-2xl);
+    background-color: var(--c-surface);
+    color: var(--c-ink);
+  }
+  .c-card-body {
+    padding: 1.5rem;
+    @media (width >= 48rem) {
+      padding: 2rem;
+    }
+  }
+  .c-card-footer {
+    margin-top: auto;
+    border-top: 1px solid var(--c-line);
+    padding: 1rem 1.5rem;
+  }
+  /* A card that is a link: the site-wide lift on hover. */
+  .c-card-link {
+    text-decoration: none;
+    transition: border-color 200ms var(--ease-brand), box-shadow 200ms var(--ease-brand);
+    &:hover {
+      @media (hover: hover) {
+        border-color: var(--c-line-strong);
+        box-shadow: var(--shadow-card);
+      }
+    }
+    &:focus-visible {
+      outline: 3px solid var(--color-brand-blue-light);
+      outline-offset: 2px;
+    }
+  }
+  /* A coloured card: cetome blue ground, white text (insight cover, mega cover). */
+  .c-card-blue {
+    border-color: var(--color-brand-blue);
+    background-color: var(--color-brand-blue);
+    color: var(--color-white);
+  }
+  /* neighbours take the two blues in turn */
+  .c-card-blue:nth-child(even) {
+    border-color: var(--color-brand-blue-deep);
+    background-color: var(--color-brand-blue-deep);
+  }
+
+  /* Entries separated by hairlines, no box (cetome.com card-grid, service index). */
+  .c-rule-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--c-line);
+  }
+  .c-rule-list > * {
+    border-bottom: 1px solid var(--c-line);
+    padding-block: 1.5rem;
+    @media (width >= 48rem) {
+      padding-block: 1.75rem;
+    }
+  }
+
+  /* Key figure: big blue number over its label (cetome.com .figures). */
+  .c-stat {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.35rem;
+  }
+  .c-stat-value {
+    margin: 0;
+    font-size: clamp(2.25rem, 4vw, 3rem);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--c-link);
+  }
+  .c-stat-label {
+    font-size: var(--text-small);
+    line-height: 1.4;
+    color: var(--c-ink-muted);
+  }
+
+  /* ---- Badges ---------------------------------------------------------------------------------- */
+
+  /* cetome.com .badge-required: a wash of the light blue with cetome-blue letters. */
+  .c-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: var(--radius-md);
+    padding: 0.15rem 0.5rem;
+    background-color: var(--c-badge-bg);
+    color: var(--c-badge-ink);
+    font-size: var(--text-micro);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1.5;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  /* DERIVED status colours, from the green/yellow/red 50-200-900 steps cetome.com's tokens carry. */
+  .c-badge-neutral {
+    background-color: var(--color-slate-100);
+    color: var(--color-slate-700);
+  }
+  .c-badge-success {
+    background-color: var(--color-green-50);
+    color: var(--color-green-900);
+    box-shadow: inset 0 0 0 1px var(--color-green-200);
+  }
+  .c-badge-warning {
+    background-color: var(--color-yellow-50);
+    color: oklch(42.1% 0.095 57.708); /* Tailwind amber-800 */
+    box-shadow: inset 0 0 0 1px var(--color-yellow-200);
+  }
+  .c-badge-danger {
+    background-color: var(--color-red-50);
+    color: var(--color-red-900);
+    box-shadow: inset 0 0 0 1px var(--color-red-200);
+  }
+  .dark .c-badge-neutral {
+    background-color: var(--color-slate-800);
+    color: var(--color-slate-200);
+  }
+  .dark .c-badge-success {
+    background-color: rgb(34 197 94 / 0.12);
+    color: var(--color-green-200);
+    box-shadow: none;
+  }
+  .dark .c-badge-warning {
+    background-color: rgb(234 179 8 / 0.12);
+    color: var(--color-yellow-200);
+    box-shadow: none;
+  }
+  .dark .c-badge-danger {
+    background-color: rgb(239 68 68 / 0.14);
+    color: var(--color-red-200);
+    box-shadow: none;
+  }
+
+  /* ---- Callouts -------------------------------------------------------------------------------- */
+
+  /* A note on public pages, the same look as the app's .a-alert: tinted ground, a full hairline in the
+     tone (never a coloured edge on a rounded box), a soft glow from the top left. */
+  .c-callout {
+    --cl-glow: var(--color-brand-blue-accent);
+    border: 1px solid var(--a-info-line);
+    border-radius: var(--radius-lg);
+    background: radial-gradient(ellipse 24rem 6rem at 0 0, color-mix(in oklab, var(--cl-glow) 12%, transparent), transparent 75%), var(--a-info-bg);
+    padding: 1rem 1.5rem;
+    color: var(--c-ink);
+    line-height: var(--leading-relaxed);
+    box-shadow: 0 1px 2px rgb(15 23 42 / 0.04), 0 8px 20px -14px color-mix(in oklab, var(--cl-glow) 55%, transparent);
+  }
+  .c-callout-success {
+    --cl-glow: var(--color-green-600);
+    border-color: var(--a-ok-line);
+    background-color: var(--a-ok-bg);
+  }
+  .c-callout-danger {
+    --cl-glow: var(--color-red-600);
+    border-color: var(--a-bad-line);
+    background-color: var(--a-bad-bg);
+  }
+  .c-callout-warning {
+    --cl-glow: var(--color-amber-600);
+    border-color: var(--a-warn-line);
+    background-color: var(--a-warn-bg);
+  }
+  .dark .c-callout { box-shadow: none; }
+
+  /* ---- Forms ----------------------------------------------------------------------------------- */
+
+  /* cetome.com .input-label: 13px, black weight, uppercase, 0.1em. */
+  .c-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: var(--text-label);
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--c-ink);
+  }
+  /* A label + field + help/error group. */
+  .c-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .c-field > .c-label {
+    margin-bottom: 0;
+  }
+  /* cetome.com contact form: an underlined field, no box; the rule turns blue on focus. */
+  .c-input,
+  .c-textarea,
+  .c-select {
+    display: block;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid var(--c-line-strong);
+    border-radius: 0;
+    background-color: var(--c-field-bg);
+    padding-block: 0.75rem;
+    font-family: var(--font-brand);
+    font-size: var(--text-small);
+    line-height: var(--text-sm--line-height);
+    color: var(--c-ink);
+    outline: none;
+    transition: border-color 300ms var(--ease-brand), box-shadow 300ms var(--ease-brand);
+    &::placeholder {
+      color: var(--c-ink-subtle);
+    }
+    &:focus {
+      border-bottom-color: var(--color-brand-blue);
+      box-shadow: 0 1px 0 0 var(--color-brand-blue);
+    }
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    &[aria-invalid="true"] {
+      border-bottom-color: var(--color-red-500);
+    }
+    &[aria-invalid="true"]:focus {
+      box-shadow: 0 1px 0 0 var(--color-red-500);
+    }
+  }
+  .dark .c-input:focus,
+  .dark .c-textarea:focus,
+  .dark .c-select:focus {
+    border-bottom-color: var(--color-brand-blue-light);
+    box-shadow: 0 1px 0 0 var(--color-brand-blue-light);
+  }
+  .c-textarea {
+    min-height: 8rem;
+    resize: vertical;
+  }
+  .c-select {
+    appearance: none;
+    padding-right: 2rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 5'%3E%3Cpath d='M0 0h8L4 5z' fill='%2364748b'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 8px 5px;
+  }
+  .c-select option {
+    background-color: var(--c-surface);
+    color: var(--c-ink);
+  }
+  /* Boxed variant for dense forms and filters (cetome.com .interest-field). */
+  .c-input-boxed {
+    border: 1px solid var(--c-line-strong);
+    border-radius: var(--radius-sm);
+    background-color: var(--c-surface);
+    padding: 0.5rem;
+    &:focus {
+      border-color: var(--color-brand-blue);
+      box-shadow: 0 0 0 1px var(--color-brand-blue);
+    }
+  }
+  .c-check {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--color-brand-blue);
+    cursor: pointer;
+  }
+  .c-help {
+    font-size: var(--text-label);
+    line-height: 1.5;
+    color: var(--c-ink-subtle);
+  }
+  /* cetome.com .error */
+  .c-error {
+    font-size: var(--text-small);
+    line-height: var(--text-sm--line-height);
+    color: var(--color-red-600);
+  }
+  .dark .c-error {
+    color: var(--color-red-500);
+  }
+
+  /* ---- Tables ---------------------------------------------------------------------------------- */
+
+  /* cetome.com .table-wrapper: a rounded, bordered box that scrolls a wide table sideways. */
+  .c-table-wrap {
+    position: relative;
+    width: 100%;
+    overflow: auto;
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-xl);
+    background-color: var(--c-surface);
+    box-shadow: var(--shadow-panel);
+    -webkit-overflow-scrolling: touch;
+  }
+  /* The table: cetome-blue sticky header, hairline rows, zebra. Left-aligned (cetome.com centres
+     the cells of its comparison tables; add .c-table-center for that). */
+  .c-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: var(--text-small);
+    line-height: var(--leading-relaxed);
+  }
+  .c-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    border-bottom: 2px solid var(--color-slate-700);
+    background-color: var(--c-table-head);
+    padding: 0.5rem 1rem;
+    text-align: left;
+    font-weight: 700;
+    white-space: nowrap;
+    color: var(--color-white);
+  }
+  .c-table td {
+    border-bottom: 1px solid var(--c-line-soft);
+    padding: 0.5rem 1rem;
+    text-align: left;
+    vertical-align: top;
+    color: var(--c-ink-muted);
+  }
+  .c-table tbody tr:nth-child(even) td {
+    background-color: var(--c-table-zebra);
+  }
+  .c-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  .c-table tbody th {
+    border-bottom: 1px solid var(--c-line-soft);
+    padding: 0.5rem 1rem;
+    text-align: left;
+    font-weight: 700;
+    color: var(--c-ink);
+  }
+  .c-table-center :is(th, td) {
+    text-align: center;
+  }
+  /* Rows that are links or selectable: blue-50 under the pointer (cetome.com panorama table). */
+  .c-table-hover tbody tr:hover :is(td, th) {
+    @media (hover: hover) {
+      background-color: var(--color-blue-50);
+      color: var(--color-slate-900);
+    }
+  }
+  .dark .c-table-hover tbody tr:hover :is(td, th) {
+    @media (hover: hover) {
+      background-color: rgb(33 122 255 / 0.1);
+      color: var(--color-slate-100);
+    }
+  }
+  /* First column pinned while the table scrolls sideways (cetome.com panorama). */
+  .c-table-sticky-col :is(th, td):first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    border-right: 2px solid var(--c-line);
+    background-color: var(--c-canvas-subtle);
+    font-weight: 700;
+    color: var(--c-ink);
+    box-shadow: 4px 0 8px -4px rgb(0 0 0 / 0.15);
+  }
+  .c-table-sticky-col thead th:first-child {
+    z-index: 3;
+    background-color: var(--c-table-head);
+    color: var(--color-white);
+  }
+
+  /* ---- Header ---------------------------------------------------------------------------------- */
+
+  /* cetome.com .nav-header: 5rem bar, white, slate-200 rule under it. Sticky here (cetome.com is
+     fixed with a spacer; sticky needs no spacer). */
+  .c-nav {
+    position: sticky;
+    top: 0;
+    z-index: 2100;
+    display: flex;
+    height: var(--spacing-nav);
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    border-bottom: 1px solid var(--c-line);
+    background-color: var(--c-canvas);
+    padding-inline: 1.5rem;
+    @media (width >= 48rem) {
+      padding-inline: 4rem;
+    }
+    @media (width >= 64rem) and (width < 76rem) {
+      padding-inline: 2rem;
+    }
+  }
+  .c-nav-logo {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+  }
+  /* The logo is set by its width: 8.3rem, 10.4rem from 64rem. */
+  .c-nav-logo .c-logo {
+    width: 8.3rem;
+    height: auto;
+    @media (width >= 64rem) {
+      width: 10.4rem;
+    }
+  }
+  /* The menu: hidden below 64rem, where the hamburger takes over. */
+  .c-nav-menu {
+    display: none;
+    flex: 1;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2.5rem;
+    @media (width >= 64rem) {
+      display: flex;
+    }
+    @media (width >= 64rem) and (width < 76rem) {
+      gap: 1.5rem;
+    }
+  }
+  .c-nav-actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  /* The actions in the bar itself: from 64rem; below, they move into the mobile menu. */
+  .c-nav-actions-bar {
+    display: none;
+    @media (width >= 64rem) {
+      display: flex;
+    }
+  }
+  /* A header link: 13px, bold, uppercase, 0.14em, cetome blue; the current page in ink with a
+     2px blue rule under it. Mark it with aria-current="page" (or .is-active). */
+  .c-nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--text-label);
+    font-weight: 700;
+    letter-spacing: var(--tracking-nav);
+    white-space: nowrap;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--c-link);
+    transition: color 150ms var(--ease-brand);
+    &:hover {
+      @media (hover: hover) {
+        color: var(--c-link-hover);
+      }
+    }
+    &:focus-visible {
+      outline: 3px solid var(--color-brand-blue-light);
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+    &[aria-current="page"], &[aria-current="true"], &.is-active {
+      color: var(--c-ink);
+    }
+    &[aria-current="page"]::before, &[aria-current="true"]::before, &.is-active::before {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: -0.45rem;
+      left: 0;
+      height: 2px;
+      background-color: var(--color-brand-blue);
+    }
+    @media (width >= 64rem) and (width < 76rem) {
+      letter-spacing: 0.08em;
+    }
+  }
+  .dark .c-nav-link:is([aria-current="page"], [aria-current="true"], .is-active)::before {
+    background-color: var(--color-brand-blue-light);
+  }
+
+  /* Mobile menu, no JavaScript: <details class="c-nav-mobile"> with the hamburger as <summary>. */
+  .c-nav-mobile {
+    @media (width >= 64rem) {
+      display: none;
+    }
+  }
+  .c-hamburger {
+    position: relative;
+    z-index: 2200;
+    display: flex;
+    height: 2.5rem;
+    width: 2.5rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    list-style: none;
+    &::-webkit-details-marker {
+      display: none;
+    }
+    &:focus-visible {
+      outline: 3px solid var(--color-brand-blue-light);
+      outline-offset: 2px;
+      border-radius: var(--radius-md);
+    }
+  }
+  .c-hamburger-line {
+    display: block;
+    height: 0.125rem;
+    width: 1.75rem;
+    background-color: var(--c-ink);
+    transition: translate 300ms var(--ease-brand), rotate 300ms var(--ease-brand), opacity 300ms var(--ease-brand);
+  }
+  .c-nav-mobile[open] .c-hamburger-line:nth-child(1) {
+    translate: 0 0.5rem;
+    rotate: 45deg;
+  }
+  .c-nav-mobile[open] .c-hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+  .c-nav-mobile[open] .c-hamburger-line:nth-child(3) {
+    translate: 0 -0.5rem;
+    rotate: -45deg;
+  }
+  /* The open menu: full screen under the bar, big uppercase links with hairlines. */
+  .c-nav-mobile-panel {
+    position: fixed;
+    inset: var(--spacing-nav) 0 0 0;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background-color: var(--c-canvas);
+    padding: 1.5rem 2rem 3rem;
+  }
+  .c-nav-mobile-menu {
+    display: flex;
+    flex-direction: column;
+  }
+  .c-nav-mobile-panel .c-nav-link {
+    display: block;
+    border-bottom: 1px solid var(--c-line-soft);
+    padding: 1rem;
+    font-size: var(--text-lg);
+    line-height: var(--text-lg--line-height);
+    letter-spacing: 0;
+    color: var(--c-ink);
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--c-surface-hover);
+        color: var(--c-link);
+      }
+    }
+    &[aria-current="page"], &[aria-current="true"], &.is-active {
+      color: var(--c-link);
+    }
+    &::before {
+      content: none;
+    }
+  }
+  .c-nav-mobile-panel .c-nav-actions {
+    margin-top: 2rem;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* ---- Hero ------------------------------------------------------------------------------------ */
+
+  /* cetome.com .hero-wrapper: the page opens on a cetome-blue band, white type. */
+  .c-hero {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-brand-blue);
+    padding-block: 3rem;
+    color: var(--color-white);
+    @media (width >= 64rem) {
+      padding-block: 4rem;
+    }
+  }
+  /* The dark variant: brand-dark with cetome.com's --hero-gradient (the hero before it turned blue). */
+  .c-hero-dark {
+    background-color: var(--color-brand-dark);
+    background-image: var(--c-hero-gradient);
+  }
+  /* Hero layout: one column, then 7 + 5 columns from 64rem (text left, cards right). */
+  .c-hero-grid {
+    position: relative;
+    z-index: 1;
+    margin-inline: auto;
+    display: grid;
+    width: 100%;
+    max-width: var(--container-site);
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 3rem;
+    padding-inline: 2rem;
+    @media (width >= 64rem) {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 5rem;
+    }
+  }
+  .c-hero-main {
+    @media (width >= 64rem) {
+      grid-column: span 7 / span 7;
+    }
+  }
+  .c-hero-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    @media (width >= 64rem) {
+      grid-column: span 5 / span 5;
+    }
+  }
+  /* Kicker / breadcrumb line above the hero title. */
+  .c-hero-kicker {
+    margin-bottom: 1.75rem;
+    font-size: var(--text-micro);
+    font-weight: 800;
+    letter-spacing: var(--tracking-kicker);
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.72);
+  }
+  .c-hero-kicker a {
+    color: inherit;
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-white);
+      }
+    }
+  }
+  .c-hero-title {
+    display: block;
+    margin-top: 0;
+    margin-bottom: 2rem;
+    max-width: 90vw;
+    font-size: 2.25rem;
+    line-height: 0.95;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--color-white);
+    @media (width >= 48rem) {
+      font-size: 3rem;
+    }
+    @media (width >= 64rem) {
+      font-size: 3.75rem;
+    }
+  }
+  /* The square on the blue is the light blue. */
+  .c-hero-title::after {
+    content: "";
+    display: inline-block;
+    margin-left: 0.15em;
+    height: 0.2em;
+    width: 0.2em;
+    background-color: var(--color-brand-blue-light);
+    vertical-align: baseline;
+  }
+  .c-hero-title:has(.c-dot-end)::after {
+    content: none;
+  }
+  .c-hero-title .c-dot-end::after {
+    background-color: var(--color-brand-blue-light);
+  }
+  .c-hero-lead {
+    margin-bottom: 0;
+    max-width: 36rem;
+    font-size: var(--text-lg);
+    line-height: 1.625;
+    font-weight: 300;
+    color: var(--color-white);
+    @media (width >= 48rem) {
+      font-size: var(--text-xl);
+    }
+  }
+  /* A white tile raised off the blue: the actions next to the hero text (cetome.com .compact-card). */
+  .c-hero-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid var(--color-white);
+    border-radius: var(--radius-2xl);
+    background-color: var(--color-white);
+    padding: 1.1rem 1.25rem;
+    color: var(--color-slate-600);
+    text-decoration: none;
+    box-shadow: var(--shadow-raised);
+    transition: box-shadow 200ms var(--ease-brand);
+    &:hover {
+      @media (hover: hover) {
+        box-shadow: var(--shadow-raised-hover);
+      }
+    }
+    &:focus-visible {
+      outline: 3px solid var(--color-brand-blue-light);
+      outline-offset: 2px;
+    }
+  }
+  .c-hero-card-title {
+    display: block;
+    font-size: var(--text-base);
+    font-weight: 700;
+    color: var(--color-brand-blue);
+    transition: color 200ms var(--ease-brand);
+  }
+  .c-hero-card:hover .c-hero-card-title {
+    @media (hover: hover) {
+      color: var(--color-brand-blue-light);
+    }
+  }
+  .c-hero-card-text {
+    display: block;
+    margin-top: 0.125rem;
+    font-size: var(--text-label);
+    color: var(--color-slate-600);
+  }
+
+  /* ---- Footer ---------------------------------------------------------------------------------- */
+
+  /* cetome.com .site-footer: brand-dark, a 5% white rule on top. Dark in both themes. */
+  .c-footer {
+    border-top: 1px solid rgb(255 255 255 / 0.05);
+    background-color: var(--color-brand-dark);
+    padding-top: 2.5rem;
+    padding-bottom: 1.25rem;
+    color: var(--color-slate-200);
+  }
+  .dark .c-footer {
+    background-color: var(--color-brand-midnight);
+    border-top-color: var(--color-slate-800);
+  }
+  .c-footer-inner {
+    margin-inline: auto;
+    max-width: var(--container-site);
+    padding-inline: 2rem;
+  }
+  /* Brand column first (1.2fr), then one column per child. */
+  .c-footer-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    padding-bottom: 30px;
+    @media (width >= 48rem) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    @media (width >= 64rem) {
+      grid-template-columns: 1.2fr;
+      grid-auto-columns: minmax(0, 1fr);
+      grid-auto-flow: column;
+    }
+  }
+  .c-footer-brand {
+    grid-column: 1 / -1;
+    @media (width >= 48rem) {
+      grid-column: auto;
+    }
+  }
+  .c-footer-brand .c-logo {
+    width: 8.3rem;
+    height: auto;
+    @media (width >= 64rem) {
+      width: 10.4rem;
+    }
+  }
+  .c-footer-registration {
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-label);
+    line-height: 1.4;
+    color: var(--color-slate-400);
+  }
+  .c-footer-registration > li + li {
+    margin-top: 0.5rem;
+  }
+  /* Column caption: 11px, black, 0.3em, pale blue (4.5:1+ on the near-black). */
+  .c-footer-label {
+    display: block;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgb(255 255 255 / 0.05);
+    padding-bottom: 0.25rem;
+    font-size: var(--text-micro);
+    font-weight: 900;
+    letter-spacing: var(--tracking-kicker);
+    text-transform: uppercase;
+    color: var(--color-brand-blue-pale);
+  }
+  .c-footer-links {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    list-style: none;
+    line-height: var(--leading-tight);
+    font-weight: 700;
+  }
+  .c-footer-links a {
+    font-size: var(--text-small);
+    color: var(--color-slate-200);
+    text-decoration: none;
+    transition: color 200ms var(--ease-brand);
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-brand-blue-light);
+      }
+    }
+  }
+  /* The legal line: copyright left, small uppercase links right. Stacks on phones. */
+  .c-footer-bottom {
+    display: grid;
+    align-items: center;
+    gap: 0.75rem 2rem;
+    border-top: 1px solid rgb(255 255 255 / 0.03);
+    padding-top: 1.25rem;
+    @media (width >= 48rem) {
+      grid-template-columns: auto 1fr auto;
+    }
+  }
+  .c-footer-copyright {
+    font-size: var(--text-micro);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-slate-400);
+  }
+  .c-footer-legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    @media (width >= 48rem) {
+      grid-column-start: 3;
+    }
+  }
+  .c-footer-bottom a {
+    font-size: var(--text-micro);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-slate-400);
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-brand-blue-light);
+      }
+    }
+  }
+  .c-footer a:focus-visible {
+    outline: 3px solid var(--color-brand-blue-light);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* ---- Brand helpers --------------------------------------------------------------------------- */
+
+  .c-logo {
+    display: block;
+    height: auto;
+    max-width: 100%;
+  }
+  /* Show one of two elements per theme (the header's colour and white logos). */
+  .c-only-dark {
+    display: none;
+  }
+  .dark .c-only-light {
+    display: none;
+  }
+  .dark .c-only-dark {
+    display: block;
+  }
+  /* The small blue square used as a bullet or marker (cetome.com .address-title-dot). */
+  .c-square {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: var(--color-brand-blue);
+  }
+  .dark .c-square {
+    background-color: var(--color-brand-blue-light);
+  }
+  /* Material Icons ligature: <span class="c-icon" aria-hidden="true">security</span>. */
+  .c-icon {
+    display: inline-block;
+    font-family: var(--font-icons);
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    direction: ltr;
+    font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "redact.tree/1",
+  "standard": "demo-1",
+  "requirement": "UPD-1",
+  "clause": "1.2",
+  "figure": "Sample 2",
+  "title": "Sample update requirement",
+  "scope": "For the product",
+  "start": "DN-1",
+  "nodes": [
+    {
+      "id": "DN-1",
+      "kind": "decision",
+      "text": "Can the product be updated?",
+      "branches": [
+        { "label": "Yes", "to": "R-PASS" },
+        { "label": "No", "to": "R-FAIL" }
+      ]
+    },
+    { "id": "R-PASS", "kind": "result", "result": "PASS" },
+    { "id": "R-FAIL", "kind": "result", "result": "FAIL" }
+  ]
+}

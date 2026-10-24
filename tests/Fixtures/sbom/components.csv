@@ -1,0 +1,6 @@
+Inventaire des composants;;;;;
+Composant;Version;Fabricant;Nature;Licence;Commentaire
+Main firmware;2.4.1;Emotec Ltd;logiciel;Proprietary;Bootloader and application
+mbedTLS;3.5.1;Arm;software;Apache-2.0;
+Example radio SoC;B2;Example Semiconductors;matériel;;Radio chip
+;;;;;

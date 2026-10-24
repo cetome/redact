@@ -1,0 +1,64 @@
+{
+  "schema": "redact.workbooks/1",
+  "notes": "INVENTED test mapping for the demo pack: one small protected workbook (demo-workbook.xlsx, built with PhpSpreadsheet, random password thrown away). No cetome content.",
+  "values": {
+    "asset_type": { "security": "Security", "data": "Data" },
+    "stored": { "true": "Yes", "false": "No" },
+    "interface_kind": { "network": "Network", "user": "User" },
+    "verdict": { "PASS": "PASS", "FAIL": "FAIL", "NOT_APPLICABLE": "N/A" }
+  },
+  "nodes": { "format": "DT.{requirement}.{node}", "not_walked": "N/A" },
+  "einfo_text": { "separator": "\n\n", "prefix": "{code}: " },
+  "workbooks": [
+    {
+      "key": "demo",
+      "file": "demo-workbook.xlsx",
+      "name": "Demo",
+      "label": { "en": "Demo workbook", "fr": "Classeur de démonstration" },
+      "description": { "en": "Invented workbook of the test pack.", "fr": "Classeur inventé du pack de test." },
+      "detect": ["Introduction", "Inventory", "Walks"],
+      "blocks": [
+        { "id": "intro", "type": "fields", "sheet": "Introduction", "cells": {
+          "B2": { "field": "version.author_name" },
+          "B3": { "field": "product.title", "export_only": true },
+          "B4": { "field": "version.completion_date", "format": "date" },
+          "A6": { "field": "product.description", "rows": "A6:A8" }
+        } },
+        { "id": "scoping", "type": "scoping", "sheet": "Scoping", "cells": { "B2": "connected", "B3": "updates" } },
+        { "id": "assets", "type": "list", "sheet": "Inventory", "list": "assets", "first_row": 2, "last_row": 6, "key": "A", "creates": true, "columns": {
+          "A": { "value": "label" },
+          "B": { "attr": "type", "map": "asset_type" },
+          "C": { "attr": "stored", "map": "stored" },
+          "D": { "value": "description" }
+        } },
+        { "id": "interfaces", "type": "list", "sheet": "Interfaces", "list": "interfaces", "first_row": 2, "last_row": 4, "key": "A", "creates": true, "columns": {
+          "A": { "value": "label" },
+          "B": { "attr": "kind", "map": "interface_kind" }
+        } },
+        { "id": "map", "type": "matrix", "sheet": "Mapping", "relation": "asset_interface",
+          "rows_of": "assets", "cols_of": "interfaces", "first_row": 2, "first_col": "B", "max_rows": 5, "max_cols": 3, "mark": "x" },
+        { "id": "walks", "type": "list", "sheet": "Walks", "list": "assets", "rows_of": "assets", "first_row": 2, "last_row": 6,
+          "columns": { "E": { "einfo": ["ACC-1\\..+"] } },
+          "walks": [ { "requirement": "ACC-1", "node": "B", "verdict": "C", "justification": "D" } ] },
+        { "id": "risks", "type": "risks", "sheet": "Risks", "first_row": 2, "last_row": 4, "ignore_keys": ["^Example:"], "columns": {
+          "A": { "risk": "threat" },
+          "B": { "risk": "stride", "is": "S", "mark": "x" },
+          "C": { "risk": "stride", "is": "T", "mark": "x" },
+          "D": { "risk": "impact" },
+          "E": { "risk": "likelihood" },
+          "G": { "risk": "remediation" }
+        } }
+      ],
+      "fixes": [
+        { "id": "demo-formula", "type": "formula", "sheet": "Walks", "range": "F2:F6", "find": "\"DT.ACC-1.DN-9\"", "replace": "\"DT.ACC-1.DN-2\"",
+          "why": { "en": "Demo fix of a formula.", "fr": "Correction de démonstration d’une formule." } },
+        { "id": "demo-dropdown", "type": "validation", "sheet": "Walks", "sqref": "B2:B6",
+          "find": "\"N/A,DT.ACC-1.DN-1,DT.ACC-1.DN-3\"", "replace": "\"N/A,DT.ACC-1.DN-1,DT.ACC-1.DN-2\"",
+          "why": { "en": "Demo fix of a dropdown.", "fr": "Correction de démonstration d’une liste." } },
+        { "id": "demo-missing", "type": "formula", "sheet": "Walks", "range": "F2:F6", "find": "NOT IN THE TEMPLATE", "replace": "x",
+          "why": { "en": "Demo fix the template does not need.", "fr": "Correction de démonstration inutile." } }
+      ]
+    }
+  ],
+  "left_for_the_owner": [ { "en": "Demo item left as it is.", "fr": "Élément de démonstration laissé tel quel." } ]
+}

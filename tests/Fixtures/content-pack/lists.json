@@ -1,0 +1,45 @@
+{
+  "lists": [
+    {
+      "key": "assets",
+      "label": "Assets",
+      "singular": "Asset",
+      "code_prefix": "AS-",
+      "help": "Things worth protecting (sample list).",
+      "fields": [
+        {
+          "key": "type",
+          "label": "Type",
+          "type": "select",
+          "required": true,
+          "options": [
+            { "value": "security", "label": "Security" },
+            { "value": "data", "label": "Data" }
+          ]
+        },
+        { "key": "stored", "label": "Stored on the product", "type": "boolean" }
+      ]
+    },
+    {
+      "key": "interfaces",
+      "label": "Interfaces",
+      "singular": "Interface",
+      "code_prefix": "IF-",
+      "help": "Ways to reach the product (sample list).",
+      "fields": [
+        {
+          "key": "kind",
+          "label": "Kind",
+          "type": "select",
+          "options": [
+            { "value": "network", "label": "Network" },
+            { "value": "user", "label": "User" }
+          ]
+        }
+      ]
+    }
+  ],
+  "relations": [
+    { "key": "asset_interface", "from": "assets", "to": "interfaces", "label": "Reachable through" }
+  ]
+}

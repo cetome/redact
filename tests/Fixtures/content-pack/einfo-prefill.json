@@ -1,0 +1,7 @@
+{
+  "schema": "redact.einfo-prefill/1",
+  "notes": "Demo pack: the asset's description pre-fills its E.Info item.",
+  "rules": [
+    { "ids": ["E.Info.ACC-1.Asset"], "from": "description", "source": "demo" }
+  ]
+}

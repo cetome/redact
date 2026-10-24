@@ -1,0 +1,33 @@
+{
+  "schema": "redact.tree/1",
+  "standard": "demo-1",
+  "requirement": "ACC-1",
+  "clause": "1.1",
+  "figure": "Sample 1",
+  "title": "Sample access requirement",
+  "scope": "For each asset",
+  "start": "DN-1",
+  "nodes": [
+    {
+      "id": "DN-1",
+      "kind": "decision",
+      "text": "Is the asset meant to be public?",
+      "branches": [
+        { "label": "Yes", "to": "R-NA" },
+        { "label": "No", "to": "DN-2" }
+      ]
+    },
+    {
+      "id": "DN-2",
+      "kind": "decision",
+      "text": "Is access to the asset controlled?",
+      "branches": [
+        { "label": "Yes", "to": "R-PASS" },
+        { "label": "No", "to": "R-FAIL" }
+      ]
+    },
+    { "id": "R-NA", "kind": "result", "result": "NOT APPLICABLE" },
+    { "id": "R-PASS", "kind": "result", "result": "PASS" },
+    { "id": "R-FAIL", "kind": "result", "result": "FAIL" }
+  ]
+}

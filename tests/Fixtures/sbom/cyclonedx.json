@@ -1,0 +1,63 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:3e671687-395b-41f5-a30f-a58921a69b79",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-10-01T09:00:00Z",
+    "tools": { "components": [ { "type": "application", "name": "example-sbom-tool", "version": "1.0.0" } ] },
+    "component": {
+      "type": "firmware",
+      "bom-ref": "fw-main",
+      "name": "Sample lock firmware",
+      "version": "2.4.1",
+      "supplier": { "name": "Emotec Ltd" }
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/lodash@4.17.20",
+      "supplier": { "name": "OpenJS Foundation" },
+      "group": "",
+      "name": "lodash",
+      "version": "4.17.20",
+      "licenses": [ { "license": { "id": "MIT" } } ],
+      "purl": "pkg:npm/lodash@4.17.20"
+    },
+    {
+      "type": "library",
+      "bom-ref": "openssl",
+      "name": "openssl",
+      "version": "3.0.7",
+      "publisher": "OpenSSL",
+      "description": "TLS and crypto library",
+      "licenses": [ { "expression": "Apache-2.0" } ],
+      "cpe": "cpe:2.3:a:openssl:openssl:3.0.7:*:*:*:*:*:*:*",
+      "components": [
+        { "type": "library", "name": "libcrypto", "version": "3.0.7", "supplier": { "name": "OpenSSL" } }
+      ]
+    },
+    {
+      "type": "operating-system",
+      "bom-ref": "rtos",
+      "name": "Example RTOS",
+      "version": "10.5.1",
+      "supplier": { "name": "Example RTOS Project" }
+    },
+    {
+      "type": "device",
+      "bom-ref": "soc",
+      "name": "Example radio SoC",
+      "version": "B2",
+      "manufacturer": { "name": "Example Semiconductors" },
+      "description": "2.4 GHz radio system-on-chip"
+    },
+    {
+      "type": "library",
+      "name": "lodash",
+      "version": "4.17.20",
+      "purl": "pkg:npm/lodash@4.17.20"
+    }
+  ]
+}

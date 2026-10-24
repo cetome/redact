@@ -1,0 +1,22 @@
+# REDact — ONLY if your host cannot point the domain's document root to /public.
+# Copy this file to the application root as ".htaccess".
+# It sends every request into public/ and refuses direct access to anything else
+# (.env, storage, vendor, config, the content pack, ...).
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Force HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Everything goes to public/
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Belt and braces: never serve these, whatever happens to mod_rewrite.
+<FilesMatch "^(\.env.*|composer\.(json|lock)|artisan|RELEASE)$">
+    Require all denied
+</FilesMatch>
+Options -Indexes

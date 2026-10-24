@@ -1,0 +1,75 @@
+{
+  "id": "demo",
+  "name": {
+    "en": "REDact demo pack (invented)",
+    "fr": "Pack de démonstration REDact (inventé)"
+  },
+  "version": "1.0.0",
+  "description": {
+    "en": "A small, fully invented method to run the REDact engine end to end. It contains no text from any standard and no real assessment method: it cannot be used to assess a real product.",
+    "fr": "Une petite méthode entièrement inventée pour faire tourner le moteur REDact de bout en bout. Elle ne contient aucun texte de norme ni aucune méthode d’évaluation réelle : elle ne permet pas d’évaluer un vrai produit."
+  },
+  "standards": [
+    {
+      "code": "demo-net",
+      "name": "DEMO-NET (invented sample method)",
+      "article": "3.3d"
+    },
+    {
+      "code": "demo-priv",
+      "name": "DEMO-PRIV (invented sample method)",
+      "article": "3.3e"
+    },
+    {
+      "code": "demo-pay",
+      "name": "DEMO-PAY (invented sample method)",
+      "article": "3.3f"
+    }
+  ],
+  "articles": [
+    {
+      "code": "3.3d",
+      "name": {
+        "en": "3.3 d) Protection of the network",
+        "fr": "3.3 d) Protection du réseau"
+      }
+    },
+    {
+      "code": "3.3e",
+      "name": {
+        "en": "3.3 e) Protection of personal data and privacy",
+        "fr": "3.3 e) Protection des données personnelles et de la vie privée"
+      }
+    },
+    {
+      "code": "3.3f",
+      "name": {
+        "en": "3.3 f) Protection against fraud",
+        "fr": "3.3 f) Protection contre la fraude"
+      }
+    }
+  ],
+  "families": {
+    "ACC": {
+      "name": {
+        "en": "Access (demo)",
+        "fr": "Accès (démo)"
+      }
+    },
+    "UPD": {
+      "name": {
+        "en": "Updates (demo)",
+        "fr": "Mises à jour (démo)"
+      }
+    },
+    "DAT": {
+      "name": {
+        "en": "Personal data (demo)",
+        "fr": "Données personnelles (démo)"
+      }
+    }
+  },
+  "ai": {
+    "system_context": "This is the REDact demo pack: an invented sample method used to try the software. Its requirements, decision trees and documentation items are examples only and do not come from any standard. Keep answers short and factual."
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schema": "redact.tree/1",
+  "standard": "demo-net",
+  "requirement": "ACC-1",
+  "clause": "D.1",
+  "figure": "Demo tree 1",
+  "title": "Access to an asset (demo)",
+  "scope": "For each asset",
+  "start": "DN-1",
+  "nodes": [
+    {
+      "id": "DN-1",
+      "kind": "decision",
+      "text": "Can the asset be reached from outside the product, through any interface?",
+      "help": "Demo question. Think of every interface linked to the asset in the inventory.",
+      "branches": [
+        {
+          "label": "No",
+          "to": "R-NA"
+        },
+        {
+          "label": "Yes",
+          "to": "DN-2"
+        }
+      ]
+    },
+    {
+      "id": "DN-2",
+      "kind": "decision",
+      "text": "Does the product check who is asking before it gives access to the asset?",
+      "branches": [
+        {
+          "label": "Yes",
+          "to": "R-PASS"
+        },
+        {
+          "label": "No",
+          "to": "DN-3"
+        }
+      ]
+    },
+    {
+      "id": "DN-3",
+      "kind": "decision",
+      "text": "Would it be harmless if anyone read or changed the asset?",
+      "branches": [
+        {
+          "label": "Yes",
+          "to": "R-PASS"
+        },
+        {
+          "label": "No",
+          "to": "R-FAIL"
+        }
+      ]
+    },
+    {
+      "id": "R-NA",
+      "kind": "result",
+      "result": "NOT APPLICABLE"
+    },
+    {
+      "id": "R-PASS",
+      "kind": "result",
+      "result": "PASS"
+    },
+    {
+      "id": "R-FAIL",
+      "kind": "result",
+      "result": "FAIL"
+    }
+  ]
+}

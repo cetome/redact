@@ -1,0 +1,20 @@
+{
+  "@context": "https://openvex.dev/ns/v0.2.0",
+  "@id": "https://example.com/vex/lock-2.4.1",
+  "author": "Emotec Ltd security team",
+  "timestamp": "2026-10-01T09:00:00Z",
+  "version": 1,
+  "statements": [
+    {
+      "vulnerability": { "name": "CVE-2020-28500", "aliases": ["GHSA-29mw-wpgm-hmr9"] },
+      "products": [ { "@id": "pkg:npm/lodash@4.17.20" } ],
+      "status": "fixed",
+      "action_statement": "Patched in our fork."
+    },
+    {
+      "vulnerability": { "name": "CVE-2026-0001", "description": "Heap overflow in the update agent" },
+      "products": [ { "@id": "pkg:generic/update-agent@1.0.0" } ],
+      "status": "under_investigation"
+    }
+  ]
+}

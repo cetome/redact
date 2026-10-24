@@ -1,0 +1,16 @@
+{
+  "id": "demo",
+  "name": "Demo content pack",
+  "version": "0.1.0",
+  "description": "A tiny, invented pack so the engine runs without cetome's private content. It contains no real know-how and no text from any standard.",
+  "standards": [
+    { "code": "demo-1", "name": "DEMO-1 (sample standard)", "article": "A1" }
+  ],
+  "articles": [
+    { "code": "A1", "name": "Sample article A1" }
+  ],
+  "families": {
+    "ACC": { "name": "Access (sample)" },
+    "UPD": { "name": "Updates (sample)" }
+  }
+}

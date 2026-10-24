@@ -1,0 +1,43 @@
+{
+    "bomFormat": "CycloneDX",
+    "specVersion": "1.6",
+    "serialNumber": "urn:uuid:044df2a2-79ed-587e-a67f-1fa022e1e5be",
+    "version": 1,
+    "metadata": {
+        "timestamp": "2026-10-24T06:46:21Z",
+        "tools": {
+            "components": [
+                {
+                    "type": "application",
+                    "name": "scripts/sbom.php",
+                    "group": "cetome",
+                    "version": "1.0.0"
+                }
+            ]
+        },
+        "supplier": {
+            "name": "cetome",
+            "url": [
+                "https://cetome.com"
+            ]
+        },
+        "component": {
+            "type": "application",
+            "bom-ref": "pkg:github/cetome/redact@1.0.0",
+            "name": "REDact engine",
+            "version": "1.0.0",
+            "purl": "pkg:github/cetome/redact@1.0.0"
+        },
+        "properties": [
+            {
+                "name": "cetome:vex:source",
+                "value": "OSV (https://osv.dev), look-up by purl of every component of sbom/redact-engine.cdx.json"
+            },
+            {
+                "name": "cetome:vex:result",
+                "value": "No known vulnerability on 2026-10-24"
+            }
+        ]
+    },
+    "vulnerabilities": []
+}

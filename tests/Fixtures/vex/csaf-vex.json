@@ -1,0 +1,26 @@
+{
+  "document": {
+    "category": "csaf_vex",
+    "csaf_version": "2.0",
+    "title": "Lock firmware VEX",
+    "publisher": { "category": "vendor", "name": "Emotec Ltd", "namespace": "https://example.com" },
+    "tracking": { "id": "EMO-2026-01", "status": "final", "version": "1", "initial_release_date": "2026-10-01T09:00:00Z", "current_release_date": "2026-10-01T09:00:00Z", "revision_history": [ { "date": "2026-10-01T09:00:00Z", "number": "1", "summary": "Initial" } ] }
+  },
+  "product_tree": {
+    "branches": [
+      { "category": "vendor", "name": "OpenSSL", "branches": [
+        { "category": "product_name", "name": "openssl", "branches": [
+          { "category": "product_version", "name": "3.0.7", "product": { "name": "OpenSSL 3.0.7", "product_id": "CSAFPID-0001" } }
+        ] }
+      ] }
+    ]
+  },
+  "vulnerabilities": [
+    {
+      "cve": "CVE-2023-0286",
+      "product_status": { "known_not_affected": ["CSAFPID-0001"] },
+      "flags": [ { "label": "vulnerable_code_not_in_execute_path", "product_ids": ["CSAFPID-0001"] } ],
+      "threats": [ { "category": "impact", "details": "CRL checking is disabled in the firmware.", "product_ids": ["CSAFPID-0001"] } ]
+    }
+  ]
+}

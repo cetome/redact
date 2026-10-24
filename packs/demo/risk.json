@@ -1,0 +1,265 @@
+{
+  "scale": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "levels": [
+    {
+      "rank": 1,
+      "name": {
+        "en": "Very high",
+        "fr": "Très élevé"
+      },
+      "color": "#DC2626"
+    },
+    {
+      "rank": 2,
+      "name": {
+        "en": "High",
+        "fr": "Élevé"
+      },
+      "color": "#EA580C"
+    },
+    {
+      "rank": 3,
+      "name": {
+        "en": "Medium",
+        "fr": "Moyen"
+      },
+      "color": "#CA8A04"
+    },
+    {
+      "rank": 4,
+      "name": {
+        "en": "Low",
+        "fr": "Faible"
+      },
+      "color": "#16A34A"
+    },
+    {
+      "rank": 5,
+      "name": {
+        "en": "Very low",
+        "fr": "Très faible"
+      },
+      "color": "#0284C7"
+    }
+  ],
+  "matrix": {
+    "5": [
+      3,
+      2,
+      2,
+      1,
+      1
+    ],
+    "4": [
+      4,
+      3,
+      2,
+      2,
+      1
+    ],
+    "3": [
+      4,
+      3,
+      3,
+      2,
+      2
+    ],
+    "2": [
+      5,
+      4,
+      3,
+      3,
+      2
+    ],
+    "1": [
+      5,
+      5,
+      4,
+      4,
+      3
+    ]
+  },
+  "stride": {
+    "S": {
+      "en": "Spoofing",
+      "fr": "Usurpation"
+    },
+    "T": {
+      "en": "Tampering",
+      "fr": "Altération"
+    },
+    "R": {
+      "en": "Repudiation",
+      "fr": "Répudiation"
+    },
+    "I": {
+      "en": "Information disclosure",
+      "fr": "Divulgation d’informations"
+    },
+    "D": {
+      "en": "Denial of service",
+      "fr": "Déni de service"
+    },
+    "E": {
+      "en": "Elevation of privilege",
+      "fr": "Élévation de privilèges"
+    }
+  },
+  "threats": [
+    {
+      "threat": {
+        "en": "Shared default password guessed (demo)",
+        "fr": "Mot de passe par défaut partagé deviné (démo)"
+      },
+      "description": {
+        "en": "Someone nearby signs in with a password printed in the manual.",
+        "fr": "Une personne à proximité se connecte avec un mot de passe imprimé dans la notice."
+      },
+      "stride": [
+        "S"
+      ],
+      "articles": [
+        "3.3d"
+      ],
+      "suggest_when": [
+        "connected"
+      ],
+      "suggest_note": "Asked because the product talks to a network.",
+      "requirements": [
+        "ACC-1"
+      ],
+      "impact": 4,
+      "likelihood": 4,
+      "residual_rank": 4,
+      "remediation": {
+        "en": "A different password per unit, or none until the user sets one.",
+        "fr": "Un mot de passe différent par appareil, ou aucun tant que l’utilisateur n’en a pas choisi."
+      }
+    },
+    {
+      "threat": {
+        "en": "Update swapped on its way to the product (demo)",
+        "fr": "Mise à jour remplacée en chemin (démo)"
+      },
+      "description": {
+        "en": "A modified update is installed because nothing checks where it comes from.",
+        "fr": "Une mise à jour modifiée est installée car rien ne vérifie sa provenance."
+      },
+      "stride": [
+        "T"
+      ],
+      "articles": [
+        "3.3d"
+      ],
+      "suggest_when": [
+        "updates"
+      ],
+      "suggest_note": "Asked because the software can be changed.",
+      "requirements": [
+        "UPD-1"
+      ],
+      "impact": 5,
+      "likelihood": 2,
+      "residual_rank": 4
+    },
+    {
+      "threat": {
+        "en": "Personal data read from a second-hand unit (demo)",
+        "fr": "Données personnelles lues sur un appareil d’occasion (démo)"
+      },
+      "description": {
+        "en": "The next owner finds the previous owner's data.",
+        "fr": "Le propriétaire suivant retrouve les données du précédent."
+      },
+      "stride": [
+        "I"
+      ],
+      "articles": [
+        "3.3e"
+      ],
+      "suggest_when": [
+        "personal_data"
+      ],
+      "requirements": [
+        "DAT-1"
+      ],
+      "impact": 3,
+      "likelihood": 3,
+      "residual_rank": 5
+    },
+    {
+      "threat": {
+        "en": "Payment token copied from the product (demo)",
+        "fr": "Jeton de paiement copié depuis le produit (démo)"
+      },
+      "description": {
+        "en": "A stored token is read and reused to pay.",
+        "fr": "Un jeton stocké est lu et réutilisé pour payer."
+      },
+      "stride": [
+        "I",
+        "E"
+      ],
+      "articles": [
+        "3.3f"
+      ],
+      "suggest_when": [
+        "payments"
+      ],
+      "requirements": [
+        "ACC"
+      ],
+      "impact": 5,
+      "likelihood": 2,
+      "residual_rank": 4
+    },
+    {
+      "threat": {
+        "en": "Product flooded with requests (demo)",
+        "fr": "Produit saturé de requêtes (démo)"
+      },
+      "description": {
+        "en": "The product stops working while it answers a flood of requests.",
+        "fr": "Le produit cesse de fonctionner en répondant à un flot de requêtes."
+      },
+      "stride": [
+        "D"
+      ],
+      "articles": [
+        "3.3d"
+      ],
+      "requirements": [
+        "ACC"
+      ],
+      "impact": 2,
+      "likelihood": 3,
+      "residual_rank": 5
+    },
+    {
+      "threat": {
+        "en": "Actions denied by the user (demo)",
+        "fr": "Actions niées par l’utilisateur (démo)"
+      },
+      "description": {
+        "en": "Nothing records who changed a setting, so nobody can tell.",
+        "fr": "Rien n’enregistre qui a changé un réglage, personne ne peut le savoir."
+      },
+      "stride": [
+        "R"
+      ],
+      "articles": [
+        "3.3e",
+        "3.3f"
+      ],
+      "impact": 2,
+      "likelihood": 2,
+      "residual_rank": 5
+    }
+  ]
+}

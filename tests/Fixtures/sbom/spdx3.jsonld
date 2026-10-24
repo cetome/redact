@@ -1,0 +1,26 @@
+{
+  "@context": "https://spdx.org/rdf/3.0.1/spdx-context.jsonld",
+  "@graph": [
+    { "type": "CreationInfo", "@id": "_:creationinfo", "specVersion": "3.0.1", "created": "2026-10-01T09:00:00Z", "createdBy": ["https://example.com/agent/tool"] },
+    { "type": "Organization", "spdxId": "https://example.com/org/acme", "name": "ACME Components", "creationInfo": "_:creationinfo" },
+    { "type": "SpdxDocument", "spdxId": "https://example.com/doc", "creationInfo": "_:creationinfo", "rootElement": ["https://example.com/sbom"] },
+    { "type": "software_Sbom", "spdxId": "https://example.com/sbom", "creationInfo": "_:creationinfo", "rootElement": ["https://example.com/pkg/app"] },
+    {
+      "type": "software_Package", "spdxId": "https://example.com/pkg/app", "creationInfo": "_:creationinfo",
+      "name": "Sample companion app", "software_packageVersion": "3.2.0", "suppliedBy": "https://example.com/org/acme",
+      "software_primaryPurpose": "application"
+    },
+    {
+      "type": "software_Package", "spdxId": "https://example.com/pkg/jinja2", "creationInfo": "_:creationinfo",
+      "name": "jinja2", "software_packageVersion": "3.1.2",
+      "externalIdentifier": [ { "type": "ExternalIdentifier", "externalIdentifierType": "packageUrl", "identifier": "pkg:pypi/jinja2@3.1.2" } ]
+    },
+    {
+      "type": "software_Package", "spdxId": "https://example.com/pkg/sensor", "creationInfo": "_:creationinfo",
+      "name": "Example motion sensor", "software_packageVersion": "S1", "suppliedBy": ["https://example.com/org/acme"],
+      "software_primaryPurpose": "device"
+    },
+    { "type": "simplelicensing_LicenseExpression", "spdxId": "https://example.com/lic/bsd", "creationInfo": "_:creationinfo", "simplelicensing_licenseExpression": "BSD-3-Clause" },
+    { "type": "Relationship", "spdxId": "https://example.com/rel/1", "creationInfo": "_:creationinfo", "from": "https://example.com/pkg/jinja2", "relationshipType": "hasConcludedLicense", "to": ["https://example.com/lic/bsd"] }
+  ]
+}

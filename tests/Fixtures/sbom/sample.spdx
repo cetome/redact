@@ -1,0 +1,39 @@
+SPDXVersion: SPDX-2.2
+DataLicense: CC0-1.0
+SPDXID: SPDXRef-DOCUMENT
+DocumentName: sample-gateway
+DocumentNamespace: https://example.com/spdx/sample-gateway-1.0
+Creator: Tool: example-sbom-tool-1.0
+Created: 2026-10-01T09:00:00Z
+DocumentComment: <text>Hand-made sample for tests.
+Several lines of comment.</text>
+
+Relationship: SPDXRef-DOCUMENT DESCRIBES SPDXRef-gateway
+
+PackageName: Sample gateway
+SPDXID: SPDXRef-gateway
+PackageVersion: 1.0
+PackageSupplier: Organization: Emotec Ltd
+PackageDownloadLocation: NOASSERTION
+
+PackageName: busybox
+SPDXID: SPDXRef-busybox
+PackageVersion: 1.36.1
+PackageSupplier: Organization: BusyBox
+PackageDownloadLocation: https://busybox.net
+PackageLicenseConcluded: GPL-2.0-only
+PackageDescription: <text>Tiny versions of many common UNIX utilities
+in a single small executable.</text>
+ExternalRef: SECURITY cpe23Type cpe:2.3:a:busybox:busybox:1.36.1:*:*:*:*:*:*:*
+
+PackageName: curl
+SPDXID: SPDXRef-curl
+PackageVersion: 8.4.0
+PackageSupplier: NOASSERTION
+PackageDownloadLocation: NOASSERTION
+PackageLicenseDeclared: curl
+ExternalRef: PACKAGE-MANAGER purl pkg:deb/debian/curl@8.4.0?arch=arm64
+
+FileName: ./bin/busybox
+SPDXID: SPDXRef-file-busybox
+FileChecksum: SHA1: 0000000000000000000000000000000000000000

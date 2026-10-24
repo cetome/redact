@@ -1,0 +1,52 @@
+{
+  "schema": "redact.tree/1",
+  "standard": "demo-priv",
+  "requirement": "DAT-1",
+  "clause": "D.3",
+  "figure": "Demo tree 3",
+  "title": "Erasing personal data (demo)",
+  "scope": "For each asset holding personal data",
+  "start": "DN-1",
+  "nodes": [
+    {
+      "id": "DN-1",
+      "kind": "decision",
+      "text": "Can the person the data is about erase it from the product without help?",
+      "branches": [
+        {
+          "label": "Yes",
+          "to": "R-PASS"
+        },
+        {
+          "label": "No",
+          "to": "DN-2"
+        }
+      ]
+    },
+    {
+      "id": "DN-2",
+      "kind": "decision",
+      "text": "Is the data erased automatically after a time the user is told about?",
+      "branches": [
+        {
+          "label": "Yes",
+          "to": "R-PASS"
+        },
+        {
+          "label": "No",
+          "to": "R-FAIL"
+        }
+      ]
+    },
+    {
+      "id": "R-PASS",
+      "kind": "result",
+      "result": "PASS"
+    },
+    {
+      "id": "R-FAIL",
+      "kind": "result",
+      "result": "FAIL"
+    }
+  ]
+}

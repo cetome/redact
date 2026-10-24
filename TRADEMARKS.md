@@ -1,7 +1,6 @@
 # Trademarks
 
-"**REDact**" and "**cetome**", and the REDact and cetome logos, are trademarks of cetome
-*[to confirm: registration status, office and numbers]*.
+"**REDact**" and "**cetome**", and the REDact and cetome logos, are trademarks of cetome, registered in England and Wales (No. 11074299) and France (SIRET: 849 836 101 00014).
 
 The GNU Affero General Public License covers the **code** of the engine. It does **not** grant any
 right to use these names or logos, except as this policy allows. The policy is meant to let

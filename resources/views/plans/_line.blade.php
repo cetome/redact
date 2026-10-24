@@ -30,8 +30,8 @@
     @if ($plan->support())
         <span class="a-plan-line-sep" aria-hidden="true">·</span><span>{{ __('plans.line.support') }}</span>
     @endif
-    {{-- Enterprise has nothing to upgrade: no link. --}}
-    @unless ($plan->isEnterprise())
+    {{-- Enterprise and a self-hosted install have nothing to upgrade: no link. --}}
+    @unless ($plan->unlimited())
         <span class="a-plan-line-sep" aria-hidden="true">·</span>
         @if ($isAdmin && \App\Billing\Plan::billingEnabled())
             <a href="{{ route('billing.show', $organisation) }}" class="a-link-btn">{{ __('plans.line.billing') }}</a>

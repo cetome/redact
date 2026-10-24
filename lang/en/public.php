@@ -129,7 +129,7 @@ return [
                 'name' => 'Open source',
                 'tag' => 'The engine, self-hosted',
                 'price' => 'Free',
-                'points' => ['Your servers', 'AGPL-3.0 licence', 'Invented demo content, no cetome rules', 'AI with your own key or model (Claude, ChatGPT, Gemini, Mistral, any OpenAI-compatible)', 'Community support'],
+                'points' => ['Your servers', 'Unlimited products and team', 'AGPL-3.0 licence', 'Invented demo content, no cetome rules', 'AI with your own key or model (Claude, ChatGPT, Gemini, Mistral, any OpenAI-compatible)', 'Community support'],
                 'cta' => 'Source code',
                 'soon' => 'Coming soon',
             ],

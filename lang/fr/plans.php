@@ -6,6 +6,7 @@ return [
         'free' => 'Offre gratuite',
         'paid' => 'Offre payante',
         'enterprise' => 'Offre entreprise',
+        'self_hosted' => 'Auto-hébergé',
     ],
     'talk' => 'Nous contacter',
     'upgrade' => 'Passer à l’offre supérieure',

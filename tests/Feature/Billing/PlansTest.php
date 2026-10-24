@@ -362,4 +362,27 @@ class PlansTest extends TestCase
         ]);
         $usage->forceFill(['created_at' => $at])->save();
     }
+
+    public function test_a_self_hosted_install_has_no_product_or_team_limit(): void
+    {
+        config(['redact.self_hosted' => true]);
+        $owner = $this->makeUser();
+        $organisation = Organisation::create(['name' => 'Self', 'created_by' => $owner->id]);
+        $organisation->members()->attach($owner->id, ['role' => 'admin']);
+
+        foreach (range(1, 3) as $n) {
+            app(CreateProduct::class)($owner, ['organisation_id' => $organisation->id, 'name' => "Product $n"]);
+        }
+        $plan = Plan::fresh($organisation);
+        $this->assertSame(3, $plan->productCount());
+        $this->assertNull($plan->productLimit());
+        $this->assertFalse($plan->productLimitReached());
+        $this->assertSame([], $plan->locked);
+        $this->assertNull($plan->teamLimit(Product::query()->firstOrFail()));
+        $this->assertSame(__('plans.name.self_hosted'), $plan->label());
+
+        // The hosted service before Stripe (REDACT_SELF_HOSTED=false): the free limits.
+        config(['redact.self_hosted' => false]);
+        $this->assertSame(1, Plan::fresh($organisation)->productLimit());
+    }
 }

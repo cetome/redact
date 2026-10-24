@@ -6,6 +6,7 @@ return [
         'free' => 'Free plan',
         'paid' => 'Paid plan',
         'enterprise' => 'Enterprise plan',
+        'self_hosted' => 'Self-hosted',
     ],
     'talk' => 'Talk to us',
     'upgrade' => 'Upgrade',

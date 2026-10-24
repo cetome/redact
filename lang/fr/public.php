@@ -129,7 +129,7 @@ return [
                 'name' => 'Open source',
                 'tag' => 'Le moteur, auto-hébergé',
                 'price' => 'Gratuit',
-                'points' => ['Vos serveurs', 'Licence AGPL-3.0', 'Contenu de démonstration inventé, sans règles cetome', 'IA avec votre propre clé ou votre modèle (Claude, ChatGPT, Gemini, Mistral, tout modèle compatible OpenAI)', 'Support communautaire'],
+                'points' => ['Vos serveurs', 'Produits et équipe illimités', 'Licence AGPL-3.0', 'Contenu de démonstration inventé, sans règles cetome', 'IA avec votre propre clé ou votre modèle (Claude, ChatGPT, Gemini, Mistral, tout modèle compatible OpenAI)', 'Support communautaire'],
                 'cta' => 'Code source',
                 'soon' => 'Bientôt',
             ],

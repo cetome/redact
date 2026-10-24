@@ -99,7 +99,8 @@ contact form message received at `REDACT_CONTACT_TO`: `spf=pass`, `dkim=pass`, `
 
 ## 5b. Billing (Stripe)
 
-Optional (without keys billing is off and the free limits apply). See `docs/BILLING.md`: create
+Optional (without keys billing is off: no plan limits on a self-hosted install, the free limits with
+`REDACT_SELF_HOSTED=false`). See `docs/BILLING.md`: create
 the product and its 100 EUR monthly price, activate Stripe Tax and the Customer Portal, add the
 webhook endpoint `https://redact.example.com/stripe/webhook` (`php artisan cashier:webhook` creates
 it with the right events once `STRIPE_SECRET` is set; it prints the signing secret), then set

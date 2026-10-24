@@ -21,9 +21,14 @@ Billing uses [Laravel Cashier](https://laravel.com/docs/billing) with the **orga
 Stripe customer: one subscription per organisation (type `products`), one unit per paid product.
 Checkout and the Customer Portal are Stripe-hosted redirects: no Stripe.js, no CSP change.
 
-Without `STRIPE_KEY`, `STRIPE_SECRET` and `STRIPE_PRICE_PRODUCT_MONTHLY` billing is **off** (local
-development, a self-hosted engine): the free limits apply, staff overrides still work, and the app
-says "Talk to us" (`REDACT_SALES_URL`; empty: the REDact contact form, `/contact/pricing`).
+Without `STRIPE_KEY`, `STRIPE_SECRET` and `STRIPE_PRICE_PRODUCT_MONTHLY` billing is **off**.
+`REDACT_SELF_HOSTED` then decides:
+
+- empty (automatic) or `true`: a **self-hosted install**. The SaaS plans do not apply: no product or
+  team limit, AI with the install's own key or model. This is the open-source default.
+- `false`: the **hosted service before Stripe is live** (redact.cetome.com sets it). The free limits
+  apply, staff overrides still work, and the app says "Talk to us" (`REDACT_SALES_URL`; empty: the
+  REDact contact form, `/contact/pricing`).
 
 ## What happens
 

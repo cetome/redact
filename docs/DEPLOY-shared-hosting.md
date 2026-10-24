@@ -144,7 +144,8 @@ in `Reply-To`, never in `From`.
 
 ### Billing (Stripe)
 
-Optional: without the Stripe keys billing is off and the free limits apply ("Talk to us").
+Optional: without the Stripe keys billing is off. With `REDACT_SELF_HOSTED=false` (the hosted
+service) the free limits apply ("Talk to us"); a self-hosted install (empty or `true`) has no plan limits.
 To sell additional products, follow `docs/BILLING.md` (product and price, Stripe Tax, Customer
 Portal), then set `STRIPE_KEY`, `STRIPE_SECRET`, `STRIPE_PRICE_PRODUCT_MONTHLY` and, after creating
 the webhook endpoint `https://redact.example.com/stripe/webhook` in the Stripe dashboard,

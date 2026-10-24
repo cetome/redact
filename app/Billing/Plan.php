@@ -116,11 +116,13 @@ final class Plan
         $free = $products->where('plan_slot', self::SLOT_FREE)->values();
         $freeAllowance = max(0, $freeSlots - $grandfathered);
         $excess = max(0, $free->count() - $freeAllowance);
-        $coveredGranted = $plan === self::ENTERPRISE ? 0 : min($excess, max(0, $grantedSlots - $granted->count()));
-        $coveredPaid = $plan === self::ENTERPRISE ? 0 : min($excess - $coveredGranted, max(0, $paidSlots - $paid->count()));
+        // Enterprise and a self-hosted install have no product limit: nothing is ever locked.
+        $unlimited = $plan === self::ENTERPRISE || self::selfHosted();
+        $coveredGranted = $unlimited ? 0 : min($excess, max(0, $grantedSlots - $granted->count()));
+        $coveredPaid = $unlimited ? 0 : min($excess - $coveredGranted, max(0, $paidSlots - $paid->count()));
 
         // Enterprise covers everything; otherwise the newest products beyond their allowance are read-only.
-        $locked = $plan === self::ENTERPRISE ? [] : array_values(array_merge(
+        $locked = $unlimited ? [] : array_values(array_merge(
             $free->slice($freeAllowance + $coveredGranted + $coveredPaid)->pluck('id')->all(),
             $granted->slice($grantedSlots)->pluck('id')->all(),
             $paid->slice($paidSlots)->pluck('id')->all(),
@@ -195,6 +197,15 @@ final class Plan
         return $this->plan === self::ENTERPRISE;
     }
 
+    /**
+     * No product or team limit: Enterprise, or a self-hosted install (its own servers: the SaaS
+     * plans do not apply; the hosted service sets REDACT_SELF_HOSTED=false).
+     */
+    public function unlimited(): bool
+    {
+        return $this->isEnterprise() || self::selfHosted();
+    }
+
     /** Has the organisation paid or granted products (unlimited team, monthly AI, support)? */
     public function hasExtras(): bool
     {
@@ -208,7 +219,7 @@ final class Plan
             return self::SLOT_FREE;
         }
         // Slots already covering extra free products are taken.
-        if ($this->isEnterprise() || $this->grantedUsed + $this->coveredGranted < $this->grantedSlots) {
+        if ($this->unlimited() || $this->grantedUsed + $this->coveredGranted < $this->grantedSlots) {
             return self::SLOT_GRANTED;
         }
         if ($this->paidUsed + $this->coveredPaid < $this->paidSlots) {
@@ -231,7 +242,7 @@ final class Plan
     /** Products the plan holds (null = no limit). Grandfathered products above it stay. */
     public function productLimit(): ?int
     {
-        return $this->isEnterprise() ? null : max($this->grandfathered, $this->freeSlots) + $this->grantedSlots + $this->paidSlots;
+        return $this->unlimited() ? null : max($this->grandfathered, $this->freeSlots) + $this->grantedSlots + $this->paidSlots;
     }
 
     /** Paid product slots not used by a product yet (bought, product not created). */
@@ -243,7 +254,7 @@ final class Plan
     /** Paid products the subscription no longer covers (what "Reactivate" pays for again). */
     public function lockedPaidCount(): int
     {
-        return $this->isEnterprise() ? 0 : max(0, $this->paidUsed - $this->paidSlots);
+        return $this->unlimited() ? 0 : max(0, $this->paidUsed - $this->paidSlots);
     }
 
     public function isLocked(Product $product): bool
@@ -299,7 +310,7 @@ final class Plan
     /** People a product's team may hold besides its owner (null = no limit): only the free product is limited. */
     public function teamLimit(Product $product): ?int
     {
-        if ($this->isEnterprise() || $product->plan_slot !== self::SLOT_FREE) {
+        if ($this->unlimited() || $product->plan_slot !== self::SLOT_FREE) {
             return null;
         }
         $override = self::override($this->organisation, 'team_members');
@@ -462,9 +473,9 @@ final class Plan
         return (bool) ($this->hasExtras() ? config('redact.plans.paid.support', true) : config('redact.plans.free.support', false));
     }
 
-    /** "Free plan", "Paid plan", "Enterprise plan". */
+    /** "Free plan", "Paid plan", "Enterprise plan", "Self-hosted". */
     public function label(): string
     {
-        return __('plans.name.'.($this->isEnterprise() ? 'enterprise' : ($this->hasExtras() ? 'paid' : 'free')));
+        return __('plans.name.'.($this->isEnterprise() ? 'enterprise' : (self::selfHosted() ? 'self_hosted' : ($this->hasExtras() ? 'paid' : 'free'))));
     }
 }

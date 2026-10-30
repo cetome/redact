@@ -3719,3 +3719,48 @@
     .a-hist tr.a-hist-row > .a-hist-where { grid-row: 1; grid-column: 3; }
   }
 }
+
+/* ------------------------------------------------------------------------------------------------
+   Z. Console overview, who does what (admin/dashboard.blade.php, App\Admin\WorkActivity): one colour
+      per area, in the order of WorkActivity::AREAS (the categorical palette validated for both themes,
+      the same steps as the stacked chart in resources/js/modules/admin.js), a dot before each area
+      name (identity is never colour alone: the name is always written), and the per-day sparkline
+      (<x-ui.sparkline>) in the link blue.
+   ------------------------------------------------------------------------------------------------ */
+@layer components {
+  .a-work {
+    --a-area-product: #2a78d6; --a-area-inventory: #eb6834; --a-area-trees: #1baf7a; --a-area-einfo: #eda100;
+    --a-area-review: #e87ba4; --a-area-documents: #008300; --a-area-team: #6250d6; --a-area-ai: #e34948;
+  }
+  .dark .a-work {
+    --a-area-product: #3987e5; --a-area-inventory: #d95926; --a-area-trees: #199e70; --a-area-einfo: #c98500;
+    --a-area-review: #d55181; --a-area-documents: #008300; --a-area-team: #9085e9; --a-area-ai: #e66767;
+  }
+  .a-work :is(td, tbody th) { vertical-align: top; }
+  .a-work-name { min-width: 11rem; font-weight: 700; }
+  .a-work-sub { display: block; font-size: var(--text-label); font-weight: 400; color: var(--c-ink-muted); overflow-wrap: anywhere; }
+  .a-work-count { font-variant-numeric: tabular-nums; color: var(--c-ink-muted); }
+  .a-work-areas, .a-work-who { display: grid; gap: 0.1rem; margin: 0; padding: 0; list-style: none; white-space: nowrap; font-size: var(--text-label); }
+  .a-work-areas li { display: flex; align-items: center; gap: 0.4rem; }
+  .a-work-dot { width: 0.6rem; height: 0.6rem; flex-shrink: 0; border-radius: 999px; background-color: var(--a-mute-ink); }
+  .a-work-dot.is-product { background-color: var(--a-area-product); }
+  .a-work-dot.is-inventory { background-color: var(--a-area-inventory); }
+  .a-work-dot.is-trees { background-color: var(--a-area-trees); }
+  .a-work-dot.is-einfo { background-color: var(--a-area-einfo); }
+  .a-work-dot.is-review { background-color: var(--a-area-review); }
+  .a-work-dot.is-documents { background-color: var(--a-area-documents); }
+  .a-work-dot.is-team { background-color: var(--a-area-team); }
+  .a-work-dot.is-ai { background-color: var(--a-area-ai); }
+  .a-work-last { min-width: 14rem; }
+  .a-work-last time { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .a-work-last .a-hist-ref { font-weight: 600; }
+
+  .a-spark { display: block; width: 8rem; height: 1.5rem; fill: var(--c-link); }
+  .a-spark .a-spark-base { fill: var(--c-line); }
+
+  /* Phones: the latest activity takes the history's card layout, the product on its own line. */
+  @media (max-width: 47.99rem) {
+    .a-work-feed .a-work-name { min-width: 0; }
+    .a-work-feed tr.a-hist-row > .a-hist-where { grid-row: auto; grid-column: 1 / -1; white-space: normal; color: var(--c-ink-muted); }
+  }
+}

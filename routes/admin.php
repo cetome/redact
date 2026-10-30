@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 // pages are …/page/{n} (App\Support\PathPaginator) and the CSV exports read the remembered filters.
 
 Route::get('/', DashboardController::class)->name('dashboard');
+Route::get('/overview/{days}', DashboardController::class)->name('dashboard.period')->whereIn('days', array_map('strval', UsageAnalytics::PERIODS));
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/users/page/{page}', [UserController::class, 'index'])->name('users.page')->whereNumber('page');

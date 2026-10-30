@@ -1,7 +1,7 @@
 {{-- cetome console sub-navigation: the tabs at the top of every console page. --}}
 <nav class="a-tabs" aria-label="{{ __('admin.nav.label') }}">
     @foreach ([
-        'admin.dashboard' => ['admin.dashboard', 'admin.nav.dashboard', 'layout-dashboard'],
+        'admin.dashboard' => ['admin.dashboard*', 'admin.nav.dashboard', 'layout-dashboard'],
         'admin.users.index' => ['admin.users.*', 'admin.nav.users', 'users'],
         'admin.products.index' => ['admin.products.*', 'admin.nav.products', 'package'],
         'admin.organisations.index' => ['admin.organisations.*', 'plans.admin.nav', 'building-2'],

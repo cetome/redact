@@ -1,9 +1,13 @@
 {{--
     One console chart with its accessible table.
     @include('admin.partials.chart', ['chart' => DailySeries::chart(...), 'title' => '...', 'help' => '...'])
+    A stacked chart (App\Admin\WorkActivity::chart) holds `datasets` instead of `values`: one column per series.
     The canvas is drawn by the `adminChart` Alpine component (resources/js/modules/admin.js).
 --}}
-@php($total = array_sum($chart['values']))
+@php
+    $series = $chart['datasets'] ?? [['label' => $chart['label'], 'values' => $chart['values']]];
+    $total = array_sum(array_map(fn ($one) => array_sum($one['values']), $series));
+@endphp
 <figure class="a-panel">
     <div class="a-panel-head">
         <div class="min-w-0">
@@ -15,7 +19,7 @@
         <span class="a-badge a-badge-neutral">{{ __('admin.charts.total', ['total' => number_format($total)]) }}</span>
     </div>
     <div class="a-panel-body">
-        <div class="relative h-52" x-data="adminChart" data-chart="{{ json_encode($chart) }}">
+        <div @class(['relative', isset($chart['datasets']) ? 'h-72' : 'h-52']) x-data="adminChart" data-chart="{{ json_encode($chart) }}">
             <canvas role="img" aria-label="{{ __('admin.charts.aria', ['title' => $title, 'total' => number_format($total)]) }}"></canvas>
         </div>
         <details class="mt-3">
@@ -26,14 +30,18 @@
                     <thead>
                         <tr>
                             <th scope="col">{{ __('admin.charts.day') }}</th>
-                            <th scope="col" class="is-num">{{ $chart['label'] }}</th>
+                            @foreach ($series as $one)
+                                <th scope="col" class="is-num">{{ $one['label'] }}</th>
+                            @endforeach
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (array_reverse(array_combine($chart['labels'], $chart['values'])) as $day => $value)
+                        @foreach (array_reverse(array_keys($chart['labels'])) as $i)
                             <tr>
-                                <td>{{ \Carbon\Carbon::parse($day)->isoFormat('D MMMM YYYY') }}</td>
-                                <td class="is-num">{{ number_format($value) }}</td>
+                                <td>{{ \Carbon\Carbon::parse($chart['labels'][$i])->isoFormat('D MMMM YYYY') }}</td>
+                                @foreach ($series as $one)
+                                    <td class="is-num">{{ number_format($one['values'][$i]) }}</td>
+                                @endforeach
                             </tr>
                         @endforeach
                     </tbody>

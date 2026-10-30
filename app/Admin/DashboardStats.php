@@ -8,12 +8,10 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Key figures and daily series for the console dashboard.
+ * Key figures and daily series for the console overview (who does what: App\Admin\WorkActivity).
  */
 final class DashboardStats
 {
-    public const DAYS = 90;
-
     /** @return array<string, int|array<string, int>> */
     public function kpis(): array
     {
@@ -80,13 +78,15 @@ final class DashboardStats
         ];
     }
 
-    /** @return array<string, array<string, int>> chart key => (Y-m-d => value) */
-    public function series(int $days = self::DAYS): array
+    /**
+     * Sign-ups and AI units per day (page views and active people per day are on the Usage page).
+     *
+     * @return array<string, array<string, int>> chart key => (Y-m-d => value)
+     */
+    public function series(int $days): array
     {
         return [
             'signups' => DailySeries::of(DB::table('users')->where('is_guest', false), $days),
-            'active' => DailySeries::of(DB::table('request_logs')->whereNotNull('user_id'), $days, 'COUNT(DISTINCT user_id)'),
-            'views' => DailySeries::of(self::pageViews(), $days),
             'ai' => DailySeries::of(DB::table('ai_usage'), $days, 'COALESCE(SUM(units), 0)'),
         ];
     }

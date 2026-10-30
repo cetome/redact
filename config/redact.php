@@ -143,7 +143,7 @@ return [
 
     // Public repository of the open-source engine (/pricing "Source code"). Empty until it is
     // published: the page then says "Coming soon".
-    'open_source_url' => env('REDACT_OPEN_SOURCE_URL', ''),
+    'open_source_url' => env('REDACT_OPEN_SOURCE_URL') ?: 'https://github.com/cetome/redact',
 
     // Self-hosted proof-of-work captcha on sign-up and on the guest sandbox.
     'altcha' => [

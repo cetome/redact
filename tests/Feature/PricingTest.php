@@ -84,8 +84,13 @@ class PricingTest extends TestCase
             ->assertDontSee(__('public.pricing.compare_title').'</h2>', false);
     }
 
-    public function test_the_open_source_button_waits_for_the_repository(): void
+    public function test_the_open_source_button_links_to_the_repository(): void
     {
+        // Published: the default is the public repository.
+        $this->get(route('pricing'))->assertSee('href="https://github.com/cetome/redact"', false)
+            ->assertSee(__('public.pricing.plans.open.cta'));
+
+        // The partial still handles "no repository" (an install that hides it).
         config(['redact.open_source_url' => '']);
         $this->get(route('pricing'))->assertSee(__('public.pricing.plans.open.soon'))
             ->assertSee('aria-disabled="true"', false);

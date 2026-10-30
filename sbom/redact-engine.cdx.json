@@ -1,10 +1,10 @@
 {
     "bomFormat": "CycloneDX",
     "specVersion": "1.6",
-    "serialNumber": "urn:uuid:f6e49eec-5f7f-57ac-bb35-0d9dcbc94d53",
+    "serialNumber": "urn:uuid:ea0d19bc-3656-5a5d-bee6-00951395210d",
     "version": 1,
     "metadata": {
-        "timestamp": "2026-10-30T09:12:40Z",
+        "timestamp": "2026-10-30T15:22:51Z",
         "lifecycles": [
             {
                 "phase": "build"
@@ -227,11 +227,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/doctrine/inflector@2.1.0",
+            "bom-ref": "pkg:composer/doctrine/inflector@2.1.1",
             "group": "doctrine",
             "name": "inflector",
-            "version": "2.1.0",
-            "purl": "pkg:composer/doctrine/inflector@2.1.0",
+            "version": "2.1.1",
+            "purl": "pkg:composer/doctrine/inflector@2.1.1",
             "licenses": [
                 {
                     "license": {
@@ -444,11 +444,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/guzzlehttp/guzzle@8.3.0",
+            "bom-ref": "pkg:composer/guzzlehttp/guzzle@8.3.1",
             "group": "guzzlehttp",
             "name": "guzzle",
-            "version": "8.3.0",
-            "purl": "pkg:composer/guzzlehttp/guzzle@8.3.0",
+            "version": "8.3.1",
+            "purl": "pkg:composer/guzzlehttp/guzzle@8.3.1",
             "licenses": [
                 {
                     "license": {
@@ -549,11 +549,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/laravel/framework@13.38.0",
+            "bom-ref": "pkg:composer/laravel/framework@13.39.0",
             "group": "laravel",
             "name": "framework",
-            "version": "13.38.0",
-            "purl": "pkg:composer/laravel/framework@13.38.0",
+            "version": "13.39.0",
+            "purl": "pkg:composer/laravel/framework@13.39.0",
             "licenses": [
                 {
                     "license": {
@@ -662,11 +662,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/league/commonmark@2.10.4",
+            "bom-ref": "pkg:composer/league/commonmark@2.10.6",
             "group": "league",
             "name": "commonmark",
-            "version": "2.10.4",
-            "purl": "pkg:composer/league/commonmark@2.10.4",
+            "version": "2.10.6",
+            "purl": "pkg:composer/league/commonmark@2.10.6",
             "licenses": [
                 {
                     "license": {
@@ -775,11 +775,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/league/uri-interfaces@7.9.0",
+            "bom-ref": "pkg:composer/league/uri-interfaces@7.9.1",
             "group": "league",
             "name": "uri-interfaces",
-            "version": "7.9.0",
-            "purl": "pkg:composer/league/uri-interfaces@7.9.0",
+            "version": "7.9.1",
+            "purl": "pkg:composer/league/uri-interfaces@7.9.1",
             "licenses": [
                 {
                     "license": {
@@ -800,11 +800,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/league/uri@7.9.0",
+            "bom-ref": "pkg:composer/league/uri@7.9.1",
             "group": "league",
             "name": "uri",
-            "version": "7.9.0",
-            "purl": "pkg:composer/league/uri@7.9.0",
+            "version": "7.9.1",
+            "purl": "pkg:composer/league/uri@7.9.1",
             "licenses": [
                 {
                     "license": {
@@ -996,11 +996,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/nesbot/carbon@3.15.0",
+            "bom-ref": "pkg:composer/nesbot/carbon@3.15.1",
             "group": "nesbot",
             "name": "carbon",
-            "version": "3.15.0",
-            "purl": "pkg:composer/nesbot/carbon@3.15.0",
+            "version": "3.15.1",
+            "purl": "pkg:composer/nesbot/carbon@3.15.1",
             "licenses": [
                 {
                     "license": {
@@ -1689,11 +1689,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/spatie/laravel-csp@3.30.0",
+            "bom-ref": "pkg:composer/spatie/laravel-csp@3.30.1",
             "group": "spatie",
             "name": "laravel-csp",
-            "version": "3.30.0",
-            "purl": "pkg:composer/spatie/laravel-csp@3.30.0",
+            "version": "3.30.1",
+            "purl": "pkg:composer/spatie/laravel-csp@3.30.1",
             "licenses": [
                 {
                     "license": {
@@ -1860,11 +1860,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/console@8.1.9",
+            "bom-ref": "pkg:composer/symfony/console@8.1.10",
             "group": "symfony",
             "name": "console",
-            "version": "8.1.9",
-            "purl": "pkg:composer/symfony/console@8.1.9",
+            "version": "8.1.10",
+            "purl": "pkg:composer/symfony/console@8.1.10",
             "licenses": [
                 {
                     "license": {
@@ -1885,11 +1885,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/css-selector@8.1.6",
+            "bom-ref": "pkg:composer/symfony/css-selector@8.1.10",
             "group": "symfony",
             "name": "css-selector",
-            "version": "8.1.6",
-            "purl": "pkg:composer/symfony/css-selector@8.1.6",
+            "version": "8.1.10",
+            "purl": "pkg:composer/symfony/css-selector@8.1.10",
             "licenses": [
                 {
                     "license": {
@@ -1935,11 +1935,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/error-handler@8.1.8",
+            "bom-ref": "pkg:composer/symfony/error-handler@8.1.10",
             "group": "symfony",
             "name": "error-handler",
-            "version": "8.1.8",
-            "purl": "pkg:composer/symfony/error-handler@8.1.8",
+            "version": "8.1.10",
+            "purl": "pkg:composer/symfony/error-handler@8.1.10",
             "licenses": [
                 {
                     "license": {
@@ -2010,11 +2010,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/finder@8.1.8",
+            "bom-ref": "pkg:composer/symfony/finder@8.1.10",
             "group": "symfony",
             "name": "finder",
-            "version": "8.1.8",
-            "purl": "pkg:composer/symfony/finder@8.1.8",
+            "version": "8.1.10",
+            "purl": "pkg:composer/symfony/finder@8.1.10",
             "licenses": [
                 {
                     "license": {
@@ -2035,11 +2035,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/http-foundation@8.1.9",
+            "bom-ref": "pkg:composer/symfony/http-foundation@8.1.10",
             "group": "symfony",
             "name": "http-foundation",
-            "version": "8.1.9",
-            "purl": "pkg:composer/symfony/http-foundation@8.1.9",
+            "version": "8.1.10",
+            "purl": "pkg:composer/symfony/http-foundation@8.1.10",
             "licenses": [
                 {
                     "license": {
@@ -2060,11 +2060,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/http-kernel@8.1.9",
+            "bom-ref": "pkg:composer/symfony/http-kernel@8.1.10",
             "group": "symfony",
             "name": "http-kernel",
-            "version": "8.1.9",
-            "purl": "pkg:composer/symfony/http-kernel@8.1.9",
+            "version": "8.1.10",
+            "purl": "pkg:composer/symfony/http-kernel@8.1.10",
             "licenses": [
                 {
                     "license": {
@@ -2085,11 +2085,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/mailer@8.1.7",
+            "bom-ref": "pkg:composer/symfony/mailer@8.1.10",
             "group": "symfony",
             "name": "mailer",
-            "version": "8.1.7",
-            "purl": "pkg:composer/symfony/mailer@8.1.7",
+            "version": "8.1.10",
+            "purl": "pkg:composer/symfony/mailer@8.1.10",
             "licenses": [
                 {
                     "license": {
@@ -2160,11 +2160,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/polyfill-intl-grapheme@1.43.0",
+            "bom-ref": "pkg:composer/symfony/polyfill-intl-grapheme@1.43.3",
             "group": "symfony",
             "name": "polyfill-intl-grapheme",
-            "version": "1.43.0",
-            "purl": "pkg:composer/symfony/polyfill-intl-grapheme@1.43.0",
+            "version": "1.43.3",
+            "purl": "pkg:composer/symfony/polyfill-intl-grapheme@1.43.3",
             "licenses": [
                 {
                     "license": {
@@ -2485,11 +2485,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/process@8.1.9",
+            "bom-ref": "pkg:composer/symfony/process@8.1.10",
             "group": "symfony",
             "name": "process",
-            "version": "8.1.9",
-            "purl": "pkg:composer/symfony/process@8.1.9",
+            "version": "8.1.10",
+            "purl": "pkg:composer/symfony/process@8.1.10",
             "licenses": [
                 {
                     "license": {
@@ -2560,11 +2560,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/routing@8.1.9",
+            "bom-ref": "pkg:composer/symfony/routing@8.1.10",
             "group": "symfony",
             "name": "routing",
-            "version": "8.1.9",
-            "purl": "pkg:composer/symfony/routing@8.1.9",
+            "version": "8.1.10",
+            "purl": "pkg:composer/symfony/routing@8.1.10",
             "licenses": [
                 {
                     "license": {
@@ -2635,11 +2635,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/string@8.1.9",
+            "bom-ref": "pkg:composer/symfony/string@8.1.10",
             "group": "symfony",
             "name": "string",
-            "version": "8.1.9",
-            "purl": "pkg:composer/symfony/string@8.1.9",
+            "version": "8.1.10",
+            "purl": "pkg:composer/symfony/string@8.1.10",
             "licenses": [
                 {
                     "license": {
@@ -2685,11 +2685,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/translation@8.1.5",
+            "bom-ref": "pkg:composer/symfony/translation@8.1.10",
             "group": "symfony",
             "name": "translation",
-            "version": "8.1.5",
-            "purl": "pkg:composer/symfony/translation@8.1.5",
+            "version": "8.1.10",
+            "purl": "pkg:composer/symfony/translation@8.1.10",
             "licenses": [
                 {
                     "license": {
@@ -2760,11 +2760,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/var-dumper@8.1.9",
+            "bom-ref": "pkg:composer/symfony/var-dumper@8.1.10",
             "group": "symfony",
             "name": "var-dumper",
-            "version": "8.1.9",
-            "purl": "pkg:composer/symfony/var-dumper@8.1.9",
+            "version": "8.1.10",
+            "purl": "pkg:composer/symfony/var-dumper@8.1.10",
             "licenses": [
                 {
                     "license": {
@@ -2810,11 +2810,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/vlucas/phpdotenv@5.7.0",
+            "bom-ref": "pkg:composer/vlucas/phpdotenv@5.8.0",
             "group": "vlucas",
             "name": "phpdotenv",
-            "version": "5.7.0",
-            "purl": "pkg:composer/vlucas/phpdotenv@5.7.0",
+            "version": "5.8.0",
+            "purl": "pkg:composer/vlucas/phpdotenv@5.8.0",
             "licenses": [
                 {
                     "license": {
@@ -3115,10 +3115,10 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:npm/chart.js@4.5.1",
+            "bom-ref": "pkg:npm/chart.js@4.6.1",
             "name": "chart.js",
-            "version": "4.5.1",
-            "purl": "pkg:npm/chart.js@4.5.1",
+            "version": "4.6.1",
+            "purl": "pkg:npm/chart.js@4.6.1",
             "licenses": [
                 {
                     "license": {
@@ -3129,13 +3129,13 @@
             "hashes": [
                 {
                     "alg": "SHA-512",
-                    "content": "1888df893f5d6e61d18988ba365db2142abb924c1d929d56fe5a7627df6b5f4ca8f6d8091a7de5290013ced2236f9b55b5ebdc06d21d202356aa5ab9f84f3f3f"
+                    "content": "849ca78ae72c166abffc4bd762f27a73a99a84fa08de46b1763547f1ac13689fdf0cd59e4aaaaa02b8b13095a458d37a7dc62f3d4dc79de480345358b518bad6"
                 }
             ],
             "externalReferences": [
                 {
                     "type": "distribution",
-                    "url": "https://registry.npmjs.org/chart.js/-/chart.js-4.5.1.tgz"
+                    "url": "https://registry.npmjs.org/chart.js/-/chart.js-4.6.1.tgz"
                 }
             ]
         },
@@ -3173,7 +3173,7 @@
                 "pkg:composer/altcha-org/altcha@2.3.0",
                 "pkg:composer/dompdf/dompdf@3.1.6",
                 "pkg:composer/laravel/cashier@16.9.0",
-                "pkg:composer/laravel/framework@13.38.0",
+                "pkg:composer/laravel/framework@13.39.0",
                 "pkg:composer/laravel/passkeys@0.2.1",
                 "pkg:composer/laravel/tinker@3.0.2",
                 "pkg:composer/mallardduck/blade-lucide-icons@2.0.33",
@@ -3182,12 +3182,12 @@
                 "pkg:composer/prism-php/prism@0.102.0",
                 "pkg:composer/smalot/pdfparser@2.13.1",
                 "pkg:composer/spatie/laravel-activitylog@5.1.3",
-                "pkg:composer/spatie/laravel-csp@3.30.0",
+                "pkg:composer/spatie/laravel-csp@3.30.1",
                 "pkg:composer/spatie/laravel-permission@8.3.2",
                 "pkg:npm/%40alpinejs/csp@3.17.5",
                 "pkg:npm/%40laravel/passkeys@0.4.0",
                 "pkg:npm/altcha@3.5.0",
-                "pkg:npm/chart.js@4.5.1"
+                "pkg:npm/chart.js@4.6.1"
             ]
         },
         {
@@ -3197,8 +3197,8 @@
         {
             "ref": "pkg:composer/blade-ui-kit/blade-icons@1.10.1",
             "dependsOn": [
-                "pkg:composer/symfony/console@8.1.9",
-                "pkg:composer/symfony/finder@8.1.8"
+                "pkg:composer/symfony/console@8.1.10",
+                "pkg:composer/symfony/finder@8.1.10"
             ]
         },
         {
@@ -3222,7 +3222,7 @@
             "dependsOn": []
         },
         {
-            "ref": "pkg:composer/doctrine/inflector@2.1.0",
+            "ref": "pkg:composer/doctrine/inflector@2.1.1",
             "dependsOn": []
         },
         {
@@ -3261,7 +3261,7 @@
         {
             "ref": "pkg:composer/fruitcake/php-cors@1.4.0",
             "dependsOn": [
-                "pkg:composer/symfony/http-foundation@8.1.9"
+                "pkg:composer/symfony/http-foundation@8.1.10"
             ]
         },
         {
@@ -3271,7 +3271,7 @@
             ]
         },
         {
-            "ref": "pkg:composer/guzzlehttp/guzzle@8.3.0",
+            "ref": "pkg:composer/guzzlehttp/guzzle@8.3.1",
             "dependsOn": [
                 "pkg:composer/guzzlehttp/promises@3.1.0",
                 "pkg:composer/guzzlehttp/psr7@3.2.0",
@@ -3306,56 +3306,56 @@
             "ref": "pkg:composer/laravel/cashier@16.9.0",
             "dependsOn": [
                 "pkg:composer/moneyphp/money@4.9.0",
-                "pkg:composer/nesbot/carbon@3.15.0",
+                "pkg:composer/nesbot/carbon@3.15.1",
                 "pkg:composer/stripe/stripe-php@21.3.2",
-                "pkg:composer/symfony/console@8.1.9",
-                "pkg:composer/symfony/http-kernel@8.1.9",
+                "pkg:composer/symfony/console@8.1.10",
+                "pkg:composer/symfony/http-kernel@8.1.10",
                 "pkg:composer/symfony/polyfill-intl-icu@1.43.0",
                 "pkg:composer/symfony/polyfill-php84@1.43.0"
             ]
         },
         {
-            "ref": "pkg:composer/laravel/framework@13.38.0",
+            "ref": "pkg:composer/laravel/framework@13.39.0",
             "dependsOn": [
                 "pkg:composer/brick/math@1.0.0",
-                "pkg:composer/doctrine/inflector@2.1.0",
+                "pkg:composer/doctrine/inflector@2.1.1",
                 "pkg:composer/dragonmantank/cron-expression@3.6.1",
                 "pkg:composer/egulias/email-validator@4.0.4",
                 "pkg:composer/fruitcake/php-cors@1.4.0",
-                "pkg:composer/guzzlehttp/guzzle@8.3.0",
+                "pkg:composer/guzzlehttp/guzzle@8.3.1",
                 "pkg:composer/guzzlehttp/promises@3.1.0",
                 "pkg:composer/guzzlehttp/psr7@3.2.0",
                 "pkg:composer/guzzlehttp/uri-template@2.0.1",
                 "pkg:composer/laravel/prompts@0.3.26",
                 "pkg:composer/laravel/serializable-closure@2.1.0",
-                "pkg:composer/league/commonmark@2.10.4",
+                "pkg:composer/league/commonmark@2.10.6",
                 "pkg:composer/league/flysystem@3.36.0",
                 "pkg:composer/league/flysystem-local@3.35.3",
-                "pkg:composer/league/uri@7.9.0",
+                "pkg:composer/league/uri@7.9.1",
                 "pkg:composer/monolog/monolog@3.12.1",
-                "pkg:composer/nesbot/carbon@3.15.0",
+                "pkg:composer/nesbot/carbon@3.15.1",
                 "pkg:composer/nunomaduro/termwind@2.4.0",
                 "pkg:composer/psr/container@2.0.2",
                 "pkg:composer/psr/http-message@2.0",
                 "pkg:composer/psr/log@3.0.2",
                 "pkg:composer/psr/simple-cache@3.0.0",
                 "pkg:composer/ramsey/uuid@4.9.4",
-                "pkg:composer/symfony/console@8.1.9",
-                "pkg:composer/symfony/error-handler@8.1.8",
-                "pkg:composer/symfony/finder@8.1.8",
-                "pkg:composer/symfony/http-foundation@8.1.9",
-                "pkg:composer/symfony/http-kernel@8.1.9",
-                "pkg:composer/symfony/mailer@8.1.7",
+                "pkg:composer/symfony/console@8.1.10",
+                "pkg:composer/symfony/error-handler@8.1.10",
+                "pkg:composer/symfony/finder@8.1.10",
+                "pkg:composer/symfony/http-foundation@8.1.10",
+                "pkg:composer/symfony/http-kernel@8.1.10",
+                "pkg:composer/symfony/mailer@8.1.10",
                 "pkg:composer/symfony/mime@8.1.10",
                 "pkg:composer/symfony/polyfill-php84@1.43.0",
                 "pkg:composer/symfony/polyfill-php85@1.43.0",
                 "pkg:composer/symfony/polyfill-php86@1.43.0",
-                "pkg:composer/symfony/process@8.1.9",
-                "pkg:composer/symfony/routing@8.1.9",
+                "pkg:composer/symfony/process@8.1.10",
+                "pkg:composer/symfony/routing@8.1.10",
                 "pkg:composer/symfony/uid@8.1.9",
-                "pkg:composer/symfony/var-dumper@8.1.9",
+                "pkg:composer/symfony/var-dumper@8.1.10",
                 "pkg:composer/tijsverkoyen/css-to-inline-styles@2.4.0",
-                "pkg:composer/vlucas/phpdotenv@5.7.0",
+                "pkg:composer/vlucas/phpdotenv@5.8.0",
                 "pkg:composer/voku/portable-ascii@2.1.1"
             ]
         },
@@ -3368,7 +3368,7 @@
         {
             "ref": "pkg:composer/laravel/prompts@0.3.26",
             "dependsOn": [
-                "pkg:composer/symfony/console@8.1.9"
+                "pkg:composer/symfony/console@8.1.10"
             ]
         },
         {
@@ -3379,11 +3379,11 @@
             "ref": "pkg:composer/laravel/tinker@3.0.2",
             "dependsOn": [
                 "pkg:composer/psy/psysh@0.12.24",
-                "pkg:composer/symfony/var-dumper@8.1.9"
+                "pkg:composer/symfony/var-dumper@8.1.10"
             ]
         },
         {
-            "ref": "pkg:composer/league/commonmark@2.10.4",
+            "ref": "pkg:composer/league/commonmark@2.10.6",
             "dependsOn": [
                 "pkg:composer/league/config@1.2.0",
                 "pkg:composer/psr/event-dispatcher@1.0.0",
@@ -3417,15 +3417,15 @@
             "dependsOn": []
         },
         {
-            "ref": "pkg:composer/league/uri-interfaces@7.9.0",
+            "ref": "pkg:composer/league/uri-interfaces@7.9.1",
             "dependsOn": [
                 "pkg:composer/psr/http-message@2.0"
             ]
         },
         {
-            "ref": "pkg:composer/league/uri@7.9.0",
+            "ref": "pkg:composer/league/uri@7.9.1",
             "dependsOn": [
-                "pkg:composer/league/uri-interfaces@7.9.0",
+                "pkg:composer/league/uri-interfaces@7.9.1",
                 "pkg:composer/psr/http-factory@1.1.0"
             ]
         },
@@ -3462,14 +3462,14 @@
             ]
         },
         {
-            "ref": "pkg:composer/nesbot/carbon@3.15.0",
+            "ref": "pkg:composer/nesbot/carbon@3.15.1",
             "dependsOn": [
                 "pkg:composer/carbonphp/carbon-doctrine-types@3.2.1",
                 "pkg:composer/psr/clock@1.0.0",
                 "pkg:composer/symfony/clock@8.1.9",
                 "pkg:composer/symfony/polyfill-mbstring@1.43.3",
                 "pkg:composer/symfony/polyfill-time@1.42.0",
-                "pkg:composer/symfony/translation@8.1.5"
+                "pkg:composer/symfony/translation@8.1.10"
             ]
         },
         {
@@ -3489,7 +3489,7 @@
         {
             "ref": "pkg:composer/nunomaduro/termwind@2.4.0",
             "dependsOn": [
-                "pkg:composer/symfony/console@8.1.9"
+                "pkg:composer/symfony/console@8.1.10"
             ]
         },
         {
@@ -3549,7 +3549,7 @@
         {
             "ref": "pkg:composer/prism-php/prism@0.102.0",
             "dependsOn": [
-                "pkg:composer/laravel/framework@13.38.0"
+                "pkg:composer/laravel/framework@13.39.0"
             ]
         },
         {
@@ -3592,8 +3592,8 @@
             "ref": "pkg:composer/psy/psysh@0.12.24",
             "dependsOn": [
                 "pkg:composer/nikic/php-parser@5.9.0",
-                "pkg:composer/symfony/console@8.1.9",
-                "pkg:composer/symfony/var-dumper@8.1.9"
+                "pkg:composer/symfony/console@8.1.10",
+                "pkg:composer/symfony/var-dumper@8.1.10"
             ]
         },
         {
@@ -3624,7 +3624,7 @@
             ]
         },
         {
-            "ref": "pkg:composer/spatie/laravel-csp@3.30.0",
+            "ref": "pkg:composer/spatie/laravel-csp@3.30.1",
             "dependsOn": [
                 "pkg:composer/spatie/laravel-package-tools@1.93.3"
             ]
@@ -3663,17 +3663,17 @@
             ]
         },
         {
-            "ref": "pkg:composer/symfony/console@8.1.9",
+            "ref": "pkg:composer/symfony/console@8.1.10",
             "dependsOn": [
                 "pkg:composer/symfony/deprecation-contracts@3.7.1",
                 "pkg:composer/symfony/polyfill-mbstring@1.43.3",
                 "pkg:composer/symfony/polyfill-php85@1.43.0",
                 "pkg:composer/symfony/service-contracts@3.7.3",
-                "pkg:composer/symfony/string@8.1.9"
+                "pkg:composer/symfony/string@8.1.10"
             ]
         },
         {
-            "ref": "pkg:composer/symfony/css-selector@8.1.6",
+            "ref": "pkg:composer/symfony/css-selector@8.1.10",
             "dependsOn": []
         },
         {
@@ -3681,11 +3681,11 @@
             "dependsOn": []
         },
         {
-            "ref": "pkg:composer/symfony/error-handler@8.1.8",
+            "ref": "pkg:composer/symfony/error-handler@8.1.10",
             "dependsOn": [
                 "pkg:composer/psr/log@3.0.2",
                 "pkg:composer/symfony/polyfill-php85@1.43.0",
-                "pkg:composer/symfony/var-dumper@8.1.9"
+                "pkg:composer/symfony/var-dumper@8.1.10"
             ]
         },
         {
@@ -3702,29 +3702,29 @@
             ]
         },
         {
-            "ref": "pkg:composer/symfony/finder@8.1.8",
+            "ref": "pkg:composer/symfony/finder@8.1.10",
             "dependsOn": []
         },
         {
-            "ref": "pkg:composer/symfony/http-foundation@8.1.9",
+            "ref": "pkg:composer/symfony/http-foundation@8.1.10",
             "dependsOn": [
                 "pkg:composer/symfony/deprecation-contracts@3.7.1",
                 "pkg:composer/symfony/polyfill-mbstring@1.43.3"
             ]
         },
         {
-            "ref": "pkg:composer/symfony/http-kernel@8.1.9",
+            "ref": "pkg:composer/symfony/http-kernel@8.1.10",
             "dependsOn": [
                 "pkg:composer/psr/log@3.0.2",
                 "pkg:composer/symfony/deprecation-contracts@3.7.1",
-                "pkg:composer/symfony/error-handler@8.1.8",
+                "pkg:composer/symfony/error-handler@8.1.10",
                 "pkg:composer/symfony/event-dispatcher@8.1.5",
-                "pkg:composer/symfony/http-foundation@8.1.9",
+                "pkg:composer/symfony/http-foundation@8.1.10",
                 "pkg:composer/symfony/polyfill-ctype@1.37.0"
             ]
         },
         {
-            "ref": "pkg:composer/symfony/mailer@8.1.7",
+            "ref": "pkg:composer/symfony/mailer@8.1.10",
             "dependsOn": [
                 "pkg:composer/egulias/email-validator@4.0.4",
                 "pkg:composer/psr/event-dispatcher@1.0.0",
@@ -3746,7 +3746,7 @@
             "dependsOn": []
         },
         {
-            "ref": "pkg:composer/symfony/polyfill-intl-grapheme@1.43.0",
+            "ref": "pkg:composer/symfony/polyfill-intl-grapheme@1.43.3",
             "dependsOn": []
         },
         {
@@ -3800,7 +3800,7 @@
             "dependsOn": []
         },
         {
-            "ref": "pkg:composer/symfony/process@8.1.9",
+            "ref": "pkg:composer/symfony/process@8.1.10",
             "dependsOn": []
         },
         {
@@ -3812,12 +3812,12 @@
         {
             "ref": "pkg:composer/symfony/property-info@8.1.8",
             "dependsOn": [
-                "pkg:composer/symfony/string@8.1.9",
+                "pkg:composer/symfony/string@8.1.10",
                 "pkg:composer/symfony/type-info@8.1.8"
             ]
         },
         {
-            "ref": "pkg:composer/symfony/routing@8.1.9",
+            "ref": "pkg:composer/symfony/routing@8.1.10",
             "dependsOn": [
                 "pkg:composer/symfony/deprecation-contracts@3.7.1"
             ]
@@ -3837,10 +3837,10 @@
             ]
         },
         {
-            "ref": "pkg:composer/symfony/string@8.1.9",
+            "ref": "pkg:composer/symfony/string@8.1.10",
             "dependsOn": [
                 "pkg:composer/symfony/polyfill-ctype@1.37.0",
-                "pkg:composer/symfony/polyfill-intl-grapheme@1.43.0",
+                "pkg:composer/symfony/polyfill-intl-grapheme@1.43.3",
                 "pkg:composer/symfony/polyfill-intl-normalizer@1.43.0",
                 "pkg:composer/symfony/polyfill-mbstring@1.43.3"
             ]
@@ -3850,7 +3850,7 @@
             "dependsOn": []
         },
         {
-            "ref": "pkg:composer/symfony/translation@8.1.5",
+            "ref": "pkg:composer/symfony/translation@8.1.10",
             "dependsOn": [
                 "pkg:composer/symfony/polyfill-mbstring@1.43.3",
                 "pkg:composer/symfony/translation-contracts@3.7.1"
@@ -3869,7 +3869,7 @@
             ]
         },
         {
-            "ref": "pkg:composer/symfony/var-dumper@8.1.9",
+            "ref": "pkg:composer/symfony/var-dumper@8.1.10",
             "dependsOn": [
                 "pkg:composer/symfony/polyfill-mbstring@1.43.3"
             ]
@@ -3877,11 +3877,11 @@
         {
             "ref": "pkg:composer/tijsverkoyen/css-to-inline-styles@2.4.0",
             "dependsOn": [
-                "pkg:composer/symfony/css-selector@8.1.6"
+                "pkg:composer/symfony/css-selector@8.1.10"
             ]
         },
         {
-            "ref": "pkg:composer/vlucas/phpdotenv@5.7.0",
+            "ref": "pkg:composer/vlucas/phpdotenv@5.8.0",
             "dependsOn": [
                 "pkg:composer/graham-campbell/result-type@1.2.0",
                 "pkg:composer/phpoption/phpoption@1.10.0",
@@ -3961,7 +3961,7 @@
             ]
         },
         {
-            "ref": "pkg:npm/chart.js@4.5.1",
+            "ref": "pkg:npm/chart.js@4.6.1",
             "dependsOn": [
                 "pkg:npm/%40kurkle/color@0.3.4"
             ]

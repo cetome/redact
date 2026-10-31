@@ -4,14 +4,23 @@
   "requirement": "DAT-1",
   "clause": "D.3",
   "figure": "Demo tree 3",
-  "title": "Erasing personal data (demo)",
-  "scope": "For each asset holding personal data",
+  "title": {
+    "en": "Erasing personal data (demo)",
+    "fr": "Effacement des données personnelles (démo)"
+  },
+  "scope": {
+    "en": "For each asset holding personal data",
+    "fr": "Pour chaque actif contenant des données personnelles"
+  },
   "start": "DN-1",
   "nodes": [
     {
       "id": "DN-1",
       "kind": "decision",
-      "text": "Can the person the data is about erase it from the product without help?",
+      "text": {
+        "en": "Can the person the data is about erase it from the product without help?",
+        "fr": "La personne concernée par les données peut-elle les effacer du produit sans aide ?"
+      },
       "branches": [
         {
           "label": "Yes",
@@ -26,7 +35,10 @@
     {
       "id": "DN-2",
       "kind": "decision",
-      "text": "Is the data erased automatically after a time the user is told about?",
+      "text": {
+        "en": "Is the data erased automatically after a time the user is told about?",
+        "fr": "Les données sont-elles effacées automatiquement après un délai communiqué à l’utilisateur ?"
+      },
       "branches": [
         {
           "label": "Yes",

@@ -1,5 +1,6 @@
 <?php
 
+use App\Admin\UsageAnalytics;
 use App\Http\Controllers\AssessmentUnitController;
 use App\Http\Controllers\ConformityController;
 use App\Http\Controllers\DashboardController;
@@ -12,10 +13,12 @@ use App\Http\Controllers\IdentificationController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\OrganisationTeamController;
+use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RiskController;
 use App\Http\Controllers\ScopingController;
+use App\Http\Controllers\SignificantChangeController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\VersionController;
 use App\Http\Middleware\EnsureOrganisation;
@@ -65,6 +68,11 @@ Route::get('/organisations/{organisation}/history/before/{before}', [HistoryCont
 Route::post('/organisations/{organisation}/history', [HistoryController::class, 'organisationFilter'])->name('organisations.history.filter');
 Route::get('/organisations/{organisation}/history.csv', [HistoryController::class, 'organisationCsv'])->name('organisations.history.csv')->middleware('throttle:5,1');
 
+// Organisation portfolio (its admins, paid plans): products, versions, who does what over 7, 30 or 90 days.
+Route::get('/organisations/{organisation}/portfolio', [PortfolioController::class, 'show'])->name('organisations.portfolio');
+Route::get('/organisations/{organisation}/portfolio/{days}', [PortfolioController::class, 'show'])->name('organisations.portfolio.period')
+    ->whereIn('days', array_map('strval', UsageAnalytics::PERIODS));
+
 // Organisation team: everyone in the organisation and their products (admins manage, members read).
 Route::get('/team', [OrganisationTeamController::class, 'mine'])->name('organisations.team.mine')->middleware(EnsureOrganisation::class);
 Route::prefix('/organisations/{organisation}/team')->name('organisations.team')->group(function () {
@@ -90,6 +98,12 @@ Route::prefix('/versions/{version}')->name('versions.')->group(function () {
 
     Route::get('/scoping', [ScopingController::class, 'edit'])->name('scoping');
     Route::put('/scoping', [ScopingController::class, 'update'])->name('scoping.update');
+
+    // Significant change since the version this one was made from (SignificantChange).
+    Route::get('/changes', [SignificantChangeController::class, 'show'])->name('changes');
+    Route::post('/changes', [SignificantChangeController::class, 'decide'])->name('changes.decide');
+    Route::post('/changes/evaluations/{evaluation}', [SignificantChangeController::class, 'confirmEvaluation'])->name('changes.confirm.evaluation')->whereUlid('evaluation');
+    Route::post('/changes/einfo/{entry}', [SignificantChangeController::class, 'confirmEinfo'])->name('changes.confirm.einfo')->whereUlid('entry');
 
     Route::get('/risks', [RiskController::class, 'index'])->name('risks');
     // The page with one panel open (no-script fallbacks; data-dialog-open / data-dialog-fetch open them in place).

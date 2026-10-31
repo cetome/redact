@@ -16,7 +16,8 @@ use Illuminate\Support\Str;
 /**
  * Creates product versions: blank (with the pack's default risk matrix) or as
  * a copy of an earlier version. Like CRAted, a copy takes everything except
- * reviews, which belong to the version that was reviewed.
+ * reviews, which belong to the version that was reviewed. Copied inventory items and risks keep
+ * the id they come from (source_id) for the significant-change comparison (SignificantChange).
  */
 class VersionFactory
 {
@@ -90,13 +91,13 @@ class VersionFactory
             $copy = $to->riskEntries()->create($entry->only([
                 'position', 'threat', 'description', 'stride', 'risk', 'impact', 'likelihood',
                 'articles', 'requirements', 'remediation', 'implementation', 'residual_rank', 'updated_by',
-            ]));
+            ]) + ['source_id' => $entry->id]);
             $keyMap[$entry->id] = $copy->id;
         }
 
         $itemMap = [];
         foreach ($from->inventoryItems as $item) {
-            $copy = $to->inventoryItems()->create($item->only(['list', 'code', 'name', 'description', 'attributes', 'members', 'position', 'updated_by']));
+            $copy = $to->inventoryItems()->create($item->only(['list', 'code', 'name', 'description', 'attributes', 'members', 'position', 'updated_by']) + ['source_id' => $item->id]);
             $itemMap[$item->id] = $copy->id;
             $keyMap[$item->id] = $copy->id;
         }

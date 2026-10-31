@@ -6,7 +6,9 @@ use App\Billing\Plan;
 use App\Guest\DemoProduct;
 use App\Guest\Sandbox;
 use App\Models\Invitation;
+use App\Models\Organisation;
 use App\Models\Product;
+use App\Portfolio\Portfolio;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -55,6 +57,9 @@ class DashboardController extends Controller
             'atPlanLimit' => $plans->isNotEmpty() && $plans->every(fn (Plan $p) => $p->productLimitReached()),
             'plans' => $plans,
             'organisations' => $organisations,
+            // The portfolio of the first organisation the person administers on a paid plan.
+            'portfolio' => $user->is_guest ? null : $user->organisations()->wherePivot('role', 'admin')->get()
+                ->first(fn (Organisation $o) => Portfolio::available($o)),
         ]);
     }
 }

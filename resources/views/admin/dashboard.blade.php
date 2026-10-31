@@ -15,14 +15,14 @@
 
     @php
         $tiles = [
-            [__('admin.kpi.users'), $kpis['users'], __('admin.kpi.verified', ['count' => number_format($kpis['verified'])])],
-            [__('admin.kpi.new_7'), $kpis['new_7'], __('admin.kpi.new_30', ['count' => number_format($kpis['new_30'])])],
-            [__('admin.kpi.active_1'), $kpis['active_1'], __('admin.kpi.active_7_30', ['week' => number_format($kpis['active_7']), 'month' => number_format($kpis['active_30'])])],
+            [__('admin.kpi.users'), $kpis['users'], __('admin.kpi.verified', ['count' => \Illuminate\Support\Number::format($kpis['verified'])])],
+            [__('admin.kpi.new_7'), $kpis['new_7'], __('admin.kpi.new_30', ['count' => \Illuminate\Support\Number::format($kpis['new_30'])])],
+            [__('admin.kpi.active_1'), $kpis['active_1'], __('admin.kpi.active_7_30', ['week' => \Illuminate\Support\Number::format($kpis['active_7']), 'month' => \Illuminate\Support\Number::format($kpis['active_30'])])],
             [__('admin.kpi.organisations'), $kpis['organisations'], null],
             [__('admin.kpi.products'), $kpis['products'], null],
             [__('admin.kpi.evaluations'), $kpis['evaluations'], null],
             [__('admin.kpi.reports'), $kpis['reports'], null],
-            [__('admin.kpi.ai_today'), $kpis['ai_today'], __('admin.kpi.ai_30', ['count' => number_format($kpis['ai_30'])])],
+            [__('admin.kpi.ai_today'), $kpis['ai_today'], __('admin.kpi.ai_30', ['count' => \Illuminate\Support\Number::format($kpis['ai_30'])])],
         ];
         $tz = auth()->user()->timezone ?: config('app.timezone');
         $when = fn (string $at) => \Carbon\CarbonImmutable::parse($at)->setTimezone($tz);
@@ -34,7 +34,7 @@
             @foreach ($tiles as [$label, $value, $sub])
                 <li class="a-stat">
                     <span class="a-stat-label">{{ $label }}</span>
-                    <span class="a-stat-value">{{ number_format($value) }}</span>
+                    <span class="a-stat-value">{{ \Illuminate\Support\Number::format($value) }}</span>
                     @if ($sub)
                         <span class="a-help">{{ $sub }}</span>
                     @endif
@@ -48,7 +48,7 @@
                 @foreach ($kpis['versions'] as $status => $count)
                     <div class="flex items-center gap-2">
                         <dt><x-version-status :status="\App\Enums\VersionStatus::from($status)" /></dt>
-                        <dd class="font-bold tabular-nums">{{ number_format($count) }}</dd>
+                        <dd class="font-bold tabular-nums">{{ \Illuminate\Support\Number::format($count) }}</dd>
                     </div>
                 @endforeach
             </dl>
@@ -68,7 +68,7 @@
             @foreach (['actions', 'people', 'products', 'organisations'] as $key)
                 <li class="a-stat">
                     <span class="a-stat-label">{{ __('admin.work.totals.'.$key) }}</span>
-                    <span class="a-stat-value">{{ number_format($work['totals'][$key]) }}</span>
+                    <span class="a-stat-value">{{ \Illuminate\Support\Number::format($work['totals'][$key]) }}</span>
                 </li>
             @endforeach
         </ul>
@@ -106,11 +106,11 @@
                                         <a href="{{ route('admin.organisations.show', $organisation) }}" class="a-link block">{{ $organisation->name }}</a>
                                     @endforeach
                                 </td>
-                                <td class="is-num font-bold">{{ number_format($row['actions']) }}</td>
-                                <td class="is-num">{{ number_format($row['days']) }}</td>
-                                <td class="is-num">{{ number_format($row['products']) }}</td>
+                                <td class="is-num font-bold">{{ \Illuminate\Support\Number::format($row['actions']) }}</td>
+                                <td class="is-num">{{ \Illuminate\Support\Number::format($row['days']) }}</td>
+                                <td class="is-num">{{ \Illuminate\Support\Number::format($row['products']) }}</td>
                                 <td>@include('admin.partials.areas', ['areas' => $row['areas']])</td>
-                                <td><x-ui.sparkline :values="$row['daily']" :label="__('admin.work.spark', ['count' => number_format($row['actions']), 'days' => $days])" /></td>
+                                <td><x-ui.sparkline :values="$row['daily']" :label="__('admin.work.spark', ['count' => \Illuminate\Support\Number::format($row['actions']), 'days' => $days])" /></td>
                                 <td class="a-work-last">
                                     <time datetime="{{ $when($row['last'])->toIso8601String() }}" title="{{ $when($row['last'])->isoFormat('D MMMM YYYY, HH:mm') }}">{{ $when($row['last'])->diffForHumans() }}</time>
                                     @if ($row['latest'])
@@ -160,11 +160,11 @@
                                         {{ $version->label }} <x-version-status :status="$version->status" />
                                     @endif
                                 </td>
-                                <td class="is-num font-bold">{{ number_format($row['actions']) }}</td>
+                                <td class="is-num font-bold">{{ \Illuminate\Support\Number::format($row['actions']) }}</td>
                                 <td>
                                     <ul class="a-work-who">
                                         @foreach (array_slice($row['who'], 0, 3) as $person)
-                                            <li><a href="{{ route('admin.users.show', $person['user']) }}" class="a-link">{{ $person['user']->name }}</a> <span class="a-work-count">{{ number_format($person['actions']) }}</span></li>
+                                            <li><a href="{{ route('admin.users.show', $person['user']) }}" class="a-link">{{ $person['user']->name }}</a> <span class="a-work-count">{{ \Illuminate\Support\Number::format($person['actions']) }}</span></li>
                                         @endforeach
                                         @if (count($row['who']) > 3)
                                             <li class="a-work-sub">{{ __('admin.work.more_people', ['count' => count($row['who']) - 3]) }}</li>
@@ -172,7 +172,7 @@
                                     </ul>
                                 </td>
                                 <td>@include('admin.partials.areas', ['areas' => $row['areas']])</td>
-                                <td><x-ui.sparkline :values="$row['daily']" :label="__('admin.work.spark', ['count' => number_format($row['actions']), 'days' => $days])" /></td>
+                                <td><x-ui.sparkline :values="$row['daily']" :label="__('admin.work.spark', ['count' => \Illuminate\Support\Number::format($row['actions']), 'days' => $days])" /></td>
                                 <td class="a-work-last">
                                     <time datetime="{{ $when($row['last'])->toIso8601String() }}" title="{{ $when($row['last'])->isoFormat('D MMMM YYYY, HH:mm') }}">{{ $when($row['last'])->diffForHumans() }}</time>
                                 </td>

@@ -68,8 +68,8 @@ return [
         'not_approved' => 'La version est :status, pas approuvée en relecture',
         'no_route' => 'Aucune procédure d’évaluation de la conformité choisie',
         'conflict' => 'La procédure choisie contredit les résultats',
-        'fail' => '{1} 1 arbre de décision aboutit à FAIL|[2,*] :count arbres de décision aboutissent à FAIL',
-        'inconclusive' => '{1} 1 évaluation est INCONCLUSIVE|[2,*] :count évaluations sont INCONCLUSIVE',
+        'fail' => '{1} 1 arbre de décision aboutit à NON CONFORME|[2,*] :count arbres de décision aboutissent à NON CONFORME',
+        'inconclusive' => '{1} 1 évaluation est non concluante|[2,*] :count évaluations sont non concluantes',
         'unjustified' => '{1} 1 évaluation n’est pas justifiée|[2,*] :count évaluations ne sont pas justifiées',
         'remaining' => '{1} 1 arbre de décision reste à compléter|[2,*] :count arbres de décision restent à compléter',
         'certificate' => 'Le certificat de l’organisme notifié n’est pas encore enregistré',
@@ -316,6 +316,7 @@ return [
             'notified_body' => 'Organisme notifié',
             'report' => 'Rapports RED',
             'vulnerabilities' => 'Vulnérabilités connues',
+            'vex' => 'VEX reçus',
             'yours' => 'Vos documents',
         ],
         'fix' => [
@@ -353,6 +354,7 @@ return [
             'einfo' => 'Documentation E.Info',
             'workbook' => 'Classeur cetome :name',
             'vulnerabilities' => 'Vulnérabilités connues des composants',
+            'vex' => 'VEX · :name',
             'needed_a_iii' => 'Notice d’utilisation et instructions de montage',
             'needed_b' => 'Dessins et schémas des pièces, sous-ensembles et circuits',
             'needed_c' => 'Légendes des dessins et explication du fonctionnement',
@@ -379,6 +381,7 @@ return [
             'simplified' => 'Déclaration UE de conformité simplifiée',
             'workbooks' => 'Classeurs cetome',
             'vulnerabilities' => 'Vulnérabilités connues',
+            'vex' => 'VEX',
             'index' => '00 Index de la documentation technique',
         ],
         'readme' => [
@@ -386,6 +389,7 @@ return [
             'lead' => 'Documentation technique au titre de la directive 2014/53/UE (équipements radioélectriques), annexe V. Un dossier par point de l’annexe V.',
             'generated' => 'Générée par REDact le :date. Statut de la version : :status.',
             'skipped' => 'Non inclus (le fichier n’a pas pu être lu ou construit) :',
+            'checksums' => 'Chaque fichier figure dans :file avec son empreinte SHA-256. Pour vérifier que rien n’a été modifié : « sha256sum -c :file » dans ce dossier (Linux, macOS), ou comparez avec « Get-FileHash -Algorithm SHA256 » (Windows).',
             'legal' => 'Le fabricant conserve la documentation technique et la déclaration UE de conformité pendant 10 ans après la mise sur le marché de l’équipement radioélectrique (directive 2014/53/UE, article 10(3)).',
         ],
         'doc' => [

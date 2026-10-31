@@ -20,7 +20,7 @@
                         <a href="{{ route('versions.documents.download', [$version, $document]) }}" class="a-row-link break-all text-sm"
                            title="{{ __('ai.documents.download_tooltip') }}">{{ $document->original_name }}</a>
                         <p class="text-micro text-ink-subtle">
-                            @if ($type = mb_strtoupper(pathinfo($document->original_name, PATHINFO_EXTENSION)))<span class="font-bold">{{ $type }}</span> · @endif{{ \Illuminate\Support\Number::fileSize($document->size, 1) }} · {{ $document->created_at->isoFormat('D MMMM YYYY') }}
+                            @if ($type = mb_strtoupper(pathinfo($document->original_name, PATHINFO_EXTENSION)))<span class="font-bold">{{ $type }}</span> · @endif{{ \App\Support\FileSize::format($document->size, 1) }} · {{ $document->created_at->isoFormat('D MMMM YYYY') }}
                             @if ($uploaders[$document->uploaded_by] ?? null)
                                 · {{ $uploaders[$document->uploaded_by] }}
                             @endif

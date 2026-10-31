@@ -3,16 +3,19 @@
   "standard": "demo-net",
   "clause": "D.1.4",
   "objective": {
-    "en": "Demo objective: show, for each asset, who can reach it and whether the product checks them."
+    "en": "Demo objective: show, for each asset, who can reach it and whether the product checks them.",
+    "fr": "Objectif de la démo : montrer, pour chaque actif, qui peut y accéder et si le produit contrôle ces accès."
   },
   "implementation_categories": {
-    "en": "- Demo category: a check the product makes\n- Demo category: a design choice\n  - Demo sub-category"
+    "en": "- Demo category: a check the product makes\n- Demo category: a design choice\n  - Demo sub-category",
+    "fr": "- Catégorie de démo : un contrôle effectué par le produit\n- Catégorie de démo : un choix de conception\n  - Sous-catégorie de démo"
   },
   "required_information": [
     {
       "id": "E.Info.ACC-1.Access",
       "text": {
-        "en": "Demo: who can reach the asset and how they are checked."
+        "en": "Demo: who can reach the asset and how they are checked.",
+        "fr": "Démo : qui peut accéder à l’actif et comment ces accès sont contrôlés."
       },
       "condition": null,
       "parent": null
@@ -20,7 +23,8 @@
     {
       "id": "E.Info.ACC-1.Harm",
       "text": {
-        "en": "Demo: what would happen if someone else read or changed it."
+        "en": "Demo: what would happen if someone else read or changed it.",
+        "fr": "Démo : ce qui se passerait si quelqu’un d’autre le lisait ou le modifiait."
       },
       "condition": null,
       "parent": null
@@ -28,7 +32,8 @@
     {
       "id": "E.Info.DT.ACC-1",
       "text": {
-        "en": "Demo: the path walked through the tree."
+        "en": "Demo: the path walked through the tree.",
+        "fr": "Démo : le chemin suivi dans l’arbre."
       },
       "condition": null,
       "parent": null
@@ -36,10 +41,12 @@
     {
       "id": "E.Just.DT.ACC-1",
       "text": {
-        "en": "Demo: why each answer was given."
+        "en": "Demo: why each answer was given.",
+        "fr": "Démo : pourquoi chaque réponse a été donnée."
       },
       "condition": {
-        "en": "Demo: for each decision."
+        "en": "Demo: for each decision.",
+        "fr": "Démo : pour chaque décision."
       },
       "parent": "E.Info.DT.ACC-1"
     }
@@ -53,7 +60,8 @@
       ],
       "match": "any",
       "text": {
-        "en": "Demo rule: an unreachable asset is justified by its access text."
+        "en": "Demo rule: an unreachable asset is justified by its access text.",
+        "fr": "Règle de démo : un actif inaccessible est justifié par son texte d’accès."
       }
     },
     {
@@ -65,7 +73,8 @@
       ],
       "match": "all",
       "text": {
-        "en": "Demo rule: the decision at DN-2 is justified by the walk and its justification."
+        "en": "Demo rule: the decision at DN-2 is justified by the walk and its justification.",
+        "fr": "Règle de démo : la décision au DN-2 est justifiée par le chemin suivi et sa justification."
       }
     },
     {
@@ -76,7 +85,8 @@
       ],
       "match": "any",
       "text": {
-        "en": "Demo rule: a harmless asset is justified by its harm text."
+        "en": "Demo rule: a harmless asset is justified by its harm text.",
+        "fr": "Règle de démo : un actif inoffensif est justifié par son texte de préjudice."
       }
     }
   ],
@@ -85,23 +95,29 @@
       "key": "conceptual",
       "clause": "D.1.4.1",
       "purpose": {
-        "en": "Demo purpose: check the documented decisions."
+        "en": "Demo purpose: check the documented decisions.",
+        "fr": "Objet de la démo : vérifier les décisions documentées."
       },
       "preconditions": {
-        "en": "Demo: the product and its documentation are available."
+        "en": "Demo: the product and its documentation are available.",
+        "fr": "Démo : le produit et sa documentation sont disponibles."
       },
       "units": {
-        "en": "- Demo unit: read the documented answer\n- Demo unit: try it on the product"
+        "en": "- Demo unit: read the documented answer\n- Demo unit: try it on the product",
+        "fr": "- Unité de démo : lire la réponse documentée\n- Unité de démo : l’essayer sur le produit"
       },
       "verdict": {
         "PASS": {
-          "en": "Demo: what is documented is what the product does."
+          "en": "Demo: what is documented is what the product does.",
+          "fr": "Démo : ce qui est documenté correspond à ce que fait le produit."
         },
         "FAIL": {
-          "en": "Demo: the product does something else."
+          "en": "Demo: the product does something else.",
+          "fr": "Démo : le produit fait autre chose."
         },
         "NOT APPLICABLE": {
-          "en": "Demo: nothing to check for this object."
+          "en": "Demo: nothing to check for this object.",
+          "fr": "Démo : rien à vérifier pour cet objet."
         }
       }
     },
@@ -109,23 +125,29 @@
       "key": "functional_completeness",
       "clause": "D.1.4.2",
       "purpose": {
-        "en": "Demo purpose: check that no way in is missing."
+        "en": "Demo purpose: check that no way in is missing.",
+        "fr": "Objet de la démo : vérifier qu’aucun point d’entrée ne manque."
       },
       "preconditions": {
-        "en": "Demo: the product and its documentation are available."
+        "en": "Demo: the product and its documentation are available.",
+        "fr": "Démo : le produit et sa documentation sont disponibles."
       },
       "units": {
-        "en": "- Demo unit: read the documented answer\n- Demo unit: try it on the product"
+        "en": "- Demo unit: read the documented answer\n- Demo unit: try it on the product",
+        "fr": "- Unité de démo : lire la réponse documentée\n- Unité de démo : l’essayer sur le produit"
       },
       "verdict": {
         "PASS": {
-          "en": "Demo: what is documented is what the product does."
+          "en": "Demo: what is documented is what the product does.",
+          "fr": "Démo : ce qui est documenté correspond à ce que fait le produit."
         },
         "FAIL": {
-          "en": "Demo: the product does something else."
+          "en": "Demo: the product does something else.",
+          "fr": "Démo : le produit fait autre chose."
         },
         "NOT APPLICABLE": {
-          "en": "Demo: nothing to check for this object."
+          "en": "Demo: nothing to check for this object.",
+          "fr": "Démo : rien à vérifier pour cet objet."
         }
       }
     },
@@ -133,23 +155,29 @@
       "key": "functional_sufficiency",
       "clause": "D.1.4.3",
       "purpose": {
-        "en": "Demo purpose: try to get in without being checked."
+        "en": "Demo purpose: try to get in without being checked.",
+        "fr": "Objet de la démo : tenter d’entrer sans être contrôlé."
       },
       "preconditions": {
-        "en": "Demo: the product and its documentation are available."
+        "en": "Demo: the product and its documentation are available.",
+        "fr": "Démo : le produit et sa documentation sont disponibles."
       },
       "units": {
-        "en": "- Demo unit: read the documented answer\n- Demo unit: try it on the product"
+        "en": "- Demo unit: read the documented answer\n- Demo unit: try it on the product",
+        "fr": "- Unité de démo : lire la réponse documentée\n- Unité de démo : l’essayer sur le produit"
       },
       "verdict": {
         "PASS": {
-          "en": "Demo: what is documented is what the product does."
+          "en": "Demo: what is documented is what the product does.",
+          "fr": "Démo : ce qui est documenté correspond à ce que fait le produit."
         },
         "FAIL": {
-          "en": "Demo: the product does something else."
+          "en": "Demo: the product does something else.",
+          "fr": "Démo : le produit fait autre chose."
         },
         "NOT APPLICABLE": {
-          "en": "Demo: nothing to check for this object."
+          "en": "Demo: nothing to check for this object.",
+          "fr": "Démo : rien à vérifier pour cet objet."
         }
       }
     }

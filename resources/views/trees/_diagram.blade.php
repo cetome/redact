@@ -61,7 +61,7 @@
                         $target = $nodes[$branch['to']] ?? null;
                         $taken = isset($answers[$id]) && mb_strtolower($answers[$id]) === mb_strtolower($branch['label']);
                         $reached = $taken && $outcome === $id && ($target['kind'] ?? null) === 'result';
-                        $label = ucfirst(mb_strtolower($branch['label']));
+                        $label = \App\Content\Tree::answerLabel($branch['label']);
                     @endphp
                     <li>
                         @if ($interactive)

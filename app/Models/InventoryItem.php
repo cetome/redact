@@ -28,8 +28,9 @@ use Spatie\Activitylog\Support\LogOptions;
  * @property array<string, mixed>|null $attributes
  * @property list<array{name: string, description?: string|null, code?: string|null, attributes?: array<string, mixed>}>|null $members
  * @property int $position
+ * @property string|null $source_id the item of the earlier version it was copied from
  */
-#[Fillable(['product_version_id', 'list', 'code', 'name', 'description', 'attributes', 'members', 'position', 'updated_by'])]
+#[Fillable(['product_version_id', 'list', 'code', 'name', 'description', 'attributes', 'members', 'position', 'updated_by', 'source_id'])]
 class InventoryItem extends Model
 {
     use HasUlids, LogsActivity;

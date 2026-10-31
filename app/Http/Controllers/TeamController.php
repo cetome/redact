@@ -117,7 +117,8 @@ class TeamController extends Controller
         }
 
         [$invitation, $token] = $team->invite($product, $email, $role, $request->user());
-        Mail::to($email)->queue(new ProductInvitation($invitation, (string) $token));
+        // In the language of the invited account, else of the person inviting.
+        Mail::to($email)->locale($existing?->preferredLocale() ?? app()->getLocale())->queue(new ProductInvitation($invitation, (string) $token));
 
         // Same neutral answer whatever the address, so accounts cannot be probed.
         return back()->with('status', __('team.invite_sent'));

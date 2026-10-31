@@ -8,6 +8,7 @@ return [
     'download_tooltip' => 'Construit le classeur à partir de cette version maintenant',
     'download_all' => 'Les quatre (zip)',
     'download_all_tooltip' => 'Les quatre classeurs et un fichier de notes dans un seul zip',
+    'zip_name' => 'Classeurs cetome REDact',
     'locked' => 'Créez un compte pour télécharger',
     'locked_tooltip' => 'Les classeurs se téléchargent une fois le bac à sable enregistré comme compte',
     'recalculate' => 'Excel recalcule toutes les formules à l’ouverture du classeur. D’autres tableurs peuvent demander un recalcul manuel.',
@@ -23,7 +24,7 @@ return [
     'notes' => [
         'overflow' => ':sheet a de la place pour :max lignes : :count de plus sont laissées de côté (:names…).',
         'overflow_risks' => 'Le registre des risques a de la place pour :max risques : :count de plus sont laissés de côté.',
-        'inconclusive' => ':requirement sur :item est INCONCLUSIVE dans REDact : aucun verdict n’est écrit.',
+        'inconclusive' => ':requirement sur :item est non concluant dans REDact : aucun verdict n’est écrit.',
         'autofill' => ':count textes E.Info appartiennent à des colonnes que le classeur remplit lui-même depuis l’inventaire (marquées Autofill) : ils ne sont pas copiés.',
         'settled' => ':sheet :ref : :reason. Écrit comme respectée à la place de la formule du classeur, qui ne lit que les questions.',
         'matrix_kept' => 'La matrice de risques de la version n’utilise pas cinq niveaux : le classeur garde sa propre matrice.',

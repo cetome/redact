@@ -46,9 +46,9 @@
                             <li class="text-sm">
                                 <p>
                                     <span class="font-bold">{{ $answer['node'] }}</span> {{ $answer['question'] }}
-                                    <span class="a-badge ml-1">{{ __('ai.path.suggested', ['answer' => $answer['answer']]) }}</span>
+                                    <span class="a-badge ml-1">{{ __('ai.path.suggested', ['answer' => \App\Content\Tree::answerLabel((string) $answer['answer'])]) }}</span>
                                     @if (isset($recorded[$answer['node']]))
-                                        <span class="a-badge a-badge-neutral ml-1">{{ __('ai.path.yours', ['answer' => $recorded[$answer['node']]]) }}</span>
+                                        <span class="a-badge a-badge-neutral ml-1">{{ __('ai.path.yours', ['answer' => \App\Content\Tree::answerLabel((string) $recorded[$answer['node']])]) }}</span>
                                     @endif
                                 </p>
                                 @if ($answer['rationale'] !== '')

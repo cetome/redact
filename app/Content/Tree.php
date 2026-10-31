@@ -24,6 +24,19 @@ final class Tree
         }
     }
 
+    /**
+     * A branch label as people read it: "Yes" and "No" in the interface language, any other label
+     * as the tree prints it (first letter upper case). The stored answer keeps the tree's label.
+     */
+    public static function answerLabel(string $label): string
+    {
+        return match (mb_strtolower(trim($label))) {
+            'yes' => (string) __('common.yes'),
+            'no' => (string) __('common.no'),
+            default => ucfirst(mb_strtolower($label)),
+        };
+    }
+
     public function standard(): string
     {
         return $this->data['standard'];
@@ -60,16 +73,35 @@ final class Tree
         return $this->data['start'];
     }
 
-    /** @return array<string, array<string, mixed>> */
+    /** @return array<string, array<string, mixed>> the nodes, their question and help in the current language */
     public function nodes(): array
     {
-        return $this->nodes;
+        return array_map(self::localised(...), $this->nodes);
     }
 
-    /** @return array<string, mixed> */
+    /** @return array<string, mixed> the node, its question and help in the current language */
     public function node(string $id): array
     {
-        return $this->nodes[$id] ?? throw new InvalidArgumentException("Unknown node {$id} in {$this->requirement()}");
+        return self::localised($this->nodes[$id] ?? throw new InvalidArgumentException("Unknown node {$id} in {$this->requirement()}"));
+    }
+
+    /**
+     * A node's texts ("text", "help") are plain English or {"en": …, "fr": …} (Text): resolved when
+     * read, never when loaded, so a long-lived worker serves each language. Branch labels stay as the
+     * tree prints them (they are the stored answers; answerLabel() shows them).
+     *
+     * @param  array<string, mixed>  $node
+     * @return array<string, mixed>
+     */
+    private static function localised(array $node): array
+    {
+        foreach (['text', 'help'] as $key) {
+            if (isset($node[$key])) {
+                $node[$key] = Text::of($node[$key]);
+            }
+        }
+
+        return $node;
     }
 
     public function has(string $id): bool

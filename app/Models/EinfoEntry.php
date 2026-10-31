@@ -17,11 +17,27 @@ use Spatie\Activitylog\Support\LogOptions;
  * @property string $einfo
  * @property string|null $inventory_item_id
  * @property string|null $text
+ * @property bool $recheck to confirm again after a significant change (App\Assessment\SignificantChange)
  */
 #[Fillable(['product_version_id', 'einfo', 'inventory_item_id', 'text', 'updated_by'])]
 class EinfoEntry extends Model
 {
     use HasUlids, LogsActivity;
+
+    protected function casts(): array
+    {
+        return ['recheck' => 'boolean'];
+    }
+
+    /** A new text is a re-check done: the mark goes. */
+    protected static function booted(): void
+    {
+        static::saving(function (EinfoEntry $entry) {
+            if ($entry->recheck && $entry->isDirty('text')) {
+                $entry->recheck = false;
+            }
+        });
+    }
 
     public function getActivitylogOptions(): LogOptions
     {

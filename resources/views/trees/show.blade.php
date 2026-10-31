@@ -23,7 +23,7 @@
     </x-ui.page-header>
 
     @if ($tree->scope())
-        <div class="a-alert"><x-lucide-repeat aria-hidden="true" /><span class="min-w-0 [overflow-wrap:anywhere]"><strong>{{ __('evaluations.scope') }}:</strong> {{ $tree->scope() }}</span></div>
+        <div class="a-alert"><x-lucide-repeat aria-hidden="true" /><span class="min-w-0 [overflow-wrap:anywhere]"><strong>{{ __('evaluations.scope_label') }}</strong> {{ $tree->scope() }}</span></div>
     @endif
 
     <div class="max-w-3xl">

@@ -175,7 +175,7 @@ class InventoryController extends Controller
         ]);
 
         return redirect()->route('versions.inventory', [$version, $list])
-            ->with('status', __('inventory.added', ['item' => $definition['singular'] ?? $list]));
+            ->with('status', __('inventory.added', ['item' => Text::of($definition['singular'] ?? $list)]));
     }
 
     public function update(Request $request, ProductVersion $version, string $list, InventoryItem $item, ContentPack $pack): RedirectResponse

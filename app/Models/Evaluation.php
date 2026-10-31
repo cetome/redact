@@ -29,6 +29,7 @@ use Spatie\Activitylog\Support\LogOptions;
  * @property string|null $shared_group
  * @property string|null $shared_source
  * @property bool $shared_untied
+ * @property bool $recheck to confirm again after a significant change (App\Assessment\SignificantChange)
  * @property int|null $updated_by
  * @property Carbon|null $updated_at
  * @property-read User|null $updater
@@ -53,7 +54,18 @@ class Evaluation extends Model
             'path' => 'array',
             'verdict' => Verdict::class,
             'shared_untied' => 'boolean',
+            'recheck' => 'boolean',
         ];
+    }
+
+    /** A new node, path, verdict or justification is a re-check done: the mark goes. */
+    protected static function booted(): void
+    {
+        static::saving(function (Evaluation $evaluation) {
+            if ($evaluation->recheck && $evaluation->isDirty(['decision_node', 'path', 'verdict', 'justification'])) {
+                $evaluation->recheck = false;
+            }
+        });
     }
 
     /** Called by spatie/laravel-activitylog before an entry about this evaluation is saved. */

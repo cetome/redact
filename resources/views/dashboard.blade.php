@@ -12,6 +12,9 @@
             @if ($canCreate && $atPlanLimit)
                 {{-- No product left on the plan: the button becomes the way to add one (App\Billing\Plan). --}}
                 <x-slot:actions>
+                    @if ($portfolio)
+                        <a href="{{ route('organisations.portfolio', $portfolio) }}" class="a-btn a-btn-ghost"><x-lucide-layout-dashboard aria-hidden="true" />{{ __('portfolio.link') }}</a>
+                    @endif
                     @if ($demo)
                         @include('dashboard._demo')
                     @endif
@@ -20,8 +23,11 @@
                         <a href="{{ route('products.create') }}" class="a-btn a-btn-outline"><x-lucide-circle-arrow-up aria-hidden="true" />{{ __('plans.upgrade') }}</a>
                     </div>
                 </x-slot:actions>
-            @elseif ($canCreate || $demo)
+            @elseif ($canCreate || $demo || $portfolio)
                 <x-slot:actions>
+                    @if ($portfolio)
+                        <a href="{{ route('organisations.portfolio', $portfolio) }}" class="a-btn a-btn-ghost"><x-lucide-layout-dashboard aria-hidden="true" />{{ __('portfolio.link') }}</a>
+                    @endif
                     @if ($demo)
                         @include('dashboard._demo')
                     @endif

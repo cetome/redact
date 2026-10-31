@@ -7,6 +7,7 @@ use App\Assessment\AssessmentCases;
 use App\Assessment\ReviewDiff;
 use App\Assessment\ReviewRights;
 use App\Content\Text;
+use App\Content\Tree;
 use App\Enums\ProductRole;
 use App\Enums\Verdict;
 use App\Enums\VersionStatus;
@@ -167,7 +168,8 @@ class ReviewController extends Controller
     /**
      * Why the version cannot be approved yet, as the refusal to send back, or null: an evaluation not
      * justified, an INCONCLUSIVE evaluation or unit, a unit not provided, a disagreement or a question
-     * still open (on an evaluation or a unit, among the reviews that count; no unit outside REDact). Each refusal names the
+     * still open (on an evaluation or a unit, among the reviews that count; no unit outside REDact), a
+     * significant change not decided or not re-checked yet (SignificantChange). Each refusal names the
      * first items and links to the first one on the Review page, never to an editor.
      */
     private function approvalRefusal(ProductVersion $version): ?RedirectResponse
@@ -190,6 +192,19 @@ class ReviewController extends Controller
         $unjustified = array_map(fn (array $row) => $evaluationItem($row['requirement'], $row['item'], $row['evaluation']), $assessment->unjustified());
         if ($unjustified !== []) {
             return $refuse('assessment.approve_refused_unjustified', $unjustified);
+        }
+
+        // A significant change since the earlier version (SignificantChange): decided on the current
+        // signs, and everything it put back to re-check confirmed or changed.
+        if ($changes = $assessment->changes()) {
+            if (! $changes->settled()) {
+                return back()->with('error', __('changes.approve_refused_undecided', ['label' => $changes->previous->label]))
+                    ->with('error_link', ['href' => route('versions.changes', $version), 'label' => __('changes.submit_link')]);
+            }
+            $rechecks = array_map(fn (array $row) => ['label' => $row['label'], 'href' => route('versions.changes', $version)], $changes->rechecks());
+            if ($rechecks !== []) {
+                return $refuse('changes.approve_refused', $rechecks);
+            }
         }
 
         $inconclusive = array_map(fn (array $row) => $evaluationItem($row['requirement'], $row['item'], $row['evaluation']), $assessment->inconclusive());
@@ -265,7 +280,7 @@ class ReviewController extends Controller
             $steps[] = [
                 'ref' => 'DT.'.$evaluation->requirement.'.'.$step['node'],
                 'question' => $node ? Text::of($node['text'] ?? '') : '',
-                'answer' => ucfirst(mb_strtolower((string) $step['answer'])),
+                'answer' => Tree::answerLabel((string) $step['answer']),
             ];
         }
 

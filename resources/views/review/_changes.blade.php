@@ -22,7 +22,7 @@
     $steps = function (array $path, array $other, string $tag) {
         return collect($path)->map(function ($step, $i) use ($other, $tag) {
             $same = isset($other[$i]) && $other[$i] == $step;
-            $text = '<span class="a-mono">'.e($step['node'] ?? '').'</span> '.e($step['answer'] ?? '');
+            $text = '<span class="a-mono">'.e($step['node'] ?? '').'</span> '.e(\App\Content\Tree::answerLabel((string) ($step['answer'] ?? '')));
 
             return $same ? '<span class="a-changes-step">'.$text.'</span>' : '<'.$tag.' class="a-changes-step a-diff-'.$tag.'">'.$text.'</'.$tag.'>';
         })->implode('<span class="a-changes-sep" aria-hidden="true">›</span>');

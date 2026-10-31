@@ -167,7 +167,7 @@ return [
         'fail' => 'Non conforme',
         'na' => 'Non applicable',
         'missing' => 'Non évalué',
-        'invalid' => 'Invalide',
+        'invalid' => 'Verdict incohérent avec le chemin',
         'inconclusive' => 'Non concluant',
     ],
 

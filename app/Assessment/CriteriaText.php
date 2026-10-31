@@ -6,8 +6,9 @@ use App\Content\Text;
 use Illuminate\Support\HtmlString;
 
 /**
- * Texts of the standard's assessment criteria (content pack, English): picks the locale, says
- * which language it is in (so a French page marks English text with lang="en"), and renders
+ * Texts of the standard's assessment criteria (content pack, English, and French where the pack has
+ * cetome's translation): picks the locale, says which language it is in (so a French page marks
+ * English text with lang="en"), and renders
  * the bullet lines ("- " and "  - ") as nested lists, the other lines as paragraphs. Escaped.
  */
 final class CriteriaText

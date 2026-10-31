@@ -2,6 +2,7 @@
   "lists": [
     {
       "key": "assets",
+      "significant_change": true,
       "label": {
         "en": "Assets",
         "fr": "Actifs"
@@ -136,6 +137,7 @@
     },
     {
       "key": "interfaces",
+      "significant_change": true,
       "label": {
         "en": "Interfaces",
         "fr": "Interfaces"

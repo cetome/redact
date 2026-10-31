@@ -9,13 +9,13 @@
     <ul class="a-stats grid-cols-2! sm:grid-cols-4!">
         @foreach ([
             [__('admin.sandboxes.active'), $sandboxes['active'], null],
-            [__('admin.sandboxes.started'), $sandboxes['started_7'], __('admin.sandboxes.in_30', ['count' => number_format($sandboxes['started_30'])])],
-            [__('admin.sandboxes.kept'), $sandboxes['kept_7'], __('admin.sandboxes.in_30', ['count' => number_format($sandboxes['kept_30'])])],
-            [__('admin.sandboxes.expired'), $sandboxes['expired_7'], __('admin.sandboxes.in_30', ['count' => number_format($sandboxes['expired_30'])])],
+            [__('admin.sandboxes.started'), $sandboxes['started_7'], __('admin.sandboxes.in_30', ['count' => \Illuminate\Support\Number::format($sandboxes['started_30'])])],
+            [__('admin.sandboxes.kept'), $sandboxes['kept_7'], __('admin.sandboxes.in_30', ['count' => \Illuminate\Support\Number::format($sandboxes['kept_30'])])],
+            [__('admin.sandboxes.expired'), $sandboxes['expired_7'], __('admin.sandboxes.in_30', ['count' => \Illuminate\Support\Number::format($sandboxes['expired_30'])])],
         ] as [$label, $value, $sub])
             <li class="a-stat">
                 <span class="a-stat-label">{{ $label }}</span>
-                <span class="a-stat-value">{{ number_format($value) }}</span>
+                <span class="a-stat-value">{{ \Illuminate\Support\Number::format($value) }}</span>
                 @if ($sub)
                     <span class="a-help">{{ $sub }}</span>
                 @endif

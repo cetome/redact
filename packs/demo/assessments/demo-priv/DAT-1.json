@@ -3,16 +3,19 @@
   "standard": "demo-priv",
   "clause": "D.3.4",
   "objective": {
-    "en": "Demo objective: show how personal data leaves the product when the person wants it to."
+    "en": "Demo objective: show how personal data leaves the product when the person wants it to.",
+    "fr": "Objectif de la démo : montrer comment les données personnelles quittent le produit lorsque la personne le souhaite."
   },
   "implementation_categories": {
-    "en": "- Demo category: a check the product makes\n- Demo category: a design choice\n  - Demo sub-category"
+    "en": "- Demo category: a check the product makes\n- Demo category: a design choice\n  - Demo sub-category",
+    "fr": "- Catégorie de démo : un contrôle effectué par le produit\n- Catégorie de démo : un choix de conception\n  - Sous-catégorie de démo"
   },
   "required_information": [
     {
       "id": "E.Info.DAT-1.Erase",
       "text": {
-        "en": "Demo: how the data is erased."
+        "en": "Demo: how the data is erased.",
+        "fr": "Démo : comment les données sont effacées."
       },
       "condition": null,
       "parent": null
@@ -27,7 +30,8 @@
       ],
       "match": "any",
       "text": {
-        "en": "Demo rule: erasing by the person is justified by the erase text."
+        "en": "Demo rule: erasing by the person is justified by the erase text.",
+        "fr": "Règle de démo : l’effacement par la personne est justifié par le texte d’effacement."
       }
     }
   ],
@@ -36,23 +40,29 @@
       "key": "conceptual",
       "clause": "D.3.4.1",
       "purpose": {
-        "en": "Demo purpose: check the documented erase function."
+        "en": "Demo purpose: check the documented erase function.",
+        "fr": "Objet de la démo : vérifier la fonction d’effacement documentée."
       },
       "preconditions": {
-        "en": "Demo: the product and its documentation are available."
+        "en": "Demo: the product and its documentation are available.",
+        "fr": "Démo : le produit et sa documentation sont disponibles."
       },
       "units": {
-        "en": "- Demo unit: read the documented answer\n- Demo unit: try it on the product"
+        "en": "- Demo unit: read the documented answer\n- Demo unit: try it on the product",
+        "fr": "- Unité de démo : lire la réponse documentée\n- Unité de démo : l’essayer sur le produit"
       },
       "verdict": {
         "PASS": {
-          "en": "Demo: what is documented is what the product does."
+          "en": "Demo: what is documented is what the product does.",
+          "fr": "Démo : ce qui est documenté correspond à ce que fait le produit."
         },
         "FAIL": {
-          "en": "Demo: the product does something else."
+          "en": "Demo: the product does something else.",
+          "fr": "Démo : le produit fait autre chose."
         },
         "NOT APPLICABLE": {
-          "en": "Demo: nothing to check for this object."
+          "en": "Demo: nothing to check for this object.",
+          "fr": "Démo : rien à vérifier pour cet objet."
         }
       }
     }

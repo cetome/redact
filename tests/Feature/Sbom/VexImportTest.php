@@ -199,6 +199,13 @@ class VexImportTest extends SbomTestCase
         $csv = TechnicalFile::for($version->fresh())->vulnerabilitiesCsv();
         $this->assertStringContainsString(__('declaration.file.csv.vex_status'), $csv);
         $this->assertStringContainsString(__('sbom.vex.status.fixed'), $csv);
+
+        // The VEX file itself goes into point (g) of the technical file, as received.
+        $vex = collect(TechnicalFile::for($version->fresh())->items())->firstWhere('label', __('declaration.file.items.vex', ['name' => 'cyclonedx-vex.xml']));
+        $this->assertNotNull($vex);
+        $this->assertSame(['g', 'present'], [$vex['heading'], $vex['status']]);
+        $this->assertStringContainsString('/'.__('declaration.file.names.vex').'/', (string) $vex['file']);
+        $this->assertStringEndsWith('cyclonedx-vex.xml', (string) $vex['file']);
     }
 
     public function test_an_sbom_with_vex_imports_its_components_then_reviews_its_statements(): void

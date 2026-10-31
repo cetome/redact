@@ -56,7 +56,7 @@ class WorkbookController extends Controller
         }
         $this->log($request, $version, 'workbooks', 'zip', ['workbooks' => $keys]);
 
-        $name = ExportName::plain([trim($version->product->name.' '.$version->label), 'cetome REDact workbooks'], 'zip');
+        $name = ExportName::plain([trim($version->product->name.' '.$version->label), __('workbooks.zip_name')], 'zip');
 
         return $this->send($path, $name, 'application/zip');
     }

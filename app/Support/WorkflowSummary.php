@@ -15,7 +15,7 @@ class WorkflowSummary
 {
     /** One lucide icon per step, used wherever a step is shown. */
     public const ICONS = [
-        'overview' => 'layout-grid', 'scoping' => 'target', 'description' => 'package', 'inventory' => 'boxes',
+        'overview' => 'layout-grid', 'scoping' => 'target', 'description' => 'package', 'inventory' => 'boxes', 'changes' => 'git-compare',
         'evaluate' => 'git-fork', 'einfo' => 'file-text', 'units' => 'flask-conical', 'risks' => 'shield-alert', 'conformity' => 'badge-check',
         'review' => 'clipboard-check', 'declaration' => 'stamp', 'reports' => 'file-down', 'team' => 'users', 'ai' => 'sparkles',
     ];

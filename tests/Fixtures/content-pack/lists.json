@@ -2,6 +2,7 @@
   "lists": [
     {
       "key": "assets",
+      "significant_change": true,
       "label": "Assets",
       "singular": "Asset",
       "code_prefix": "AS-",
@@ -22,6 +23,7 @@
     },
     {
       "key": "interfaces",
+      "significant_change": true,
       "label": "Interfaces",
       "singular": "Interface",
       "code_prefix": "IF-",

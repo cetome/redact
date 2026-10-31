@@ -521,6 +521,7 @@ final class WordReport
     private function assessmentBody(Section $section): void
     {
         $this->productAndScope($section);
+        $this->significantChange($section, 1);
         $this->riskAssessment($section);
         $this->inventory($section);
         $this->decisionTrees($section);
@@ -975,6 +976,40 @@ final class WordReport
         return $figures;
     }
 
+    /** A version made from an earlier one: the decision on the significant change, then its signs. */
+    private function significantChange(Section $section, int $level): void
+    {
+        $change = $this->data->change;
+        if ($change === null) {
+            return;
+        }
+        $this->heading($section, __('changes.title', ['label' => $change['previous']]), $level);
+        $facts = [
+            __('changes.decision_state') => $change['decision'],
+            __('changes.report.decided') => $change['decided'],
+            __('changes.justification') => $change['justification'],
+        ];
+        if ($change['rechecks'] > 0) {
+            $facts[__('changes.recheck_title')] = trans_choice('changes.recheck_count', $change['rechecks'], ['count' => $change['rechecks']]);
+        }
+        $this->facts($section, $facts);
+
+        if ($change['signs'] === []) {
+            $this->placeholder($section, __('changes.no_signs_text', ['label' => $change['previous']]));
+
+            return;
+        }
+        $table = $this->table($section);
+        $this->headerRow($table, [__('changes.report.kind') => 22, __('changes.col.what') => 40, __('changes.col.change') => 38]);
+        foreach ($change['signs'] as $sign) {
+            $table->addRow(null, ['cantSplit' => true]);
+            $this->textCell($table, 22, $sign['kind'], ['bold' => true]);
+            $this->textCell($table, 40, $sign['what']);
+            $this->textCell($table, 38, $sign['detail']);
+        }
+        $this->spacer($section);
+    }
+
     /** In the assessment: the decisions and the reviews of the evaluations, briefly. */
     private function reviewStatus(Section $section): void
     {
@@ -995,6 +1030,7 @@ final class WordReport
         $this->heading($section, __('reports.sections.evaluation_reviews'), 2);
         $this->counts($section, $this->reviewCounts());
         $this->meta($section, __('reports.review_note'));
+        $this->significantChange($section, 2);
 
         $this->heading($section, __('reports.sections.reviews_by_requirement'), 1);
         $this->reviewTables($section, 2);

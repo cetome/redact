@@ -12,6 +12,8 @@ use App\Models\Organisation;
 use App\Models\Product;
 use App\Models\ProductVersion;
 use App\Models\User;
+use App\Support\FileSize;
+use App\Support\Locales;
 use App\Support\WordDiff;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
@@ -66,7 +68,7 @@ final class Describer
     /** Fields never listed (ids, positions, bookkeeping, or already in the sentence). */
     private const QUIET = ['id', 'product_version_id', 'product_id', 'organisation_id', 'user_id', 'position', 'updated_by', 'recorded_by',
         'document_id', 'inventory_item_id', 'from_item_id', 'to_item_id', 'evaluation_id', 'created_at', 'updated_at', 'list', 'standard',
-        'requirement', 'question', 'einfo', 'feature', 'target_type', 'target_key', 'field', 'relation', 'mime', 'case_key', 'granted_by'];
+        'requirement', 'question', 'einfo', 'feature', 'target_type', 'target_key', 'field', 'relation', 'mime', 'case_key', 'granted_by', 'assessment_case_result_id'];
 
     /** @var array<int, array{name: string, email: ?string}> */
     private array $users = [];
@@ -82,6 +84,9 @@ final class Describer
 
     /** @var array<string, string>|null */
     private ?array $lists = null;
+
+    /** @var array<string, array{label: string, options: array<string, string>}>|null */
+    private ?array $fields = null;
 
     private string $timezone;
 
@@ -228,7 +233,9 @@ final class Describer
         return match ($a->log_name) {
             'evaluation' => $this->evaluation($a, $event, $description, $old, $new, $changed),
             'assessment_case' => $this->assessmentCase($a, $event, $old, $new, $changed),
-            'einfo' => $this->model($a, 'einfo', 'einfo', ['code' => $this->code($this->v($a, 'einfo')), 'item' => $this->item($a)], $old, $new),
+            'einfo' => $description === 'recheck_confirmed'
+                ? ['einfo', 'einfo_recheck_confirmed', ['code' => $this->code($this->v($a, 'einfo')), 'item' => $this->item($a)], [], false]
+                : $this->model($a, 'einfo', 'einfo', ['code' => $this->code($this->v($a, 'einfo')), 'item' => $this->item($a)], $old, $new),
             'risk' => $this->model($a, 'risks', 'risk', ['name' => (string) $this->v($a, 'threat')], $old, $new, ['threat']),
             'scoping' => $this->scoping($a, $event, $old, $new),
             'inventory' => $this->inventory($a, $event, $description, $type, $old, $new),
@@ -280,6 +287,7 @@ final class Describer
         return match (true) {
             $description === 'shared' => ['trees', 'shared', ['target' => $target, 'with' => (string) $a->getProperty('shared_with')], [], false],
             $description === 'untied' => ['trees', 'untied', ['target' => $target], [], false],
+            $description === 'recheck_confirmed' => ['trees', 'recheck_confirmed', ['target' => $target], [], false],
             $description === 'tied' => ['trees', 'tied', ['target' => $target, 'with' => (string) $a->getProperty('shared_with')], [], false],
             $event === 'created' => isset($new['verdict'])
                 ? ['trees', 'evaluated', ['target' => $target, 'verdict' => $this->verdict($new['verdict'])], $this->details([], $new, 'created', ['verdict']), true]
@@ -381,6 +389,8 @@ final class Describer
 
         return match (true) {
             $description === 'articles_confirmed' => ['scoping', 'articles_confirmed', [], [], false],
+            $description === 'change_decided' => ['review', 'change_decided.'.($a->getProperty('decision') === 'significant' ? 'significant' : 'not_significant'),
+                ['label' => (string) $a->getProperty('previous')], $this->details([], ['justification' => $a->getProperty('justification')], 'created'), false],
             $description === 'demo loaded' => ['product', 'demo_loaded', [], [], false],
             $description === 'identifiers imported' => ['exports', 'identifiers_imported', [], [], false],
             $description === 'declaration saved' => ['conformity', 'declaration_saved', [], [], false],
@@ -451,6 +461,7 @@ final class Describer
 
         return match ($description) {
             'invited' => ['team', 'invited', ['email' => $email, 'role' => $this->value('role', $a->getProperty('role'))], [], false],
+            'invitation declined' => ['team', 'invitation_declined', [], [], false],
             'invitation revoked' => ['team', $a->subject_type === Product::class ? 'invitation_revoked' : 'org_invitation_revoked', ['email' => $email], [], false],
             'organisation invitation sent' => ['team', 'org_invited', ['email' => $email, 'role' => $role($a->getProperty('organisation_role'))], [], false],
             'organisation joined' => ['team', 'org_joined', ['role' => $role($a->getProperty('organisation_role'))], [], false],
@@ -692,11 +703,7 @@ final class Describer
         }
         $size = (int) $size;
 
-        return match (true) {
-            $size >= 1048576 => number_format($size / 1048576, 1).' MB',
-            $size >= 1024 => number_format($size / 1024, 0).' KB',
-            default => $size.' B',
-        };
+        return FileSize::format($size, $size >= 1048576 ? 1 : 0);
     }
 
     /**
@@ -766,6 +773,8 @@ final class Describer
                 'category' => Lang::has('declaration.technical.categories.'.$value) ? (string) __('declaration.technical.categories.'.$value) : (string) $value,
                 'owner_id', 'user_id' => $this->person($value),
                 'size' => self::bytes($value),
+                'limits' => $this->limits($value),
+                'attributes' => $this->attributes($value),
                 'expires_at', 'completion_date', 'ends_at' => CarbonImmutable::parse((string) $value)->setTimezone($this->timezone)->isoFormat('D MMMM YYYY'),
                 default => $this->plain($value),
             };
@@ -786,13 +795,60 @@ final class Describer
                     continue;
                 }
                 $text = is_array($item) ? implode(', ', array_map(fn ($v) => is_scalar($v) ? (string) $v : (string) json_encode($v), $item)) : $this->plain($item);
-                $parts[] = is_int($key) ? $text : Str::ucfirst(str_replace('_', ' ', (string) $key)).': '.$text;
+                $parts[] = is_int($key) ? $text : $this->fieldLabel((string) $key).Locales::detail('colon').$text;
             }
 
             return $parts === [] ? '—' : Str::limit(implode(is_int(array_key_first($value)) ? ', ' : ' · ', $parts), 300);
         }
 
         return Str::limit((string) $value, 300);
+    }
+
+    /** An organisation's plan overrides with the console's labels ("Extra products granted: 2 · AI period: per month"). */
+    private function limits(mixed $value): string
+    {
+        if (! is_array($value)) {
+            return $this->plain($value);
+        }
+        $parts = [];
+        foreach ($value as $key => $item) {
+            if ($item === null || $item === '') {
+                continue;
+            }
+            $label = Lang::has('plans.admin.fields.'.$key) ? (string) __('plans.admin.fields.'.$key) : $this->fieldLabel((string) $key);
+            $text = $key === 'ai_period' && Lang::has('plans.periods.'.$item) ? (string) __('plans.periods.'.$item) : $this->plain($item);
+            $parts[] = $label.Locales::detail('colon').$text;
+        }
+
+        return $parts === [] ? '—' : implode(' · ', $parts);
+    }
+
+    /** An item's attributes with the content pack's field and option labels ("Type: Data · Stored on the product: Yes"). */
+    private function attributes(mixed $value): string
+    {
+        if (! is_array($value)) {
+            return $this->plain($value);
+        }
+        $fields = $this->fields();
+        $parts = [];
+        foreach ($value as $key => $item) {
+            if ($item === null || $item === '' || $item === []) {
+                continue;
+            }
+            $field = $fields[(string) $key] ?? null;
+            if ($field === null) {
+                $parts[] = (is_int($key) ? '' : $this->fieldLabel((string) $key).Locales::detail('colon')).$this->plain($item);
+
+                continue;
+            }
+            $options = $field['options'];
+            $text = is_array($item)
+                ? implode(', ', array_map(fn ($v) => is_scalar($v) ? ($options[(string) $v] ?? (string) $v) : (string) json_encode($v), $item))
+                : (is_scalar($item) && isset($options[(string) $item]) ? $options[(string) $item] : $this->plain($item));
+            $parts[] = $field['label'].Locales::detail('colon').$text;
+        }
+
+        return $parts === [] ? '—' : Str::limit(implode(' · ', $parts), 300);
     }
 
     // ---- Content pack (labels only) --------------------------------------------------------------
@@ -833,6 +889,33 @@ final class Describer
         }
 
         return $this->lists;
+    }
+
+    /** @return array<string, array{label: string, options: array<string, string>}> field key => labels (first list wins) */
+    private function fields(): array
+    {
+        if ($this->fields === null) {
+            $this->fields = [];
+            try {
+                foreach (app(ContentPack::class)->lists() as $list) {
+                    foreach ($list['fields'] ?? [] as $field) {
+                        $key = (string) ($field['key'] ?? '');
+                        if ($key === '' || isset($this->fields[$key])) {
+                            continue;
+                        }
+                        $options = [];
+                        foreach ($field['options'] ?? [] as $option) {
+                            $options[(string) ($option['value'] ?? '')] = Text::of($option['label'] ?? ($option['value'] ?? ''));
+                        }
+                        $this->fields[$key] = ['label' => Text::of($field['label'] ?? $key), 'options' => $options];
+                    }
+                }
+            } catch (Throwable) {
+                // No pack: the keys are shown.
+            }
+        }
+
+        return $this->fields;
     }
 
     /** The labels of the versions of products (current ones, then removed ones from their entries). */

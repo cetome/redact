@@ -23,7 +23,7 @@
         </select>
         <button type="submit" class="a-btn a-btn-primary a-btn-sm"><x-lucide-filter aria-hidden="true" />{{ __('admin.filter') }}</button>
         @if ($q !== '' || $topic)<button type="submit" name="reset" value="1" class="a-btn a-btn-ghost a-btn-sm"><x-lucide-rotate-ccw aria-hidden="true" />{{ __('admin.reset') }}</button>@endif
-        <span class="a-toolbar-end a-toolbar-count">{{ trans_choice('contact.admin.count', $messages->total(), ['count' => number_format($messages->total())]) }}</span>
+        <span class="a-toolbar-end a-toolbar-count">{{ trans_choice('contact.admin.count', $messages->total(), ['count' => \Illuminate\Support\Number::format($messages->total())]) }}</span>
     </form>
 
     <div class="a-table-wrap">

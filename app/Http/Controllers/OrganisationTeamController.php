@@ -151,7 +151,8 @@ class OrganisationTeamController extends Controller
             return $invitation;
         });
 
-        Mail::to($email)->queue(new OrganisationInvitation($invitation, $token));
+        // In the language of the invited account, else of the person inviting.
+        Mail::to($email)->locale($existing?->preferredLocale() ?? app()->getLocale())->queue(new OrganisationInvitation($invitation, $token));
 
         return back()->with('status', __('orgteam.invited', ['email' => $email]));
     }

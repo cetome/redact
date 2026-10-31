@@ -9,6 +9,7 @@ use App\Models\Document;
 use App\Models\ProductVersion;
 use App\Models\SbomImport;
 use App\Models\User;
+use App\Models\VexImport;
 use App\Models\VulnerabilityCheck;
 use App\Models\VulnerabilityFinding;
 use App\Reports\CetomeWorkbooks;
@@ -39,6 +40,9 @@ use ZipArchive;
  */
 final class TechnicalFile
 {
+    /** The SHA-256 checksum of every file of the zip, at its root (sha256sum format). */
+    public const SUMS = 'SHA256SUMS.txt';
+
     /** Annex V points, in order: a, a(i), a(ii), a(iii), b to i, then documents not filed yet. */
     public const HEADINGS = ['a', 'a_i', 'a_ii', 'a_iii', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'other'];
 
@@ -229,6 +233,14 @@ final class TechnicalFile
                 __('declaration.file.names.vulnerabilities').'.csv', ['type' => 'vulnerabilities'],
                 $checked || ! Route::has('versions.vulnerabilities') ? null : $fix(route('versions.vulnerabilities', $version), __('declaration.file.fix.vulnerabilities')));
         }
+        // The VEX documents imported (the manufacturer's analysis of each vulnerability), as received.
+        foreach (VexImport::query()->where('product_version_id', $version->id)->whereNotNull('imported_at')->orderBy('created_at')->get() as $vex) {
+            foreach ((array) $vex->files as $n => $file) {
+                $add('g', __('declaration.file.items.vex', ['name' => $file['name']]), __('declaration.file.source.vex'), 'present',
+                    __('declaration.file.names.vex').'/'.self::safe($vex->created_at->format('Ymd').' '.$n.' '.$file['name']),
+                    ['type' => 'disk', 'path' => $file['path']]);
+            }
+        }
 
         // (h) Test reports: the review (reviewers' verdicts and assessment units), the laboratories' reports.
         // A version approved by self-review only (no reviewer on the product) says so.
@@ -342,6 +354,7 @@ final class TechnicalFile
         }
         $temporary = [];
         $skipped = [];
+        $sums = [];
         $files = 0;
         $report = null;
         $workbooks = null;
@@ -374,13 +387,21 @@ final class TechnicalFile
                     continue;
                 }
                 $zip->addFile($path, $root.'/'.$item['file']);
+                $sums[$item['file']] = hash_file('sha256', $path);
                 $files++;
             }
 
             $index = $this->temporary($temporary);
             (new TechnicalFileIndex($this))->save($index);
-            $zip->addFile($index, $root.'/'.__('declaration.file.names.index').'.docx');
-            $zip->addFromString($root.'/README.txt', $this->readme($skipped));
+            $indexName = __('declaration.file.names.index').'.docx';
+            $zip->addFile($index, $root.'/'.$indexName);
+            $sums[$indexName] = hash_file('sha256', $index);
+            $readme = $this->readme($skipped);
+            $zip->addFromString($root.'/README.txt', $readme);
+            $sums['README.txt'] = hash('sha256', $readme);
+            // An auditor checks that nothing changed: "sha256sum -c SHA256SUMS.txt" in the folder.
+            ksort($sums, SORT_STRING);
+            $zip->addFromString($root.'/'.self::SUMS, implode('', array_map(fn (string $file, string $hash) => $hash.'  '.$file."\n", array_keys($sums), $sums)));
             if (! $zip->close()) {
                 throw new RuntimeException('Cannot write the technical file.');
             }
@@ -502,6 +523,8 @@ final class TechnicalFile
             }
             $lines[] = '';
         }
+        $lines[] = __('declaration.file.readme.checksums', ['file' => self::SUMS]);
+        $lines[] = '';
         $lines[] = __('declaration.file.readme.legal');
 
         return implode("\r\n", $lines)."\r\n";

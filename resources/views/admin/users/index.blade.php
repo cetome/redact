@@ -27,7 +27,7 @@
         </select>
         <button type="submit" class="a-btn a-btn-primary a-btn-sm"><x-lucide-filter aria-hidden="true" />{{ __('admin.filter') }}</button>
         @if (array_filter($filters))<button type="submit" name="reset" value="1" class="a-btn a-btn-ghost a-btn-sm"><x-lucide-rotate-ccw aria-hidden="true" />{{ __('admin.reset') }}</button>@endif
-        <span class="a-toolbar-end a-toolbar-count">{{ trans_choice('admin.users.count', $users->total(), ['count' => number_format($users->total())]) }}</span>
+        <span class="a-toolbar-end a-toolbar-count">{{ trans_choice('admin.users.count', $users->total(), ['count' => \Illuminate\Support\Number::format($users->total())]) }}</span>
     </form>
 
     <div class="a-table-wrap">

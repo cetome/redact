@@ -45,7 +45,8 @@ class WorkflowOrderTest extends TestCase
     {
         $version = $this->product($this->owner());
 
-        $this->assertSame(self::ORDER, Assessment::ORDER);
+        // "Changes" (significant change) comes after the inventory, only on a version made from an earlier one.
+        $this->assertSame(['description', 'scoping', 'risks', 'inventory', 'changes', 'evaluate', 'einfo', 'units', 'conformity', 'review', 'declaration'], Assessment::ORDER);
         $this->assertSame(self::ORDER, array_values(array_unique(array_column(Assessment::for($version)->steps(), 'key'))));
         $this->assertSame(self::ORDER, array_column(WorkflowSummary::for($version)->groups, 'key'));
     }

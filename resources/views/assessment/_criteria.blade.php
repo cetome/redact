@@ -1,7 +1,8 @@
 {{--
     The standard's "Assessment criteria" of one requirement (content pack assessments/<std>/<REQ>.json)
     in a collapsible panel: objective, implementation categories, required information, justification
-    rules and, with $withCases, the assessment cases. Texts stay in the standard's language (lang="en").
+    rules and, with $withCases, the assessment cases. Texts in the page's language when the pack has
+    it (cetome's translation, the English text prevails), else in English marked lang="en".
 
     @include('assessment._criteria', ['criteria' => $criteria, 'standardName' => '…', 'withCases' => true, 'open' => false])
 --}}

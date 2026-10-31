@@ -47,6 +47,11 @@ use Spatie\Activitylog\Support\LogOptions;
  * @property Carbon|null $articles_confirmed_at "Essential requirements" confirmed (see App\Assessment\ArticlesCheck)
  * @property int|null $articles_confirmed_by
  * @property string|null $articles_confirmed_hash fingerprint of the comparison that was confirmed
+ * @property string|null $change_decision significant change since the previous version: "significant" or "not_significant" (App\Assessment\SignificantChange)
+ * @property string|null $change_justification
+ * @property int|null $change_decided_by
+ * @property Carbon|null $change_decided_at
+ * @property string|null $change_fingerprint fingerprint of the signs the decision was taken on
  * @property Carbon $created_at
  * @property-read Product $product
  */
@@ -68,6 +73,7 @@ class ProductVersion extends Model
             'approved_at' => 'datetime',
             'inventory_none' => 'array',
             'articles_confirmed_at' => 'datetime',
+            'change_decided_at' => 'datetime',
             'declaration' => 'array',
             'certificate_issued_on' => 'date',
             'certificate_expires_on' => 'date',
@@ -131,6 +137,12 @@ class ProductVersion extends Model
         }
 
         return $rows->values();
+    }
+
+    /** @return BelongsTo<User, $this> */
+    public function changeDecider(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'change_decided_by');
     }
 
     /** @return BelongsTo<User, $this> who confirmed the articles and standards */

@@ -48,6 +48,7 @@ final class ExcelReport
         $this->overview($book);
         if ($this->kind === ReportKind::Assessment) {
             $this->scoping($book);
+            $this->changes($book);
             $this->risks($book);
             $this->inventory($book);
             $this->links($book);
@@ -236,6 +237,26 @@ final class ExcelReport
         // After the bold column A, so the header stays white on the blue (CRAted's order)
         $this->brandHeader($sheet, $headerRow, count($header));
         $this->widths($sheet, [26, 60, 12, 12, 16, 16]);
+    }
+
+    /** A version made from an earlier one: the significant change, decision first, then the signs. */
+    private function changes(Spreadsheet $book): void
+    {
+        $change = $this->data->change;
+        if ($change === null) {
+            return;
+        }
+        $rows = [
+            [__('changes.decision_state'), $change['decision'], ''],
+            [__('changes.report.decided'), $change['decided'], ''],
+            [__('changes.justification'), $change['justification'], ''],
+            [__('changes.recheck_title'), $change['rechecks'], ''],
+            ['', '', ''],
+        ];
+        foreach ($change['signs'] as $sign) {
+            $rows[] = [$sign['kind'], $sign['what'], $sign['detail']];
+        }
+        $this->tableSheet($book, __('changes.report.sheet'), [__('changes.report.kind'), __('changes.col.what'), __('changes.col.change')], $rows, [26, 50, 50]);
     }
 
     private function scoping(Spreadsheet $book): void

@@ -31,4 +31,9 @@ return [
     'support_access' => 'cetome support access: you are viewing this product read-only, and this visit is logged.',
     'updated_by' => 'Updated by :name on :date',
     'progress' => ':done of :total',
+    'breadcrumb' => 'Breadcrumb',
+    // App\Support\FileSize: a file size and its unit.
+    'size' => ['b' => ':size B', 'kb' => ':size KB', 'mb' => ':size MB', 'gb' => ':size GB'],
+    // E-mail header next to the REDact mark.
+    'byline' => 'by cetome',
 ];

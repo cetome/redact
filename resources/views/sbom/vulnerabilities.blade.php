@@ -266,7 +266,7 @@
                                 <td class="is-nowrap">
                                     @if ($finding->severity || $finding->score() !== null)
                                         <span class="a-sev {{ $severityBadge[$finding->severity ?? 'none'] ?? 'a-sev-none' }}">
-                                            @if ($finding->score() !== null)<b>{{ number_format($finding->score(), 1) }}</b>@endif
+                                            @if ($finding->score() !== null)<b>{{ \Illuminate\Support\Number::format($finding->score(), 1) }}</b>@endif
                                             {{ __('sbom.severity.'.($finding->severity ?? 'unknown')) }}
                                         </span>
                                     @else

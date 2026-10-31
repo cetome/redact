@@ -2378,6 +2378,10 @@
   .a-einfo-field .a-einfo-done { display: none; }
   .a-einfo-field.is-filled .a-einfo-done { display: inline-flex; }
   .a-einfo-field.is-filled .a-einfo-missing { display: none; }
+  /* To re-check after a significant change: written, not done yet; "Still valid" under the badge. */
+  .a-einfo-field.is-recheck .a-einfo-missing { display: none; }
+  .a-einfo-field.is-recheck.is-filled .a-einfo-recheck { display: none; }
+  .a-einfo-still-valid { margin-top: 0.4rem; }
   /* Conditional items (required only if the standard's condition holds): after the required ones, with the condition. */
   .a-einfo-field-meta .a-einfo-condition { font-style: italic; }
   .a-einfo-field.is-conditional:not(.is-filled) .a-code.a-einfo-code { color: var(--c-ink-muted); }
@@ -2407,7 +2411,11 @@
     .a-savebar.a-einfo-savebar { flex-wrap: nowrap; gap: 0.5rem; padding-inline: 0.75rem; }
     .a-einfo-savebar .a-einfo-count { display: none; }
   }
-  @container einfo-card (width < 28rem) { .a-einfo-save-label { display: none; } }
+  @container einfo-card (width < 28rem) {
+    .a-einfo-save-label { display: none; }
+    /* Long labels (French) wrap rather than widen the card past a phone screen. */
+    .a-einfo-savebar .a-btn-primary, .a-einfo-prefill-bar .a-btn { height: auto; min-height: 2.125rem; flex-shrink: 1; min-width: 0; padding-block: 0.35rem; line-height: 1.25; white-space: normal; }
+  }
 }
 
 @layer components {
@@ -3249,6 +3257,25 @@
   .a-art-confirm.is-confirmed > svg { color: var(--a-ok-ink); }
   .a-art-confirm.is-stale { border-color: var(--a-warn-line); background-color: var(--a-warn-bg); }
   .a-art-confirm.is-stale > svg { color: var(--a-warn-ink); }
+
+  /* Organisation portfolio (portfolio.show): earlier versions recede under the latest one. */
+  .a-folio tbody + tbody { border-top: 1px solid var(--c-line); }
+  .a-folio tr.a-folio-older > td { color: var(--c-ink-muted); }
+  .a-folio .a-folio-bad { color: var(--a-bad-ink); }
+
+  /* Significant change since the earlier version (changes.show, SignificantChange). */
+  .a-signs .a-table-group > th svg { display: inline-block; width: 0.95rem; height: 0.95rem; margin-right: 0.3rem; vertical-align: -0.15rem; color: var(--c-ink-muted); }
+  .a-sign-detail { color: var(--c-ink-muted); overflow-wrap: anywhere; }
+  .a-sign-removed { color: var(--c-ink-muted); text-decoration: line-through; }
+  .a-sign-type { display: inline-block; width: 0.9rem; height: 0.9rem; margin-right: 0.35rem; vertical-align: -0.12rem; color: var(--c-ink-subtle); }
+  .a-sign-why { margin: 0 1rem 0.85rem; border-radius: var(--radius-lg); background-color: var(--a-mute-bg); padding: 0.5rem 0.7rem; font-size: var(--text-label); color: var(--c-ink); white-space: pre-line; overflow-wrap: anywhere; }
+  .a-recheck-alert { align-items: center; }
+  .a-recheck-alert > .min-w-0 { flex: 1 1 auto; }
+  .a-recheck-action { flex-shrink: 0; }
+  @media (max-width: 47.99rem) { .a-recheck-alert { flex-wrap: wrap; } .a-sign-grid > aside { order: -1; } }
+  .a-sign-change { display: flex; align-items: center; gap: 0.4rem; margin: 0 1rem 0.85rem; cursor: pointer; font-size: var(--text-label); font-weight: 600; color: var(--c-link); }
+  .a-sign-change > svg { width: 0.95rem; height: 0.95rem; }
+  .a-sign-form[open] > .a-sign-change { margin-bottom: 0.6rem; }
   .a-art-actions .a-btn:not(.a-btn-block) { flex: 1 1 auto; }
 
   /* Risk form and register: articles and mechanisms outside the scope. */
@@ -3609,6 +3636,7 @@
      this item and "Edit the decision tree" (modal, evaluations/_tree-form). Tinted rows, no edge colour. */
   .a-einfo-req-head {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;
     min-height: 2.5rem;
@@ -3616,7 +3644,8 @@
     background-color: var(--c-canvas-subtle);
     padding: 0.3rem 0.75rem 0.3rem 1rem;
   }
-  .a-einfo-req-name { flex: 1; min-width: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--text-label); }
+  /* A long state (French) goes under the name rather than past a phone screen. */
+  .a-einfo-req-name { flex: 1 1 8rem; min-width: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--text-label); }
   .a-einfo-req-name .a-code { font-weight: 800; }
   .a-einfo-req-title { color: var(--c-ink-muted); }
   .a-einfo-req-state { display: inline-flex; flex-shrink: 0; align-items: center; gap: 0.35rem; }

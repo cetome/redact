@@ -53,7 +53,7 @@
         </div>
     </form>
 
-    <p class="a-toolbar-count mb-2">{{ trans_choice('admin.activity.count', $activities->total(), ['count' => number_format($activities->total())]) }}</p>
+    <p class="a-toolbar-count mb-2">{{ trans_choice('admin.activity.count', $activities->total(), ['count' => \Illuminate\Support\Number::format($activities->total())]) }}</p>
 
     <div class="a-table-wrap">
         <table class="a-table a-table-compact">

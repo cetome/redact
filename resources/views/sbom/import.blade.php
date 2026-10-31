@@ -25,7 +25,7 @@
                                    @error('files') aria-invalid="true" @enderror @error('files.*') aria-invalid="true" @enderror
                                    class="a-sbom-file">
                         </label>
-                        <p class="a-help">{{ __('sbom.import.limits', ['mb' => $maxMb, 'files' => $maxFiles, 'max' => number_format($maxComponents, 0, '.', ' ')]) }}</p>
+                        <p class="a-help">{{ __('sbom.import.limits', ['mb' => $maxMb, 'files' => $maxFiles, 'max' => \Illuminate\Support\Number::format($maxComponents)]) }}</p>
                         @error('files')<p class="a-error">{{ $message }}</p>@enderror
                         @foreach ($errors->get('files.*') as $messages)
                             <p class="a-error">{{ $messages[0] }}</p>

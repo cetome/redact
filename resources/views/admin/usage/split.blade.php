@@ -18,9 +18,9 @@
             @foreach ($rows as $label => $count)
                 <tr>
                     <td>{{ $label }}</td>
-                    <td class="is-num">{{ number_format($count) }}</td>
+                    <td class="is-num">{{ \Illuminate\Support\Number::format($count) }}</td>
                     @if ($percent)
-                        <td class="is-num">{{ number_format($count / $sum * 100, 1) }} %</td>
+                        <td class="is-num">{{ \Illuminate\Support\Number::format($count / $sum * 100, 1) }} %</td>
                     @endif
                 </tr>
             @endforeach

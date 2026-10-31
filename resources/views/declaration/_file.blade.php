@@ -75,7 +75,7 @@
                         <tr>
                             <td class="min-w-0">
                                 <a href="{{ route('versions.documents.download', [$version, $document]) }}" class="a-row-link break-all">{{ $document->original_name }}</a>
-                                <span class="a-row-sub">{{ \Illuminate\Support\Number::fileSize($document->size, 1) }} · {{ $document->created_at->isoFormat('D MMMM YYYY') }}</span>
+                                <span class="a-row-sub">{{ \App\Support\FileSize::format($document->size, 1) }} · {{ $document->created_at->isoFormat('D MMMM YYYY') }}</span>
                             </td>
                             <td class="is-nowrap">
                                 @if ($canFile)

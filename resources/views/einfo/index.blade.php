@@ -191,7 +191,7 @@
                                 $optional = $field['conditional'] ?? false;
                                 $prefilled = $editable && $field['prefill'] !== null;
                             @endphp
-                            <div @class(['a-einfo-field', 'is-filled' => $field['done'], 'is-conditional' => $optional, 'is-prefilled' => $prefilled]) data-einfo-field data-search="{{ $field['search'] }}"
+                            <div @class(['a-einfo-field', 'is-filled' => $field['done'], 'is-recheck' => $field['recheck'], 'is-conditional' => $optional, 'is-prefilled' => $prefilled]) data-einfo-field data-search="{{ $field['search'] }}"
                                  @if ($optional) data-optional @endif @if ($field['done']) data-state="done" @endif @if (! $field['hit']) hidden @endif>
                                 <div class="a-einfo-field-meta">
                                     <label for="{{ $fieldId }}" class="a-code a-einfo-code">@if ($short !== $field['code'])<span class="a-einfo-code-prefix">{{ $prefix }}</span>@endif{{ $short }}</label>
@@ -208,7 +208,13 @@
                                             <span class="a-badge a-badge-warning a-einfo-missing">{{ __('einfo.missing') }}</span>
                                         @endif
                                         <span class="a-badge a-badge-success a-einfo-done"><x-lucide-check aria-hidden="true" />{{ __('einfo.documented') }}</span>
+                                        @if ($field['recheck'])
+                                            <span class="a-badge a-badge-warning a-einfo-recheck" title="{{ __('changes.recheck_help') }}"><x-lucide-refresh-ccw aria-hidden="true" />{{ __('evaluations.status.recheck') }}</span>
+                                        @endif
                                     </p>
+                                    @if ($field['recheck'] && $editable)
+                                        <button type="submit" form="einfo-recheck-{{ $field['entry']->id }}" class="a-btn a-btn-outline a-btn-sm a-einfo-still-valid" title="{{ __('changes.still_valid_help') }}"><x-lucide-check aria-hidden="true" />{{ __('changes.still_valid') }}</button>
+                                    @endif
                                 </div>
                                 <div class="a-einfo-field-input">
                                     <textarea id="{{ $fieldId }}" name="entries[{{ $selectedKey }}][{{ $field['code'] }}]" class="a-textarea" rows="3" maxlength="20000">{{ $field['entry']?->text ?? ($prefilled ? $field['prefill'] : '') }}</textarea>
@@ -264,6 +270,16 @@
                         @endif
                     </div>
                 </form>
+                {{-- "Still valid" of the entries put back to re-check (SignificantChange): forms outside the E.Info form, buttons inside it. --}}
+                @if ($editable)
+                    @foreach ($selected['fields'] ?? [] as $field)
+                        @if ($field['recheck'])
+                            <form method="POST" action="{{ route('versions.changes.confirm.einfo', [$version, $field['entry']]) }}" id="einfo-recheck-{{ $field['entry']->id }}" hidden>
+                                @csrf
+                            </form>
+                        @endif
+                    @endforeach
+                @endif
             </section>
         </div>
 

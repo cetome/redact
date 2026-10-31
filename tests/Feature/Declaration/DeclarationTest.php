@@ -630,6 +630,21 @@ class DeclarationTest extends TestCase
         $this->assertStringContainsString('- [Missing] Drawings and schemes of components, sub-assemblies and circuits', $readme);
         $this->assertStringContainsString('not assessed in REDact', $readme);
         $this->assertStringContainsString('Article 10(3)', $readme);
+        $this->assertStringContainsString('sha256sum -c SHA256SUMS.txt', $readme);
+
+        // Every file is in SHA256SUMS.txt with its checksum, and every checksum matches (sha256sum format).
+        $sums = [];
+        foreach (explode("\n", trim((string) $zip->getFromName($root.TechnicalFile::SUMS))) as $line) {
+            [$hash, $file] = explode('  ', $line, 2);
+            $sums[$file] = $hash;
+        }
+        $files = array_values(array_filter($names, fn (string $n) => ! str_ends_with($n, '/') && $n !== $root.TechnicalFile::SUMS));
+        $this->assertSame(count($files), count($sums));
+        foreach ($files as $name) {
+            $relative = substr($name, strlen($root));
+            $this->assertArrayHasKey($relative, $sums, $relative);
+            $this->assertSame(hash('sha256', (string) $zip->getFromName($name)), $sums[$relative], $relative);
+        }
 
         // The index opens in Word and lists the items with their status.
         $index = tempnam(sys_get_temp_dir(), 'idx').'.docx';

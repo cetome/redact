@@ -216,6 +216,7 @@ relations (mappings) between lists.
       "label": "Assets",
       "singular": "Asset",
       "code_prefix": "AS-",
+      "significant_change": true,
       "help": "What is worth protecting.",
       "fields": [
         { "key": "type", "label": "Type", "type": "select", "required": true,
@@ -227,7 +228,7 @@ relations (mappings) between lists.
         { "key": "notes", "label": "Notes", "type": "textarea", "help": "Anything a reviewer should know." }
       ]
     },
-    { "key": "interfaces", "label": "Interfaces", "singular": "Interface", "code_prefix": "IF-", "fields": [] }
+    { "key": "interfaces", "label": "Interfaces", "singular": "Interface", "code_prefix": "IF-", "significant_change": true, "fields": [] }
   ],
   "relations": [
     { "key": "asset_interface", "from": "assets", "to": "interfaces", "label": "Reachable through" }
@@ -240,6 +241,7 @@ relations (mappings) between lists.
 | `lists[].key` | Required, unique, referenced by requirements, E.Info, relations and the catalogue. Lists appear in file order. |
 | `label`, `singular`, `help` | Texts. |
 | `code_prefix` | Prefix of the codes the engine proposes (`AS-1`, `AS-2`…). |
+| `significant_change` | `true`: on a version made from an earlier one, an object of this list added, removed, or with other attributes or members is a sign of a significant change ("Changes" step, `App\Assessment\SignificantChange`). A new name or description alone is not. Usually the assets and the interfaces. |
 | `fields[].key`, `label`, `help` | Field identity and texts. Values are stored in the object's `attributes`. |
 | `fields[].type` | `text` (500 characters), `textarea` (10,000), `select` (one option value), `multiselect` (a list of option values), `boolean`, `yesno` (`yes` / `no` / `na`). |
 | `fields[].required` | Required on save (booleans are never required). |

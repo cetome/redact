@@ -15,6 +15,7 @@ use App\Models\InventoryItem;
 use App\Models\InventoryLink;
 use App\Models\ProductVersion;
 use App\Models\RiskEntry;
+use App\Models\RiskLevel;
 use App\Models\RiskMatrixCell;
 use App\Models\User;
 use App\Reports\ReportData;
@@ -507,6 +508,13 @@ final class ImportApplier
         $existing = $this->version->riskEntries()->get()->keyBy(fn (RiskEntry $r) => Mapping::normalise((string) $r->threat));
         $levels = [];
         foreach ($this->version->riskLevels()->get() as $level) {
+            // A level still named as in the pack also reads in the pack's other languages.
+            $packNames = array_map(fn (string $n) => Mapping::normalise($n), RiskLevel::packNamesOf($level->rank));
+            if (in_array(Mapping::normalise((string) $level->getRawOriginal('name')), $packNames, true)) {
+                foreach ($packNames as $name) {
+                    $levels[$name] ??= $level->rank;
+                }
+            }
             $levels[Mapping::normalise((string) $level->name)] = $level->rank;
         }
         $articles = array_keys($this->pack->articles());

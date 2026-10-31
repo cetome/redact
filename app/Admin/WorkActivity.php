@@ -4,6 +4,7 @@ namespace App\Admin;
 
 use App\History\Describer;
 use App\History\Entry;
+use App\Models\Organisation;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Query\Builder;
@@ -11,10 +12,11 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Models\Activity;
 
 /**
- * Who does what, over a period of 7, 30 or 90 days, for the console overview: the work of
- * accounts (sandbox guests and the console's own entries left out) from the activity log, by
- * area, by person and by product, and the latest entries in the customers' history sentences
- * (App\History\Describer).
+ * Who does what, over a period of 7, 30 or 90 days, for the console overview (every
+ * organisation) and an organisation's portfolio (that organisation only, App\Portfolio\Portfolio):
+ * the work of accounts (sandbox guests and the console's own entries left out) from the activity
+ * log, by area, by person and by product, and the latest entries in the customers' history
+ * sentences (App\History\Describer).
  */
 final class WorkActivity
 {
@@ -34,11 +36,12 @@ final class WorkActivity
 
     public const LATEST = 25;
 
-    public function __construct(private readonly int $days) {}
+    public function __construct(private readonly int $days, private readonly ?string $organisationId = null) {}
 
-    public static function for(int $days): self
+    /** Every organisation, or $organisation's work only. */
+    public static function for(int $days, ?Organisation $organisation = null): self
     {
-        return new self(in_array($days, UsageAnalytics::PERIODS, true) ? $days : 30);
+        return new self(in_array($days, UsageAnalytics::PERIODS, true) ? $days : 30, $organisation?->id);
     }
 
     public function days(): int
@@ -71,7 +74,8 @@ final class WorkActivity
             ->where('a.causer_type', (new User)->getMorphClass())
             ->where('u.is_guest', false)
             ->whereIn('a.log_name', self::logs())
-            ->where('a.created_at', '>=', DailySeries::start($this->days));
+            ->where('a.created_at', '>=', DailySeries::start($this->days))
+            ->when($this->organisationId, fn (Builder $q, string $id) => $q->where('a.organisation_id', $id));
     }
 
     /** @return array{actions: int, people: int, products: int, organisations: int} */

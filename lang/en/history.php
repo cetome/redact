@@ -130,6 +130,7 @@ return [
         'original_name' => 'File',
         'size' => 'Size',
         'reason' => 'Reason',
+        'self_review' => 'Self-review',
     ],
 
     'events' => [
@@ -156,6 +157,12 @@ return [
         'answer_changed' => 'Changed “:question”: :old → :new',
         'answer_deleted' => 'Cleared “:question”',
         'articles_confirmed' => 'Confirmed the articles and standards',
+        'change_decided' => [
+            'significant' => 'Decided the changes since :label are significant: reassess',
+            'not_significant' => 'Decided the changes since :label are not significant',
+        ],
+        'recheck_confirmed' => 'Confirmed :target still valid after the significant change',
+        'einfo_recheck_confirmed' => 'Confirmed E.Info :code of :item still valid after the significant change',
         'route_changed' => 'Chose the conformity route :new',
         'notified_body' => 'Edited the Notified Body',
         'declaration_saved' => 'Edited the declaration of conformity',
@@ -232,6 +239,7 @@ return [
         'member_updated' => 'Edited the access of :person',
         'invited' => 'Invited :email as :role',
         'invitation_revoked' => 'Revoked the invitation of :email',
+        'invitation_declined' => 'Declined the invitation',
         'org_invited' => 'Invited :email to the organisation as :role',
         'org_invitation_revoked' => 'Revoked the organisation invitation of :email',
         'org_joined' => 'Joined the organisation as :role',

@@ -50,6 +50,7 @@ final readonly class ReportData
      * @param  array<string, mixed>  $reviews  overall, counts
      * @param  list<array<string, mixed>>  $cases  assessment cases per standard and requirement (AssessmentCases)
      * @param  bool  $unitsExternal  the assessment units are performed outside REDact (independent test laboratory): not reported
+     * @param  array{previous: string, decision: string, justification: string, decided: string, rechecks: int, signs: list<array{kind: string, what: string, detail: string}>}|null  $change  significant change since the earlier version (SignificantChange), null for a first version
      */
     public function __construct(
         public array $product,
@@ -67,6 +68,7 @@ final readonly class ReportData
         public string $exportedAt,
         public string $exportedOn,
         public bool $unitsExternal = false,
+        public ?array $change = null,
     ) {}
 
     public static function for(ProductVersion $version, User $by): self
@@ -101,7 +103,41 @@ final readonly class ReportData
             exportedAt: $now->isoFormat('D MMMM YYYY, HH:mm'),
             exportedOn: $now->isoFormat('D MMMM YYYY'),
             unitsExternal: (bool) $version->units_external,
+            change: self::change($assessment),
         );
+    }
+
+    /**
+     * The significant change since the version this one was made from: the signs, the decision with
+     * its justification, who took it, and what is still to re-check (SignificantChange).
+     *
+     * @return array{previous: string, decision: string, justification: string, decided: string, rechecks: int, signs: list<array{kind: string, what: string, detail: string}>}|null
+     */
+    private static function change(Assessment $assessment): ?array
+    {
+        $changes = $assessment->changes();
+        if ($changes === null) {
+            return null;
+        }
+        $version = $assessment->version;
+        $state = $changes->state();
+        $by = (string) $version->changeDecider()->value('name');
+        $on = $version->change_decided_at?->locale(app()->getLocale())->isoFormat('D MMMM YYYY') ?? '';
+
+        return [
+            'previous' => $changes->previous->label,
+            'decision' => $version->change_decision === null
+                ? (string) __('changes.state_short.'.$state)
+                : __('changes.decisions.'.$version->change_decision).($state === 'outdated' ? ' ('.__('changes.state_short.outdated').')' : ''),
+            'justification' => (string) $version->change_justification,
+            'decided' => trim($by.($by !== '' && $on !== '' ? ' · ' : '').$on),
+            'rechecks' => $changes->significant() ? count($changes->rechecks()) : 0,
+            'signs' => array_map(fn (array $sign) => [
+                'kind' => (string) __('changes.kind.'.$sign['kind']),
+                'what' => $sign['label'],
+                'detail' => $sign['detail'] !== '' ? $sign['detail'] : (string) __('changes.detail.'.$sign['kind']),
+            ], $changes->signs()),
+        ];
     }
 
     /** "Smart lock · version 2.1", the way CRAted names a product in its documents. */

@@ -4,15 +4,27 @@
   "requirement": "ACC-1",
   "clause": "D.1",
   "figure": "Demo tree 1",
-  "title": "Access to an asset (demo)",
-  "scope": "For each asset",
+  "title": {
+    "en": "Access to an asset (demo)",
+    "fr": "Accès à un actif (démo)"
+  },
+  "scope": {
+    "en": "For each asset",
+    "fr": "Pour chaque actif"
+  },
   "start": "DN-1",
   "nodes": [
     {
       "id": "DN-1",
       "kind": "decision",
-      "text": "Can the asset be reached from outside the product, through any interface?",
-      "help": "Demo question. Think of every interface linked to the asset in the inventory.",
+      "text": {
+        "en": "Can the asset be reached from outside the product, through any interface?",
+        "fr": "L’actif est-il accessible depuis l’extérieur du produit, par une interface quelconque ?"
+      },
+      "help": {
+        "en": "Demo question. Think of every interface linked to the asset in the inventory.",
+        "fr": "Question de démonstration. Penser à chaque interface liée à l’actif dans l’inventaire."
+      },
       "branches": [
         {
           "label": "No",
@@ -27,7 +39,10 @@
     {
       "id": "DN-2",
       "kind": "decision",
-      "text": "Does the product check who is asking before it gives access to the asset?",
+      "text": {
+        "en": "Does the product check who is asking before it gives access to the asset?",
+        "fr": "Le produit vérifie-t-il qui fait la demande avant de donner accès à l’actif ?"
+      },
       "branches": [
         {
           "label": "Yes",
@@ -42,7 +57,10 @@
     {
       "id": "DN-3",
       "kind": "decision",
-      "text": "Would it be harmless if anyone read or changed the asset?",
+      "text": {
+        "en": "Would it be harmless if anyone read or changed the asset?",
+        "fr": "Serait-il sans conséquence que n’importe qui lise ou modifie l’actif ?"
+      },
       "branches": [
         {
           "label": "Yes",

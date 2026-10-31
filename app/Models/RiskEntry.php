@@ -19,9 +19,10 @@ use Spatie\Activitylog\Support\LogOptions;
  * @property int|null $impact
  * @property int|null $likelihood
  * @property int|null $residual_rank
+ * @property string|null $source_id the risk of the earlier version it was copied from
  */
 #[Fillable(['product_version_id', 'position', 'threat', 'description', 'stride', 'risk', 'impact', 'likelihood',
-    'articles', 'requirements', 'remediation', 'implementation', 'residual_rank', 'updated_by'])]
+    'articles', 'requirements', 'remediation', 'implementation', 'residual_rank', 'updated_by', 'source_id'])]
 class RiskEntry extends Model
 {
     use HasUlids, LogsActivity;
@@ -42,7 +43,7 @@ class RiskEntry extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logAll()->logExcept(['updated_at', 'created_at'])->logOnlyDirty()
+        return LogOptions::defaults()->logAll()->logExcept(['updated_at', 'created_at', 'source_id'])->logOnlyDirty()
             ->dontLogEmptyChanges()->useLogName('risk');
     }
 

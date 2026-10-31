@@ -92,7 +92,7 @@ class FollowsFromTest extends TestCase
 
         // French.
         app()->setLocale('fr');
-        $this->assertSame('FAIL · découle de ACC-1', __('evaluations.follows.badge', ['code' => 'ACC-1']));
+        $this->assertSame('NON CONFORME · découle de ACC-1', __('evaluations.follows.badge', ['code' => 'ACC-1']));
     }
 
     public function test_the_reports_list_it_apart(): void

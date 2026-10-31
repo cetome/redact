@@ -4,14 +4,23 @@
   "requirement": "UPD-1",
   "clause": "D.2",
   "figure": "Demo tree 2",
-  "title": "Software updates (demo)",
-  "scope": "For the product",
+  "title": {
+    "en": "Software updates (demo)",
+    "fr": "Mises à jour logicielles (démo)"
+  },
+  "scope": {
+    "en": "For the product",
+    "fr": "Pour le produit"
+  },
   "start": "DN-1",
   "nodes": [
     {
       "id": "DN-1",
       "kind": "decision",
-      "text": "Can the product's software be changed after it is sold?",
+      "text": {
+        "en": "Can the product's software be changed after it is sold?",
+        "fr": "Le logiciel du produit peut-il être modifié après la vente de celui-ci ?"
+      },
       "branches": [
         {
           "label": "No",
@@ -26,7 +35,10 @@
     {
       "id": "DN-2",
       "kind": "decision",
-      "text": "Does the product check where an update comes from before installing it?",
+      "text": {
+        "en": "Does the product check where an update comes from before installing it?",
+        "fr": "Le produit vérifie-t-il la provenance d’une mise à jour avant de l’installer ?"
+      },
       "branches": [
         {
           "label": "Yes",

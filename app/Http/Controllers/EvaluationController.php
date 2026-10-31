@@ -43,7 +43,7 @@ class EvaluationController extends Controller
         foreach ($assessment->pack->requirementsFor($standard) as $code => $requirement) {
             $tree = $assessment->pack->tree($standard, $code);
             $targets = $assessment->targets($standard, $code);
-            $counts = ['total' => count($targets), 'done' => 0, 'invalid' => 0, 'unjustified' => 0, 'inconclusive' => 0, 'fail' => 0, 'pass' => 0, 'na' => 0];
+            $counts = ['total' => count($targets), 'done' => 0, 'invalid' => 0, 'unjustified' => 0, 'inconclusive' => 0, 'recheck' => 0, 'fail' => 0, 'pass' => 0, 'na' => 0];
             foreach ($targets as $item) {
                 $evaluation = $assessment->evaluation($standard, $code, $item);
                 $status = $assessment->status($evaluation, $tree);
@@ -51,6 +51,7 @@ class EvaluationController extends Controller
                 $counts['invalid'] += $status === 'invalid' ? 1 : 0;
                 $counts['unjustified'] += $status === 'unjustified' ? 1 : 0;
                 $counts['inconclusive'] += $status === 'inconclusive' ? 1 : 0;
+                $counts['recheck'] += $status === 'recheck' ? 1 : 0;
                 $counts['fail'] += $evaluation?->verdict === Verdict::Fail ? 1 : 0;
                 $counts['pass'] += $evaluation?->verdict === Verdict::Pass ? 1 : 0;
                 $counts['na'] += $evaluation?->verdict === Verdict::NotApplicable ? 1 : 0;

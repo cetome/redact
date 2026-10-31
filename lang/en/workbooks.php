@@ -9,6 +9,7 @@ return [
     'download_tooltip' => 'Builds the workbook from this version now',
     'download_all' => 'All four (zip)',
     'download_all_tooltip' => 'The four workbooks and a notes file in one zip',
+    'zip_name' => 'cetome REDact workbooks',
     'locked' => 'Create an account to download',
     'locked_tooltip' => 'Workbooks can be downloaded once the sandbox is saved as an account',
     'recalculate' => 'Excel recomputes every formula when the workbook opens. Other spreadsheet programs may need a manual recalculation.',

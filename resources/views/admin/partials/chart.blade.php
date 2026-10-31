@@ -16,11 +16,11 @@
                 <p class="a-help mt-0.5">{{ $help }}</p>
             @endisset
         </div>
-        <span class="a-badge a-badge-neutral">{{ __('admin.charts.total', ['total' => number_format($total)]) }}</span>
+        <span class="a-badge a-badge-neutral">{{ __('admin.charts.total', ['total' => \Illuminate\Support\Number::format($total)]) }}</span>
     </div>
     <div class="a-panel-body">
         <div @class(['relative', isset($chart['datasets']) ? 'h-72' : 'h-52']) x-data="adminChart" data-chart="{{ json_encode($chart) }}">
-            <canvas role="img" aria-label="{{ __('admin.charts.aria', ['title' => $title, 'total' => number_format($total)]) }}"></canvas>
+            <canvas role="img" aria-label="{{ __('admin.charts.aria', ['title' => $title, 'total' => \Illuminate\Support\Number::format($total)]) }}"></canvas>
         </div>
         <details class="mt-3">
             <summary class="a-link-btn cursor-pointer text-label">{{ __('admin.charts.show_table') }}</summary>
@@ -40,7 +40,7 @@
                             <tr>
                                 <td>{{ \Carbon\Carbon::parse($chart['labels'][$i])->isoFormat('D MMMM YYYY') }}</td>
                                 @foreach ($series as $one)
-                                    <td class="is-num">{{ number_format($one['values'][$i]) }}</td>
+                                    <td class="is-num">{{ \Illuminate\Support\Number::format($one['values'][$i]) }}</td>
                                 @endforeach
                             </tr>
                         @endforeach

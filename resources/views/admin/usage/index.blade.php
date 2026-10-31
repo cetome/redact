@@ -15,10 +15,10 @@
 
     <ul class="a-stats grid-cols-2! sm:grid-cols-4!">
         @foreach ([
-            [__('admin.usage.requests'), number_format($totals['requests']), null],
-            [__('admin.usage.users'), number_format($totals['users']), null],
-            [__('admin.usage.errors'), number_format($totals['errors']), $totals['errors'] > 0 ? 'bad' : null],
-            [__('admin.usage.error_rate'), number_format($totals['error_rate'], 2).' %', $totals['errors'] > 0 ? 'bad' : null],
+            [__('admin.usage.requests'), \Illuminate\Support\Number::format($totals['requests']), null],
+            [__('admin.usage.users'), \Illuminate\Support\Number::format($totals['users']), null],
+            [__('admin.usage.errors'), \Illuminate\Support\Number::format($totals['errors']), $totals['errors'] > 0 ? 'bad' : null],
+            [__('admin.usage.error_rate'), \Illuminate\Support\Number::format($totals['error_rate'], 2).' %', $totals['errors'] > 0 ? 'bad' : null],
         ] as [$label, $value, $tone])
             <li @class(['a-stat', 'a-stat-'.$tone => $tone])>
                 <span class="a-stat-label">{{ $label }}</span>
@@ -57,8 +57,8 @@
                     @foreach ($funnel as $step => $count)
                         <tr>
                             <th scope="row" class="font-normal!">{{ __('admin.usage.steps.'.$step) }}</th>
-                            <td class="is-num">{{ number_format($count) }}</td>
-                            <td class="is-num">{{ $funnel['signed_up'] > 0 ? number_format($count / $base * 100, 1).' %' : '—' }}</td>
+                            <td class="is-num">{{ \Illuminate\Support\Number::format($count) }}</td>
+                            <td class="is-num">{{ $funnel['signed_up'] > 0 ? \Illuminate\Support\Number::format($count / $base * 100, 1).' %' : '—' }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -86,14 +86,14 @@
                     @forelse ($routes as $row)
                         <tr>
                             <td class="a-mono">{{ $row['route'] }}</td>
-                            <td class="is-num">{{ number_format($row['hits']) }}</td>
-                            <td class="is-num">{{ number_format($row['users']) }}</td>
-                            <td class="is-num">{{ number_format($row['avg_ms']) }}</td>
-                            <td class="is-num">{{ number_format($row['p95_ms']) }}</td>
+                            <td class="is-num">{{ \Illuminate\Support\Number::format($row['hits']) }}</td>
+                            <td class="is-num">{{ \Illuminate\Support\Number::format($row['users']) }}</td>
+                            <td class="is-num">{{ \Illuminate\Support\Number::format($row['avg_ms']) }}</td>
+                            <td class="is-num">{{ \Illuminate\Support\Number::format($row['p95_ms']) }}</td>
                             <td class="is-num">
-                                {{ number_format($row['errors']) }}
+                                {{ \Illuminate\Support\Number::format($row['errors']) }}
                                 @if ($row['errors'] > 0)
-                                    <span class="a-badge a-badge-danger ml-1">{{ number_format($row['error_rate'], 2) }} %</span>
+                                    <span class="a-badge a-badge-danger ml-1">{{ \Illuminate\Support\Number::format($row['error_rate'], 2) }} %</span>
                                 @endif
                             </td>
                         </tr>
@@ -168,8 +168,8 @@
                             <td>
                                 <span class="a-badge {{ $row['outcome'] === 'ok' ? 'a-badge-success' : ($row['outcome'] === 'error' ? 'a-badge-danger' : 'a-badge-warning') }}">{{ \App\Admin\Label::of('outcomes', $row['outcome']) }}</span>
                             </td>
-                            <td class="is-num">{{ number_format($row['calls']) }}</td>
-                            <td class="is-num">{{ number_format($row['units']) }}</td>
+                            <td class="is-num">{{ \Illuminate\Support\Number::format($row['calls']) }}</td>
+                            <td class="is-num">{{ \Illuminate\Support\Number::format($row['units']) }}</td>
                         </tr>
                     @empty
                         <tr><td colspan="4" class="a-muted">{{ __('admin.no_data') }}</td></tr>

@@ -105,6 +105,14 @@ class VersionController extends Controller
             return redirect()->route('versions.conformity', $version)->with('error', __('conformity.conflict'));
         }
 
+        // A version made from an earlier one: the significant change is decided on the current signs
+        // first (SignificantChange). What it puts back to re-check waits for approval, not here.
+        $changes = $assessment->changes();
+        if ($changes && ! $changes->settled()) {
+            return back()->with('error', __('changes.submit_refused', ['label' => $changes->previous->label]))
+                ->with('error_link', ['href' => route('versions.changes', $version), 'label' => __('changes.submit_link')]);
+        }
+
         // Every walked verdict must be justified the way the standard asks (Justification).
         $unjustified = $assessment->unjustified();
         if ($unjustified !== []) {
@@ -155,6 +163,10 @@ class VersionController extends Controller
                 $response->with('warning_link', ['href' => $missing[0]['href'], 'label' => __('assessment.provide_units')]);
             }
             $response->with('warning_post', ['action' => route('versions.units.where', $version), 'fields' => ['where' => 'external'], 'label' => __('assessment.where.lab_action')]);
+        }
+        $rechecks = $changes && $changes->significant() ? count($changes->rechecks()) : 0;
+        if ($rechecks > 0) {
+            $warnings[] = trans_choice('changes.submitted_with_rechecks', $rechecks, ['count' => $rechecks]);
         }
         if ($warnings !== []) {
             $response->with('warning', implode(' ', $warnings));

@@ -298,7 +298,7 @@ class PlansTest extends TestCase
         $owner = $this->owner();
         $organisation = $owner->organisations()->first();
         $organisation->forceFill(['limits' => ['extra_products' => 2]])->save();
-        $this->usage($owner, $organisation, 900, now()->subMonth()->startOfMonth()->addDay());
+        $this->usage($owner, $organisation, 900, now()->startOfMonth()->subMonthNoOverflow()->addDay());
         $this->usage($owner, $organisation, 990, now()->startOfMonth()->addMinute());
 
         $ai = Plan::fresh($organisation)->aiAllowance();

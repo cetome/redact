@@ -5,7 +5,10 @@ namespace App\Providers;
 use App\Content\ContentPack;
 use App\History\ActivityScope;
 use App\Models\User;
+use Illuminate\Foundation\Events\LocaleUpdated;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Number;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passkeys\Contracts\PasskeyConfirmationResponse;
 use Laravel\Passkeys\Contracts\PasskeyDeletedResponse;
@@ -46,6 +49,10 @@ class AppServiceProvider extends ServiceProvider
         Passkeys::authorizeLoginUsing(
             fn ($request, $user) => $user instanceof User && $user->active
         );
+
+        // Numbers follow the interface language ("1,234.5" / "1 234,5"), like dates do (Carbon).
+        Number::useLocale($this->app->getLocale());
+        Event::listen(LocaleUpdated::class, fn (LocaleUpdated $event) => Number::useLocale($event->locale));
 
         // Every activity entry knows its organisation, product and version (customer histories).
         ActivityScope::register();

@@ -47,6 +47,9 @@
         @if ($progress['inconclusive'])
             <x-ui.stat :label="__('verdicts.INCONCLUSIVE')" :value="$progress['inconclusive']" tone="bad" />
         @endif
+        @if ($progress['recheck'])
+            <x-ui.stat :label="__('evaluations.status.recheck')" :value="$progress['recheck']" tone="bad" :title="__('changes.recheck_help')" />
+        @endif
     </div>
 
     <div class="a-toolbar" data-filter-scope>
@@ -57,6 +60,9 @@
             <button type="button" class="a-seg-btn" data-facet="fail" aria-pressed="false">{{ __('verdicts.FAIL') }} <span class="a-seg-count">{{ $rows->filter(fn ($r) => $r['counts']['fail'] > 0 || $r['counts']['follows'] > 0)->count() }}</span></button>
             <button type="button" class="a-seg-btn" data-facet="unjustified" aria-pressed="false">{{ __('evaluations.status.unjustified') }} <span @class(['a-seg-count', 'is-warning' => $progress['unjustified']])>{{ $rows->filter(fn ($r) => $r['counts']['unjustified'] > 0)->count() }}</span></button>
             <button type="button" class="a-seg-btn" data-facet="inconclusive" aria-pressed="false">{{ __('verdicts.INCONCLUSIVE') }} <span @class(['a-seg-count', 'is-warning' => $progress['inconclusive']])>{{ $rows->filter(fn ($r) => $r['counts']['inconclusive'] > 0)->count() }}</span></button>
+            @if ($progress['recheck'])
+                <button type="button" class="a-seg-btn" data-facet="recheck" aria-pressed="false">{{ __('evaluations.status.recheck') }} <span class="a-seg-count is-warning">{{ $rows->filter(fn ($r) => $r['counts']['recheck'] > 0)->count() }}</span></button>
+            @endif
             <button type="button" class="a-seg-btn" data-facet="done" aria-pressed="false">{{ __('workflow.done') }}</button>
         </div>
         <span class="a-toolbar-count" data-filter-count data-template="{{ __('ui.shown') }}"></span>
@@ -84,7 +90,7 @@
                             $state = $c['unlinked'] > 0 ? 'todo' : ($c['total'] === 0 ? ($c['follows'] ? 'done' : 'none') : ($c['done'] === $c['total'] ? 'done' : 'todo'));
                             $source = implode(', ', $row['sources']);
                         @endphp
-                        <tr data-filter-item data-search="{{ $row['code'] }} {{ $row['title'] }} {{ $family }}" data-facet-value="{{ trim($state.($c['fail'] || $c['follows'] ? ' fail' : '').($c['unjustified'] ? ' unjustified' : '').($c['inconclusive'] ? ' inconclusive' : '')) }}" @class(['is-muted' => $c['total'] === 0 && ! $c['follows'] && ! $c['unlinked']])>
+                        <tr data-filter-item data-search="{{ $row['code'] }} {{ $row['title'] }} {{ $family }}" data-facet-value="{{ trim($state.($c['fail'] || $c['follows'] ? ' fail' : '').($c['unjustified'] ? ' unjustified' : '').($c['inconclusive'] ? ' inconclusive' : '').($c['recheck'] ? ' recheck' : '')) }}" @class(['is-muted' => $c['total'] === 0 && ! $c['follows'] && ! $c['unlinked']])>
                             <th scope="row" class="font-normal!">
                                 <a class="a-row-link" data-row-link href="{{ route('versions.evaluate.requirement', [$version, $standard, $row['code']]) }}"><span class="a-code">{{ $row['code'] }}</span></a>
                                 <span class="ml-1">{{ $row['title'] }}</span>

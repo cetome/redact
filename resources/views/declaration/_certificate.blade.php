@@ -52,7 +52,7 @@
                     @if ($certificate)
                         <p class="a-decl-file"><x-lucide-file-badge aria-hidden="true" />
                             <a href="{{ route('versions.documents.download', [$version, $certificate]) }}" class="a-row-link">{{ $certificate->original_name }}</a>
-                            <span class="a-muted">{{ \Illuminate\Support\Number::fileSize($certificate->size, 1) }}</span>
+                            <span class="a-muted">{{ \App\Support\FileSize::format($certificate->size, 1) }}</span>
                             <label class="a-check ml-auto"><input type="checkbox" name="remove_file" value="1"> {{ __('declaration.certificate.remove_file') }}</label>
                         </p>
                     @endif

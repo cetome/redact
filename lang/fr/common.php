@@ -30,4 +30,9 @@ return [
     'support_access' => 'Accès support cetome : vous consultez ce produit en lecture seule, et cette visite est journalisée.',
     'updated_by' => 'Modifié par :name le :date',
     'progress' => ':done sur :total',
+    'breadcrumb' => 'Fil d’Ariane',
+    // App\Support\FileSize : une taille de fichier et son unité.
+    'size' => ['b' => ':size o', 'kb' => ':size Ko', 'mb' => ':size Mo', 'gb' => ':size Go'],
+    // En-tête des e-mails, à côté de la marque REDact.
+    'byline' => 'par cetome',
 ];

@@ -21,8 +21,11 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  */
 class PublicController extends Controller
 {
-    /** The workflow in its real order, then the reports: "What happens next" and the tour pictures. */
-    public const TOUR = [...Assessment::ORDER, 'reports'];
+    /**
+     * The workflow in its real order, then the reports: "What happens next" and the tour pictures.
+     * "Changes" exists only on a version made from an earlier one: not in the tour of a first assessment.
+     */
+    public const TOUR = ['description', 'scoping', 'risks', 'inventory', 'evaluate', 'einfo', 'units', 'conformity', 'review', 'declaration', 'reports'];
 
     public function home(ContentPack $pack, ScopingForm $form): View
     {

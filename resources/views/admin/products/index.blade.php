@@ -15,7 +15,7 @@
         </label>
         <button type="submit" class="a-btn a-btn-primary a-btn-sm"><x-lucide-filter aria-hidden="true" />{{ __('admin.filter') }}</button>
         @if (filled($filters['q']))<button type="submit" name="reset" value="1" class="a-btn a-btn-ghost a-btn-sm"><x-lucide-rotate-ccw aria-hidden="true" />{{ __('admin.reset') }}</button>@endif
-        <span class="a-toolbar-end a-toolbar-count">{{ trans_choice('admin.products.count', $products->total(), ['count' => number_format($products->total())]) }}</span>
+        <span class="a-toolbar-end a-toolbar-count">{{ trans_choice('admin.products.count', $products->total(), ['count' => \Illuminate\Support\Number::format($products->total())]) }}</span>
     </form>
 
     <div class="a-table-wrap">

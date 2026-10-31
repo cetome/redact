@@ -36,6 +36,8 @@ class Assessment
 
     private ?Conformity $conformity = null;
 
+    private SignificantChange|false|null $changes = null;
+
     public function __construct(
         public readonly ProductVersion $version,
         public readonly ContentPack $pack,
@@ -71,6 +73,17 @@ class Assessment
     public function conformity(): Conformity
     {
         return $this->conformity ??= new Conformity($this);
+    }
+
+    /** The comparison with the version this one was made from, or null for a first version (SignificantChange). */
+    public function changes(): ?SignificantChange
+    {
+        if ($this->changes === null) {
+            $previous = $this->version->previous_version_id ? $this->version->previousVersion()->first() : null;
+            $this->changes = $previous ? new SignificantChange($this, $previous) : false;
+        }
+
+        return $this->changes ?: null;
     }
 
     /** The "Assets & interfaces" step as a sequence of lists (see InventoryGuide). */
@@ -159,7 +172,8 @@ class Assessment
      * missing | inconclusive (set by a person while evidence is missing, not a verdict of EN 18031)
      * | incomplete (node or verdict missing) | invalid (verdict not reachable)
      * | unjustified (walked, but the justification is missing, too short or not based on what the
-     * standard requires, see Justification) | done
+     * standard requires, see Justification) | recheck (walked and justified, put back to re-check by
+     * a significant change, see SignificantChange) | done
      */
     public function status(?Evaluation $evaluation, ?Tree $tree): string
     {
@@ -177,6 +191,10 @@ class Assessment
         }
         if (! $this->justification()->check($evaluation)->justified) {
             return 'unjustified';
+        }
+        // Put back to re-check by a significant change (SignificantChange): not done until confirmed.
+        if ($evaluation->recheck) {
+            return 'recheck';
         }
 
         return 'done';
@@ -240,7 +258,7 @@ class Assessment
      */
     public function evaluationProgress(string $standard): array
     {
-        $counts = ['total' => 0, 'done' => 0, 'missing' => 0, 'incomplete' => 0, 'invalid' => 0, 'unjustified' => 0, 'inconclusive' => 0, 'to_check' => 0, 'pass' => 0, 'fail' => 0, 'na' => 0, 'follows' => 0, 'unlinked' => 0];
+        $counts = ['total' => 0, 'done' => 0, 'missing' => 0, 'incomplete' => 0, 'invalid' => 0, 'unjustified' => 0, 'inconclusive' => 0, 'to_check' => 0, 'recheck' => 0, 'pass' => 0, 'fail' => 0, 'na' => 0, 'follows' => 0, 'unlinked' => 0];
 
         $unlinked = [];
         foreach (array_keys($this->pack->requirementsFor($standard)) as $code) {
@@ -310,7 +328,8 @@ class Assessment
     /** @return array{total: int, done: int} */
     public function einfoProgress(string $standard): array
     {
-        $texts = $this->version->einfoEntries()->whereNotNull('text')->where('text', '!=', '')
+        // An entry to re-check after a significant change (SignificantChange) is not done yet.
+        $texts = $this->version->einfoEntries()->whereNotNull('text')->where('text', '!=', '')->where('recheck', false)
             ->get(['einfo', 'inventory_item_id'])
             ->map(fn ($e) => $e->einfo.'|'.($e->inventory_item_id ?? '-'))
             ->flip();
@@ -330,7 +349,7 @@ class Assessment
     }
 
     /** The workflow steps in order: the keys of steps(), the sidebar, WorkflowSummary. */
-    public const ORDER = ['description', 'scoping', 'risks', 'inventory', 'evaluate', 'einfo', 'units', 'conformity', 'review', 'declaration'];
+    public const ORDER = ['description', 'scoping', 'risks', 'inventory', 'changes', 'evaluate', 'einfo', 'units', 'conformity', 'review', 'declaration'];
 
     /**
      * The step after $key, for "Save and continue" buttons and "Next" links: its key, label and
@@ -346,6 +365,10 @@ class Assessment
             return null;
         }
         $next = self::ORDER[$at + 1];
+        // "Changes" exists only for a version made from an earlier one.
+        if ($next === 'changes' && $this->changes() === null) {
+            $next = self::ORDER[$at + 2];
+        }
 
         return ['key' => $next, 'label' => __('workflow.steps.'.$next), 'href' => $this->stepUrl($next)];
     }
@@ -360,6 +383,7 @@ class Assessment
             'risks' => route('versions.risks', $version),
             'scoping' => route('versions.scoping', $version),
             'inventory' => route('versions.inventory', [$version, $this->inventoryGuide()->listKeys()[0] ?? array_key_first($this->pack->lists()) ?? '']),
+            'changes' => route('versions.changes', $version),
             'evaluate' => route('versions.evaluate', [$version, $standard ?? $this->workingStandards()[0] ?? '']),
             'einfo' => route('versions.einfo', [$version, $standard ?? $this->workingStandards()[0] ?? '']),
             'units' => route('versions.units', $version),
@@ -424,6 +448,18 @@ class Assessment
                 'done' => $lists['total'] > 0 && $lists['done'] === $lists['total'],
                 'detail' => $inventoryDetail],
         ];
+
+        // A version made from an earlier one: the signs of a significant change, the decision, and
+        // what that decision puts back to re-check (SignificantChange). Done when nothing waits.
+        if ($changes = $this->changes()) {
+            $state = $changes->state();
+            $rechecks = $changes->settled() ? count($changes->rechecks()) : 0;
+            $steps[] = ['key' => 'changes', 'route' => 'versions.changes', 'params' => [],
+                'done' => $changes->settled() && $rechecks === 0,
+                'detail' => $rechecks > 0
+                    ? trans_choice('changes.recheck_count', $rechecks, ['count' => $rechecks])
+                    : __('changes.state_short.'.($state === 'decided' ? $version->change_decision : $state))];
+        }
 
         foreach ($this->workingStandards() as $standard) {
             $p = $this->evaluationProgress($standard);

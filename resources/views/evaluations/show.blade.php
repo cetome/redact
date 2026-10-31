@@ -30,7 +30,7 @@
     </x-ui.page-header>
 
     @if ($tree?->scope())
-        <div class="a-alert"><x-lucide-repeat aria-hidden="true" /><span class="min-w-0 [overflow-wrap:anywhere]"><b>{{ __('evaluations.scope') }}:</b> {{ $tree->scope() }}</span></div>
+        <div class="a-alert"><x-lucide-repeat aria-hidden="true" /><span class="min-w-0 [overflow-wrap:anywhere]"><b>{{ __('evaluations.scope_label') }}</b> {{ $tree->scope() }}</span></div>
     @endif
 
     @if ($criteria)
@@ -77,6 +77,10 @@
                                     <x-verdict :verdict="$e?->verdict" :icon="false" />
                                 @elseif ($target['status'] === 'inconclusive')
                                     <span class="a-badge a-badge-warning a-badge-inconclusive is-icon" title="{{ __('evaluations.status.inconclusive') }}"><x-lucide-circle-help aria-hidden="true" /><span class="a-sr-only">{{ __('evaluations.status.inconclusive') }}</span></span>
+                                @elseif ($target['status'] === 'invalid')
+                                    <span class="a-badge a-badge-danger is-icon" title="{{ __('evaluations.status.invalid') }}"><x-lucide-triangle-alert aria-hidden="true" /><span class="a-sr-only">{{ __('evaluations.status.invalid') }}</span></span>
+                                @elseif ($target['status'] === 'recheck')
+                                    <span class="a-badge a-badge-warning is-icon" title="{{ __('evaluations.status.recheck') }}"><x-lucide-refresh-ccw aria-hidden="true" /><span class="a-sr-only">{{ __('evaluations.status.recheck') }}</span></span>
                                 @elseif ($target['status'] === 'unjustified')
                                     <span class="a-badge a-badge-warning a-badge-unjustified is-icon" title="{{ __('evaluations.status.unjustified') }}"><x-lucide-scale aria-hidden="true" /><span class="a-sr-only">{{ __('evaluations.status.unjustified') }}</span></span>
                                 @elseif ($target['status'] === 'missing')
@@ -111,7 +115,7 @@
             <section class="a-panel min-w-0" aria-labelledby="object-title">
                 <header class="a-panel-head">
                     <h2 class="a-h2 min-w-0 truncate" id="object-title">{{ $selected['item']?->label() ?? __('evaluations.product') }}</h2>
-                    <span class="flex items-center gap-2">
+                    <span class="flex min-w-0 flex-wrap items-center gap-2">
                         @if ($evaluation?->nodeReference())<span class="a-chip a-chip-sm a-chip-code">{{ $evaluation->nodeReference() }}</span>@endif
                         @if ($selected['status'] === 'done' || ! $evaluation)
                             <x-verdict :verdict="$evaluation?->verdict" />
@@ -133,6 +137,9 @@
                 @endif
                 @if ($evaluation?->verdict === \App\Enums\Verdict::Inconclusive)
                     <div class="a-alert a-alert-warning a-inconclusive-alert"><x-lucide-circle-help aria-hidden="true" /><span><b>{{ __('verdicts.INCONCLUSIVE') }}.</b> {{ __('assessment.inconclusive_note') }}</span></div>
+                @endif
+                @if ($evaluation?->recheck)
+                    @include('changes._recheck', ['subject' => $evaluation, 'action' => route('versions.changes.confirm.evaluation', [$version, $evaluation]), 'editable' => $canEdit])
                 @endif
                 @include('evaluations._tree-form', ['targetKey' => $selected['key']])
                 @if ($canEdit && $evaluation && $shared)

@@ -74,7 +74,8 @@ class HomeStartTest extends TestCase
             ->assertDontSee('data-tour-open', false)
             ->getContent();
 
-        $this->assertSame([...Assessment::ORDER, 'reports'], PublicController::TOUR);
+        // Every step but "Changes" (only on a version made from an earlier one), then the reports.
+        $this->assertSame([...array_values(array_diff(Assessment::ORDER, ['changes'])), 'reports'], PublicController::TOUR);
         // Every step has its pictures (scripts/tour-shots.py), 1x and 2x, light and dark. They are screens of
         // the private content pack: the open-source snapshot leaves them out and the slider shows none.
         if (! is_dir(public_path('images/tour'))) {

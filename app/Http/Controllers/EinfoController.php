@@ -238,7 +238,9 @@ class EinfoController extends Controller
                         'requirement' => (string) ($catalogue[$code]['requirement'] ?? ''),
                         'label' => $label,
                         'entry' => $entry,
-                        'done' => $saved,
+                        // Put back to re-check by a significant change (SignificantChange): not done until confirmed.
+                        'done' => $saved && ! $entry->recheck,
+                        'recheck' => $saved && $entry->recheck,
                         'conditional' => $conditional,
                         'condition' => $conditional ? $this->condition($assessment, $standard, $code) : null,
                         // Shown in the empty field, not saved: the field still counts as missing.

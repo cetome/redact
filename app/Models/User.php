@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Guest\Sandbox;
 use Database\Factories\UserFactory;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -41,7 +42,7 @@ use Spatie\Permission\Traits\HasRoles;
  */
 #[Fillable(['name', 'email', 'organisation_name', 'locale', 'timezone', 'wants_product_news', 'shortcuts_enabled'])]
 #[Hidden(['remember_token'])]
-class User extends Authenticatable implements PasskeyUser
+class User extends Authenticatable implements HasLocalePreference, PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, LogsActivity, Notifiable, PasskeyAuthenticatable;
@@ -77,6 +78,12 @@ class User extends Authenticatable implements PasskeyUser
             ->logOnlyDirty()
             ->dontLogEmptyChanges()
             ->useLogName('account');
+    }
+
+    /** The language of the e-mails sent to this account (Mail::to($user), queued or not). */
+    public function preferredLocale(): string
+    {
+        return in_array($this->locale, array_keys((array) config('redact.locales')), true) ? $this->locale : (string) config('app.locale');
     }
 
     /** @return BelongsToMany<Organisation, $this> */

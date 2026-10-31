@@ -18,7 +18,7 @@
                         <td style="padding:28px 32px 8px 32px;">
                             <span style="display:inline-block;width:12px;height:12px;background:#0044aa;margin-right:8px;vertical-align:middle;"></span>
                             <span style="font-size:13px;font-weight:900;letter-spacing:.3em;text-transform:uppercase;color:#0044aa;vertical-align:middle;">REDact</span>
-                            <span style="font-size:13px;color:#64748b;vertical-align:middle;">&nbsp;by cetome</span>
+                            <span style="font-size:13px;color:#64748b;vertical-align:middle;">&nbsp;{{ __('common.byline') }}</span>
                         </td>
                     </tr>
                     <tr>

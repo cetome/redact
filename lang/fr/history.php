@@ -130,6 +130,7 @@ return [
         'original_name' => 'Fichier',
         'size' => 'Taille',
         'reason' => 'Motif',
+        'self_review' => 'Auto-relecture',
     ],
 
     'events' => [
@@ -154,6 +155,12 @@ return [
         'answer_changed' => 'A changé « :question » : :old → :new',
         'answer_deleted' => 'A effacé « :question »',
         'articles_confirmed' => 'A confirmé les articles et les normes',
+        'change_decided' => [
+            'significant' => 'A décidé que les changements depuis :label sont significatifs : réévaluer',
+            'not_significant' => 'A décidé que les changements depuis :label ne sont pas significatifs',
+        ],
+        'recheck_confirmed' => 'A confirmé :target toujours valable après le changement significatif',
+        'einfo_recheck_confirmed' => 'A confirmé l’E.Info :code de :item toujours valable après le changement significatif',
         'route_changed' => 'A choisi la procédure :new',
         'notified_body' => 'A modifié l’organisme notifié',
         'declaration_saved' => 'A modifié la déclaration de conformité',
@@ -224,6 +231,7 @@ return [
         'member_updated' => 'A modifié l’accès de :person',
         'invited' => 'A invité :email comme :role',
         'invitation_revoked' => 'A annulé l’invitation de :email',
+        'invitation_declined' => 'A décliné l’invitation',
         'org_invited' => 'A invité :email dans l’organisation comme :role',
         'org_invitation_revoked' => 'A annulé l’invitation de :email dans l’organisation',
         'org_joined' => 'A rejoint l’organisation comme :role',

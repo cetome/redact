@@ -91,7 +91,7 @@
         </div>
 
         <div class="a-table-wrap a-table-scroll">
-            <table class="a-table">
+            <table class="a-table a-table-pin-2">
                 <thead>
                     <tr>
                         <th scope="col" class="is-shrink">#</th>
@@ -118,7 +118,7 @@
                         <tr id="risk-{{ $entry->id }}" data-filter-item data-search="{{ $entry->threat }} {{ $entry->description }} {{ $mech->implode(' ') }}" data-facet-value="{{ $facets }}"
                             @class(['is-current' => $editing?->id === $entry->id])>
                             <td class="is-shrink a-muted">{{ $loop->iteration }}</td>
-                            <td class="min-w-60">
+                            <td class="min-w-36 sm:min-w-60">
                                 <a href="{{ route('versions.risks.edit', [$version, $entry->id]) }}" class="a-row-link" data-row-link data-dialog-fetch="risk-edit">{{ $entry->threat }}</a>
                                 @if ($entry->description)<span class="a-row-sub line-clamp-1" title="{{ $entry->description }}">{{ $entry->description }}</span>@endif
                             </td>

@@ -3,7 +3,7 @@
 // Significant change since the previous version (App\Assessment\SignificantChange, route versions.changes).
 return [
     'title' => 'Changes since :label',
-    'lead' => 'A new version must be reassessed when it brings new risks, higher risks or changes to its assets. REDact compares this version with :label and lists the signs; you decide whether the change is significant.',
+    'lead' => 'A new version must be reassessed when it brings new risks, higher risks or changes to its assets. REDact compares this version with :label and lists the signs. You decide whether the change is significant.',
     'untitled_risk' => 'Untitled risk',
     'signs_title' => 'Signs of a significant change',
     'sign_count' => '{1} 1 sign|[2,*] :count signs',
@@ -65,7 +65,7 @@ return [
         'not_significant' => 'Not significant',
     ],
     'decisions_help' => [
-        'significant' => 'The decision trees and E.Info these signs touch go back to "To re-check"; approval waits for each.',
+        'significant' => 'The decision trees and E.Info these signs touch go back to "To re-check". Approval waits for each of them.',
         'not_significant' => 'The assessment carries over. The justification goes into the review, the reports and the technical file.',
     ],
     'justification' => 'Justification',

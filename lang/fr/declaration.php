@@ -369,7 +369,7 @@ return [
             'in_assessment' => 'dans le rapport d’évaluation RED',
             'in_trees' => 'dans les rapports d’évaluation RED et des arbres de décision',
             'review' => 'avis des relecteurs et unités d’évaluation',
-            'review_external' => 'avis des relecteurs ; unités d’évaluation réalisées en externe (laboratoire d’essais indépendant)',
+            'review_external' => 'avis des relecteurs, unités d’évaluation réalisées en externe (laboratoire d’essais indépendant)',
             'not_produced' => 'non produit par REDact',
         ],
         'names' => [

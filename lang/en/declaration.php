@@ -369,7 +369,7 @@ return [
             'in_assessment' => 'in the RED assessment report',
             'in_trees' => 'in the RED assessment and decision tree reports',
             'review' => 'reviewers’ verdicts and assessment units',
-            'review_external' => 'reviewers’ verdicts; assessment units performed externally (independent test laboratory)',
+            'review_external' => 'reviewers’ verdicts, assessment units performed externally (independent test laboratory)',
             'not_produced' => 'not produced by REDact',
         ],
         'names' => [

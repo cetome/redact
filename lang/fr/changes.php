@@ -3,7 +3,7 @@
 // Changement significatif depuis la version précédente (App\Assessment\SignificantChange, route versions.changes).
 return [
     'title' => 'Changements depuis :label',
-    'lead' => 'Une nouvelle version doit être réévaluée lorsqu’elle apporte de nouveaux risques, des risques plus élevés ou des changements de ses actifs. REDact compare cette version avec :label et liste les signes ; vous décidez si le changement est significatif.',
+    'lead' => 'Une nouvelle version doit être réévaluée lorsqu’elle apporte de nouveaux risques, des risques plus élevés ou des changements de ses actifs. REDact compare cette version avec :label et liste les signes. Vous décidez si le changement est significatif.',
     'untitled_risk' => 'Risque sans titre',
     'signs_title' => 'Signes d’un changement significatif',
     'sign_count' => '{1} 1 signe|[2,*] :count signes',
@@ -65,7 +65,7 @@ return [
         'not_significant' => 'Non significatif',
     ],
     'decisions_help' => [
-        'significant' => 'Les arbres de décision et E.Info touchés par ces signes repassent « À revérifier » ; l’approbation attend chacun d’eux.',
+        'significant' => 'Les arbres de décision et E.Info touchés par ces signes repassent « À revérifier ». L’approbation attend chacun d’eux.',
         'not_significant' => 'L’évaluation est reprise telle quelle. La justification figure dans la revue, les rapports et le dossier technique.',
     ],
     'justification' => 'Justification',

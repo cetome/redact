@@ -9,7 +9,7 @@ return [
     'added' => 'Risk added.',
     'deleted' => 'Risk deleted.',
     'library' => 'Threat library',
-    'library_help' => 'Typical threats for radio equipment. Those linked to your scoping answers are ticked and listed first; adapt them to your product.',
+    'library_help' => 'Typical threats for radio equipment. Those linked to your scoping answers are ticked and listed first. Adapt them to your product.',
     'add_selected' => 'Add the selected threats',
     'threat' => 'Threat',
     'description' => 'Threat description',

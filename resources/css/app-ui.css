@@ -964,6 +964,25 @@
   }
   .a-table-matrix thead th:first-child { z-index: 3; }
 
+  /* Phones: a table scrolls with the page, never in a box of its own, and .a-table-pin-2 keeps
+     the second column (the name) in view while the row scrolls sideways. Translucent row tints
+     are laid over the surface so the cells passing under stay hidden. */
+  @media (width < 40rem) {
+    .a-table-scroll { max-height: none; }
+    .a-table-pin-2 :is(td, th):nth-child(2) {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      min-width: 9rem;
+      max-width: 11rem;
+      border-right: 1px solid var(--c-line);
+      background-color: var(--c-surface);
+    }
+    .a-table-pin-2 thead th:nth-child(2) { z-index: 3; }
+    .a-table-pin-2 tr.is-current > :nth-child(2) { background-image: linear-gradient(var(--a-row-current), var(--a-row-current)); }
+    .a-table-pin-2 tbody tr:hover > :nth-child(2) { @media (hover: hover) { background-image: linear-gradient(var(--a-row-hover), var(--a-row-hover)); } }
+  }
+
   /* ----------------------------------------------------------------------------------------------
      8. Chips, toggle chips, badges, verdicts
      ---------------------------------------------------------------------------------------------- */

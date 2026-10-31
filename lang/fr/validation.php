@@ -182,7 +182,7 @@ return [
         'sources' => 'sources',
         'role' => 'rôle',
         'products' => 'produits',
-        'likelihood' => 'probabilité',
+        'likelihood' => 'vraisemblance',
         'impact' => 'impact',
         'category' => 'catégorie',
         'topic' => 'sujet',

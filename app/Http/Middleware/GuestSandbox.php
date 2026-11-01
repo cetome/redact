@@ -39,6 +39,8 @@ class GuestSandbox
         'versions.declaration.*', 'versions.technical-file.*', 'versions.certificate.*',
         // Product identification from Excel, and its template.
         'versions.identification.import', 'versions.identification.template',
+        // Public product page: publishing needs an account.
+        'versions.public', 'versions.public.*', 'products.qr',
     ];
 
     public function handle(Request $request, Closure $next): Response

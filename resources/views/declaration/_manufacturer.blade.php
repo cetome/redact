@@ -15,7 +15,7 @@
         @endif
     </div>
     @if ($orgAdmin && ! $data->isDemo())
-        <details class="a-decl-org" @if (! $data->hasManufacturer() || $errors->hasAny(['legal_name', 'address', 'country', 'authorised_rep_name', 'authorised_rep_address'])) open @endif>
+        <details class="a-decl-org" @if (! $data->hasManufacturer() || $errors->hasAny(['legal_name', 'address', 'country', 'authorised_rep_name', 'authorised_rep_address', 'security_contact'])) open @endif>
             <summary class="a-decl-org-summary">
                 <span class="min-w-0 truncate">{{ $data->hasManufacturer() ? $data->manufacturerName().' · '.str_replace("\n", ', ', $data->manufacturerAddress()) : __('declaration.manufacturer.fill') }}</span>
                 <span class="a-link-btn shrink-0">{{ __('common.edit') }}</span>
@@ -45,6 +45,12 @@
                     <div class="a-field">
                         <label class="a-label" for="org-rep-address">{{ __('declaration.manufacturer.rep_address') }}</label>
                         <textarea id="org-rep-address" name="authorised_rep_address" class="a-textarea a-textarea-sm" rows="2" maxlength="1000">{{ old('authorised_rep_address', $org->authorised_rep_address) }}</textarea>
+                    </div>
+                    <div class="a-field">
+                        <label class="a-label" for="org-security-contact">{{ __('declaration.manufacturer.security_contact') }}</label>
+                        <input type="text" id="org-security-contact" name="security_contact" class="a-input" maxlength="300" value="{{ old('security_contact', $org->security_contact) }}" placeholder="security@… · https://…">
+                        <p class="a-help">{{ __('declaration.manufacturer.security_contact_help') }}</p>
+                        @error('security_contact')<p class="a-error">{{ $message }}</p>@enderror
                     </div>
                 </div>
                 <div class="flex flex-wrap items-center gap-3">

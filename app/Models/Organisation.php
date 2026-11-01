@@ -24,12 +24,13 @@ use Spatie\Activitylog\Support\LogOptions;
  * @property int|null $created_by
  * @property string|null $stripe_id
  * @property string|null $legal_name manufacturer's legal name (EU declaration of conformity)
+ * @property string|null $security_contact default security contact of the public product pages (e-mail or web address)
  * @property string|null $address
  * @property string|null $country
  * @property string|null $authorised_rep_name
  * @property string|null $authorised_rep_address
  */
-#[Fillable(['name', 'created_by', 'ai_enabled', 'settings', 'legal_name', 'address', 'country', 'authorised_rep_name', 'authorised_rep_address'])]
+#[Fillable(['name', 'created_by', 'ai_enabled', 'settings', 'legal_name', 'address', 'country', 'authorised_rep_name', 'authorised_rep_address', 'security_contact'])]
 class Organisation extends Model
 {
     // Billable: the organisation is the Stripe customer (Cashier::useCustomerModel, BillingServiceProvider).
@@ -53,7 +54,7 @@ class Organisation extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnly(['name', 'ai_enabled', 'plan', 'limits', 'legal_name', 'address', 'country', 'authorised_rep_name', 'authorised_rep_address'])->logOnlyDirty()
+        return LogOptions::defaults()->logOnly(['name', 'ai_enabled', 'plan', 'limits', 'legal_name', 'address', 'country', 'authorised_rep_name', 'authorised_rep_address', 'security_contact'])->logOnlyDirty()
             ->dontLogEmptyChanges()->useLogName('organisation');
     }
 

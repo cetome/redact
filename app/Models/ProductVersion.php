@@ -52,6 +52,9 @@ use Spatie\Activitylog\Support\LogOptions;
  * @property int|null $change_decided_by
  * @property Carbon|null $change_decided_at
  * @property string|null $change_fingerprint fingerprint of the signs the decision was taken on
+ * @property array<string, mixed>|null $public_page what the public product page shows of this version (App\PublicPage\PublicSettings)
+ * @property Carbon|null $published_at on the public product page since then (null: not published)
+ * @property int|null $published_by
  * @property Carbon $created_at
  * @property-read Product $product
  */
@@ -77,6 +80,8 @@ class ProductVersion extends Model
             'declaration' => 'array',
             'certificate_issued_on' => 'date',
             'certificate_expires_on' => 'date',
+            'public_page' => 'array',
+            'published_at' => 'datetime',
         ];
     }
 
@@ -89,7 +94,7 @@ class ProductVersion extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()->logOnly(['label', 'status', 'intended_use', 'hardware_version', 'software_version', 'author_name', 'completion_date',
-            'conformity_route', 'units_external', 'notified_body', 'notified_body_number'])
+            'conformity_route', 'units_external', 'notified_body', 'notified_body_number', 'published_at'])
             ->logOnlyDirty()->dontLogEmptyChanges()->useLogName('version');
     }
 

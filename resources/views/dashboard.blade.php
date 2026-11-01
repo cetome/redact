@@ -80,6 +80,7 @@
                         <th scope="col">{{ __('versions.version') }}</th>
                         <th scope="col" class="w-[18%] max-md:hidden">{{ __('products.progress') }}</th>
                         <th scope="col" class="w-[16%] max-lg:hidden">{{ __('workflow.steps.evaluate') }}</th>
+                        <th scope="col" class="max-md:hidden">{{ __('public_page.list.column') }}</th>
                         <th scope="col" class="max-sm:hidden">{{ __('products.next') }}</th>
                     </tr>
                 </thead>
@@ -120,6 +121,18 @@
                             <td class="max-lg:hidden">
                                 @if ($trees && $trees['total'])
                                     <x-ui.progress :value="$trees['doneCount']" :max="$trees['total']" line />
+                                @endif
+                            </td>
+                            <td class="max-md:hidden is-nowrap">
+                                @if ($product->has_public_page && $product->public_code)
+                                    <span class="inline-flex items-center gap-1">
+                                        <a href="{{ route('verify.show', $product->public_code) }}" class="a-btn a-btn-ghost a-btn-sm" target="_blank" rel="noopener"
+                                           aria-label="{{ __('public_page.list.open', ['product' => $product->name]) }}"><x-lucide-globe aria-hidden="true" />{{ $product->public_code }}</a>
+                                        <a href="{{ route('products.qr', [$product, 'svg']) }}" class="a-btn a-btn-ghost a-btn-icon a-btn-sm" download
+                                           aria-label="{{ __('public_page.list.qr', ['product' => $product->name]) }}" title="{{ __('public_page.qr_svg') }}"><x-lucide-qr-code aria-hidden="true" /></a>
+                                    </span>
+                                @else
+                                    <span class="a-muted">—</span>
                                 @endif
                             </td>
                             <td class="max-sm:hidden">

@@ -308,6 +308,13 @@ function autosave(form) {
     }, 450));
 }
 
+// <button data-print> opens the browser's print window (the QR label sheet).
+document.addEventListener('click', (event) => {
+    if (event.target instanceof Element && event.target.closest('[data-print]')) {
+        window.print();
+    }
+});
+
 // Check or clear a whole row or column of a tick grid: <button data-check-row> inside the row,
 // <button data-check-col="3"> in the header (the cell index), or every box still shown by the
 // filters of a scope: <button data-check-visible="#scope">. All ticked: clears, else ticks all.

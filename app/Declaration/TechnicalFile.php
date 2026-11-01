@@ -49,7 +49,7 @@ final class TechnicalFile
     /** Categories a person can give a document, and the Annex V point each one files it under. */
     public const CATEGORIES = [
         'general' => 'a', 'photographs' => 'a_i', 'software' => 'a_ii', 'user_information' => 'a_iii',
-        'drawings' => 'b', 'descriptions' => 'c', 'standards' => 'd', 'calculations' => 'g',
+        'drawings' => 'b', 'descriptions' => 'c', 'standards' => 'd', 'declaration_signed' => 'e', 'calculations' => 'g',
         'test_reports' => 'h', 'article_10' => 'i', 'other' => 'other',
     ];
 

@@ -1,0 +1,148 @@
+/*
+ * Public product page (/verify/{code}) and its preview in the app: `pp-` layout pieces around the
+ * app kit's tables, badges and buttons. The same markup renders in both places (public-product/_page).
+ * Phones first: one column, the side column (documents, manufacturer, contact) joins the flow.
+ */
+@layer components {
+  .pp-page { display: flex; flex-direction: column; gap: 2.5rem; color: var(--c-ink); }
+
+  .pp-hero { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1.5rem 2rem; }
+  .pp-picture {
+    flex: 0 0 auto; width: min(16rem, 100%); aspect-ratio: 1 / 1; object-fit: contain;
+    border: 1px solid var(--c-line); border-radius: var(--radius-2xl); background-color: var(--c-surface);
+  }
+  .pp-hero-body { display: flex; min-width: 0; flex: 999 1 24rem; flex-direction: column; gap: 1rem; }
+  .pp-kicker { font-size: var(--text-micro); font-weight: 900; letter-spacing: 0.3em; text-transform: uppercase; color: var(--c-accent-text); }
+  .pp-title {
+    margin: 0; font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 900; line-height: 1.05; text-transform: uppercase; overflow-wrap: anywhere;
+    &::after { content: ''; display: inline-block; width: 0.3em; height: 0.3em; margin-left: 0.2em; background-color: var(--c-primary); }
+  }
+  .pp-ids { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; font-size: var(--text-small); color: var(--c-ink-muted); }
+  .pp-ids b { color: var(--c-ink); }
+  .pp-versions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+
+  .pp-facts {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr)); gap: 1px; overflow: hidden;
+    border: 1px solid var(--c-line); border-radius: var(--radius-xl); background-color: var(--c-line);
+  }
+  .pp-fact { display: flex; flex-direction: column; gap: 0.3rem; background-color: var(--c-surface); padding: 0.8rem 1rem; }
+  .pp-fact-value { font-size: var(--text-body); font-weight: 800; }
+  .pp-fact .a-badge { white-space: normal; }
+
+  .pp-columns { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2.5rem; }
+  .pp-main { display: flex; min-width: 0; flex: 999 1 34rem; flex-direction: column; gap: 2.5rem; }
+  .pp-side { display: flex; min-width: 0; flex: 1 1 18rem; flex-direction: column; gap: 2rem; }
+
+  .pp-section { display: flex; min-width: 0; flex-direction: column; gap: 0.85rem; }
+  .pp-h2 {
+    display: flex; align-items: center; gap: 0.6rem; margin: 0;
+    font-size: var(--text-small); font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase;
+    &::before { content: ''; flex: none; width: 0.55rem; height: 0.55rem; background-color: var(--c-primary); }
+  }
+  .pp-section-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; }
+  .pp-muted { font-size: var(--text-label); color: var(--c-ink-muted); }
+
+  /* Residual levels: one bar split per level, the legend under it (colours: the page's nonce'd style). */
+  .pp-bar { display: flex; gap: 2px; height: 0.85rem; }
+  .pp-bar > span { min-width: 0.4rem; border-radius: 0; }
+  .pp-bar > span:first-child { border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem; }
+  .pp-bar > span:last-child { border-top-right-radius: 0.25rem; border-bottom-right-radius: 0.25rem; }
+  .pp-legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1.25rem; font-size: var(--text-label); }
+  .pp-legend span { display: inline-flex; align-items: center; gap: 0.45rem; }
+  .pp-legend i { width: 0.65rem; height: 0.65rem; }
+  .pp-risk { display: flex; align-items: flex-start; gap: 0.85rem; border-top: 1px solid var(--c-line); padding-top: 0.75rem; }
+  .pp-risk-title { font-weight: 700; }
+  .pp-risk-advice { margin-top: 0.15rem; font-size: var(--text-label); color: var(--c-ink-muted); }
+
+  .pp-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr)); gap: 0.75rem; }
+  .pp-tile { border: 1px solid var(--c-line); border-radius: var(--radius-xl); background-color: var(--c-surface); padding: 0.75rem 1rem; }
+  .pp-tile-value { font-size: 1.75rem; font-weight: 900; line-height: 1.1; }
+
+  .pp-boms { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.75rem; }
+  .pp-bom { display: flex; flex-direction: column; gap: 0.5rem; border: 1px solid var(--c-line); border-radius: var(--radius-xl); background-color: var(--c-surface); padding: 1rem; }
+  .pp-bom-count { font-size: 1.4rem; font-weight: 900; }
+
+  .pp-files { display: flex; flex-direction: column; }
+  .pp-file { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; border-bottom: 1px solid var(--c-line); padding-block: 0.6rem; }
+  .pp-file-name { font-weight: 700; overflow-wrap: anywhere; }
+
+  .pp-address { font-size: var(--text-small); line-height: 1.55; white-space: pre-line; }
+  .pp-contact { display: flex; flex-direction: column; gap: 0.75rem; border: 1px solid var(--c-line); border-radius: var(--radius-2xl); background-color: var(--c-canvas-subtle); padding: 1.1rem; }
+  .pp-contact-value { overflow-wrap: anywhere; }
+
+  .pp-older { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; }
+
+  /* The public layout around the page: manufacturer bar, page column, footer with the QR code. */
+  .pp-shell { display: flex; min-height: 100vh; flex-direction: column; background-color: var(--c-canvas); color: var(--c-ink); }
+  .pp-bar-top { border-bottom: 1px solid var(--c-line); background-color: var(--c-surface); }
+  .pp-bar-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; max-width: 74rem; margin-inline: auto; padding: 0.75rem 1rem; }
+  .pp-maker { font-size: var(--text-body); font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; overflow-wrap: anywhere; }
+  .pp-langs { display: flex; gap: 0.25rem; }
+  .pp-body { flex: 1; width: 100%; max-width: 74rem; margin-inline: auto; padding: 2rem 1rem 2.5rem; }
+  .pp-foot { border-top: 1px solid var(--c-line); background-color: var(--c-surface); }
+  .pp-foot-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; max-width: 74rem; margin-inline: auto; padding: 1rem; font-size: var(--text-label); color: var(--c-ink-muted); }
+  .pp-qr { width: 4.5rem; height: 4.5rem; border-radius: var(--radius-md); background-color: var(--color-white); }
+  .pp-made { display: flex; align-items: center; gap: 0.75rem; }
+  .pp-made a { font-weight: 800; color: var(--c-ink); text-decoration: none; }
+  .pp-made a:hover { color: var(--c-link); text-decoration: underline; }
+
+  /* In the app's preview dialog: the page on its own ground, framed like the real one. */
+  .pp-preview { border: 1px solid var(--c-line); border-radius: var(--radius-xl); background-color: var(--c-canvas); padding: 1.5rem 1rem; }
+  .pp-preview-lead { margin-bottom: 1rem; }
+
+  /* App settings page: one row per section, switch on the right. */
+  .pp-switches { display: flex; flex-direction: column; gap: 0.5rem; }
+  .pp-switch-help { display: block; font-size: var(--text-label); color: var(--c-ink-muted); }
+  .pp-locked { display: flex; align-items: center; justify-content: space-between; gap: 1rem; border: 1px solid var(--c-line); border-radius: var(--radius-lg); background-color: var(--c-canvas-subtle); padding: 0.55rem 0.85rem; font-size: var(--text-sm); }
+  .pp-qr-box { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
+  :is(.pp-qr, .pp-qr-big) svg { display: block; width: 100%; height: 100%; }
+  .pp-qr-big { width: 7.5rem; height: 7.5rem; border: 1px solid var(--c-line); border-radius: var(--radius-lg); background-color: var(--color-white); padding: 0.25rem; }
+}
+
+/*
+ * Printable QR labels (public-page/labels): a bar on screen, then an A4 sheet at actual size, black
+ * on white whatever the theme. The sheet's grid sizes come from App\PublicPage\Labels (a nonce'd
+ * style in the page). Text sizes are in points: what prints is what the label shows.
+ */
+@layer components {
+  .pl-bar { display: flex; flex-direction: column; gap: 0.6rem; border-bottom: 1px solid var(--c-line); background-color: var(--c-surface); padding: 0.75rem 1rem; }
+  .pl-bar-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem; }
+  .pl-bar .a-seg { flex-wrap: wrap; }
+  .pl-scroll { overflow-x: auto; padding: 1.5rem 1rem; }
+  .pl-sheet {
+    display: grid; align-content: start; justify-content: center; box-sizing: border-box; margin-inline: auto;
+    background-color: #fff; color: #000; box-shadow: 0 1px 3px rgb(15 23 42 / 0.25);
+  }
+  .pl-label {
+    display: flex; align-items: center; box-sizing: border-box; overflow: hidden;
+    border: 0.2mm dashed #94a3b8; border-radius: 1.5mm; line-height: 1.2;
+  }
+  .pl-qr { flex: 0 0 auto; display: block; }
+  .pl-text { display: flex; flex-direction: column; gap: 0.6mm; min-width: 0; }
+  .pl-head { font-weight: 800; }
+  .pl-maker { color: #334155; }
+  .pl-url { margin-top: auto; font-weight: 800; overflow-wrap: anywhere; }
+
+  .pl-product .pl-label { flex-direction: column; justify-content: center; gap: 0.3mm; padding: 0.8mm; }
+  .pl-product .pl-qr { width: 18mm; height: 18mm; }
+  .pl-code { font-size: 4.5pt; font-weight: 800; letter-spacing: 0.02em; white-space: nowrap; }
+
+  .pl-packaging .pl-label { gap: 1.5mm; padding: 1.2mm 2mm 1.2mm 1.2mm; font-size: 6pt; }
+  .pl-packaging .pl-qr { width: 22mm; height: 22mm; }
+  .pl-packaging .pl-head { font-size: 7.5pt; }
+  .pl-packaging .pl-text { align-self: stretch; padding-block: 1mm; }
+  .pl-packaging .pl-url { display: flex; flex-direction: column; font-size: 5pt; white-space: nowrap; }
+
+  .pl-manual .pl-label { gap: 3mm; padding: 2.5mm 4mm 2.5mm 2.5mm; font-size: 7.5pt; }
+  .pl-manual .pl-qr { width: 34mm; height: 34mm; }
+  .pl-manual .pl-head { font-size: 8.5pt; }
+  .pl-manual .pl-product { font-weight: 700; }
+  .pl-manual .pl-text { align-self: stretch; padding-block: 1.5mm; gap: 1mm; }
+}
+
+@media print {
+  @page { size: A4; margin: 0; }
+  .pl-bar { display: none; }
+  .pl-scroll { overflow: visible; padding: 0; }
+  .pl-sheet { margin: 0; min-height: 0; box-shadow: none; }
+}

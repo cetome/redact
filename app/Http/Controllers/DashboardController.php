@@ -28,6 +28,8 @@ class DashboardController extends Controller
                         ->where(fn ($e) => $e->whereNull('expires_at')->orWhere('expires_at', '>', now())));
             })
             ->with(['organisation', 'owner', 'versions' => fn ($q) => $q->limit(1)])
+            // A published public page (/verify/{code}): its link and QR code in the list.
+            ->withExists(['versions as has_public_page' => fn ($q) => $q->whereNotNull('published_at')])
             ->orderByDesc('updated_at')
             ->get();
 

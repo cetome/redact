@@ -20,6 +20,10 @@
     if (Route::has('reports.index')) {
         $tools['reports'] = [route('reports.index', $version), __('workflow.steps.reports'), 'file-down'];
     }
+    // Public product page: not for sandbox guests (no account, nothing to publish).
+    if (auth()->user() && ! auth()->user()->is_guest) {
+        $tools['public'] = [route('versions.public', $version), __('public_page.tool'), 'globe'];
+    }
     $tools['team'] = [route('team.index', $product), __('products.team'), 'users'];
     // History (App\History): the owner, the organisation's admins, contributors, staff on support access; never reviewers.
     if (auth()->user() && ! auth()->user()->is_guest && \App\Support\ProductAccess::for(auth()->user(), $product)->canSeeHistory()) {

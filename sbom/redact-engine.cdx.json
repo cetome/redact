@@ -1,10 +1,10 @@
 {
     "bomFormat": "CycloneDX",
     "specVersion": "1.6",
-    "serialNumber": "urn:uuid:ea0d19bc-3656-5a5d-bee6-00951395210d",
+    "serialNumber": "urn:uuid:f670a6bb-df9f-56ef-992c-329010df4daa",
     "version": 1,
     "metadata": {
-        "timestamp": "2026-10-30T15:22:51Z",
+        "timestamp": "2026-10-31T17:05:20Z",
         "lifecycles": [
             {
                 "phase": "build"
@@ -84,6 +84,31 @@
                 {
                     "type": "vcs",
                     "url": "https://github.com/altcha-org/altcha-lib-php.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/bacon/bacon-qr-code@3.1.1",
+            "group": "bacon",
+            "name": "bacon-qr-code",
+            "version": "3.1.1",
+            "purl": "pkg:composer/bacon/bacon-qr-code@3.1.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "BSD-2-Clause"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/Bacon/BaconQrCode.git"
+                },
+                {
+                    "type": "website",
+                    "url": "https://github.com/Bacon/BaconQrCode"
                 }
             ]
         },
@@ -172,6 +197,27 @@
                 {
                     "type": "vcs",
                     "url": "https://github.com/composer/pcre.git"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/dasprid/enum@1.0.7",
+            "group": "dasprid",
+            "name": "enum",
+            "version": "1.0.7",
+            "purl": "pkg:composer/dasprid/enum@1.0.7",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "BSD-2-Clause"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/DASPRiD/Enum.git"
                 }
             ]
         },
@@ -3171,6 +3217,7 @@
             "ref": "pkg:github/cetome/redact@1.0.0",
             "dependsOn": [
                 "pkg:composer/altcha-org/altcha@2.3.0",
+                "pkg:composer/bacon/bacon-qr-code@3.1.1",
                 "pkg:composer/dompdf/dompdf@3.1.6",
                 "pkg:composer/laravel/cashier@16.9.0",
                 "pkg:composer/laravel/framework@13.39.0",
@@ -3195,6 +3242,12 @@
             "dependsOn": []
         },
         {
+            "ref": "pkg:composer/bacon/bacon-qr-code@3.1.1",
+            "dependsOn": [
+                "pkg:composer/dasprid/enum@1.0.7"
+            ]
+        },
+        {
             "ref": "pkg:composer/blade-ui-kit/blade-icons@1.10.1",
             "dependsOn": [
                 "pkg:composer/symfony/console@8.1.10",
@@ -3211,6 +3264,10 @@
         },
         {
             "ref": "pkg:composer/composer/pcre@3.4.0",
+            "dependsOn": []
+        },
+        {
+            "ref": "pkg:composer/dasprid/enum@1.0.7",
             "dependsOn": []
         },
         {

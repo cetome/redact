@@ -23,6 +23,7 @@ use Spatie\Activitylog\Support\LogOptions;
  * @property string|null $reference
  * @property string|null $description
  * @property string|null $image_path
+ * @property string|null $public_code the public product page's address /verify/{code} and QR code (App\PublicPage\PublicCode)
  * @property string|null $plan_slot free | granted | paid | demo (App\Billing\Plan), null = created before plans (grandfathered)
  * @property bool $is_demo the demo product an account loaded (App\Guest\DemoProduct): read-only, never counted by the plan
  * @property-read Organisation $organisation

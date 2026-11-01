@@ -15,6 +15,7 @@ use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\OrganisationTeamController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PublicPageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RiskController;
 use App\Http\Controllers\ScopingController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\SignificantChangeController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\VersionController;
 use App\Http\Middleware\EnsureOrganisation;
+use App\PublicPage\Labels;
 use Illuminate\Support\Facades\Route;
 
 // Signed-in area (the `auth` middleware is applied in web.php).
@@ -38,6 +40,8 @@ Route::get('/products/{product}/picture', [IdentificationController::class, 'sho
 Route::post('/products/{product}/picture', [IdentificationController::class, 'storeImage'])->name('products.image.store')->middleware('throttle:20,10');
 Route::delete('/products/{product}/picture', [IdentificationController::class, 'destroyImage'])->name('products.image.destroy');
 Route::put('/versions/{version}/identification', [IdentificationController::class, 'update'])->name('versions.identification');
+// The QR code of the product's public page (PublicPageController), once the product has one.
+Route::get('/products/{product}/qr.{format}', [PublicPageController::class, 'qr'])->name('products.qr')->whereIn('format', ['svg', 'png']);
 
 // Team and invitations
 Route::get('/products/{product}/team', [TeamController::class, 'index'])->name('team.index');
@@ -175,6 +179,19 @@ Route::prefix('/versions/{version}')->name('versions.')->group(function () {
     Route::post('/review/evaluations/{evaluation}', [ReviewController::class, 'reviewEvaluation'])->name('review.evaluation');
     Route::post('/review/units/{result}', [ReviewController::class, 'reviewUnit'])->name('review.unit');
     Route::post('/review/decision', [ReviewController::class, 'decide'])->name('review.decide');
+
+    // Public product page: what it shows (a draft), the preview (data-dialog-fetch, or the page
+    // with the preview open without script), publishing from the preview.
+    Route::get('/public', [PublicPageController::class, 'edit'])->name('public');
+    Route::get('/public/preview', [PublicPageController::class, 'edit'])->name('public.preview')->defaults('panel', 'preview');
+    Route::put('/public', [PublicPageController::class, 'update'])->name('public.update');
+    Route::post('/public/risks', [PublicPageController::class, 'tickRisks'])->name('public.risks');
+    Route::post('/public/documents', [PublicPageController::class, 'upload'])->name('public.documents')->middleware('throttle:20,10');
+    Route::post('/public/publish', [PublicPageController::class, 'publish'])->name('public.publish');
+    Route::delete('/public/publish', [PublicPageController::class, 'unpublish'])->name('public.unpublish');
+    // Printable QR labels of a published version: /public/labels/{product|packaging|manual}/{lang}.
+    Route::get('/public/labels/{kind}/{lang}', [PublicPageController::class, 'labels'])->name('public.labels')
+        ->whereIn('kind', array_keys(Labels::KINDS))->whereIn('lang', array_keys((array) config('redact.locales')));
 });
 
 // EN 18031 decision trees (viewer)

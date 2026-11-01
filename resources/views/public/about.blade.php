@@ -1,6 +1,6 @@
 {{--
     About REDact: what used to be the home page (how it works, features, what is included, FAQ,
-    "Need an expert?"), plus the ways to use REDact. The FAQ is also the page's FAQPage JSON-LD.
+    "Need an expert?"), the public product page, plus the ways to use REDact. The FAQ is also the page's FAQPage JSON-LD.
 --}}
 <x-layouts.guest :bare="true" :index="true" :page-title="__('public.about.meta.title')" :description="__('public.about.meta.description')" :json-ld="$jsonLd">
     <section class="c-hero">
@@ -92,8 +92,30 @@
         </div>
     </section>
 
+    {{-- The public product page (/verify, App\PublicPage): what a manufacturer publishes for buyers. --}}
+    <section class="c-section-band" id="verify">
+        <div class="c-container">
+            <p class="c-kicker">{{ __('public.about.verify_kicker') }}</p>
+            <h2 class="c-h2">{{ __('public.about.verify_title') }}</h2>
+            <p class="c-lead mt-4">{{ __('public.about.verify_lead') }}</p>
+            <ul class="mt-8 grid gap-6 md:grid-cols-3">
+                @foreach (['choose' => 'toggle-right', 'preview' => 'eye', 'qr' => 'qr-code'] as $item => $icon)
+                    <li class="c-card">
+                        <div class="c-card-body r-way">
+                            <x-dynamic-component :component="'lucide-'.$icon" class="r-way-icon" aria-hidden="true" />
+                            <div>
+                                <h3 class="c-h3">{{ __('public.about.verify.'.$item.'.title') }}</h3>
+                                <p class="c-text mt-2">{{ __('public.about.verify.'.$item.'.text') }}</p>
+                            </div>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    </section>
+
     {{-- Ways to use REDact: web-based (an account) or self-hosted (talk to us); prices on /pricing. --}}
-    <section class="c-section-band" id="ways">
+    <section class="c-section" id="ways">
         <div class="c-container">
             <p class="c-kicker">{{ __('public.about.ways_kicker') }}</p>
             <h2 class="c-h2">{{ __('public.about.ways_title') }}</h2>
@@ -122,7 +144,7 @@
         </div>
     </section>
 
-    <section class="c-section">
+    <section class="c-section-band">
         <div class="c-container">
             <h2 class="c-h2">{{ __('public.faq_title') }}</h2>
             <div class="mt-6 grid gap-3">
@@ -136,7 +158,7 @@
         </div>
     </section>
 
-    <section class="c-section-band">
+    <section class="c-section">
         <div class="c-container text-center">
             <h2 class="c-h2 c-no-dot">{{ __('public.cta_title') }}</h2>
             <p class="c-lead mx-auto mt-4">{{ __('public.cta_text') }}</p>

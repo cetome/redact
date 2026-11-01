@@ -4,8 +4,9 @@
     jsonLd: structured data (schema.org) for indexed pages, printed as a data block (not executed).
     description: the page's own search and social description (default: the home page's).
     canonical: the address of the page when it has several (the contact form with a topic chosen).
+    alternates: the same page in each language, [hreflang => url] ('x-default' included), for indexed pages.
 --}}
-@props(['title' => null, 'social' => false, 'index' => false, 'pageTitle' => null, 'jsonLd' => null, 'description' => null, 'canonical' => null])
+@props(['title' => null, 'social' => false, 'index' => false, 'pageTitle' => null, 'jsonLd' => null, 'description' => null, 'canonical' => null, 'alternates' => []])
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -13,6 +14,12 @@
 @if ($index)
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <link rel="canonical" href="{{ $canonical ?? url()->current() }}">
+@foreach ($alternates as $hreflang => $href)
+<link rel="alternate" hreflang="{{ $hreflang }}" href="{{ $href }}">
+@endforeach
+@if (! $social && $description)
+<meta name="description" content="{{ $description }}">
+@endif
 @else
 <meta name="robots" content="noindex, nofollow">
 @endif

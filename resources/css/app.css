@@ -2,6 +2,7 @@
 @import './cetome.css';
 @import './app-ui.css';
 @import './app-plans.css';
+@import './public-page.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';

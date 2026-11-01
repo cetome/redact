@@ -7,6 +7,8 @@ use App\Assessment\ScopingForm;
 use App\Billing\Plan;
 use App\Content\ContentPack;
 use App\Guest\Sandbox;
+use App\Models\Product;
+use App\PublicPage\PublicSettings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Lang;
@@ -17,7 +19,8 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 /**
  * Public pages: the home page (hero, the RED scoping tool at #start, then the workflow with a
  * picture of each step), about (what REDact is, FAQ), legal texts (terms and legal notice on one page, privacy), security.txt (RFC 9116), robots.txt and the sitemap.
- * Only home, about, free templates and "try without an account" are meant for search engines.
+ * Only home, about, free templates, "try without an account" and the published product pages
+ * (/verify, PublicProductController) are meant for search engines.
  */
 class PublicController extends Controller
 {
@@ -129,6 +132,10 @@ class PublicController extends Controller
             'Allow: /templates/*.webp$',
             'Allow: /contact$',
             'Allow: /try$',
+            // Published product pages and the documents they offer. Their bills of materials and VEX files are data, not pages.
+            'Allow: /verify/',
+            'Disallow: /verify/*/bom/',
+            'Disallow: /verify/*/vex/',
             'Disallow: /dashboard',
             'Disallow: /products',
             'Disallow: /versions',
@@ -153,6 +160,17 @@ class PublicController extends Controller
         if (config('redact.guest.enabled') && app('router')->has('guest.start')) {
             $urls[] = route('guest.start');
         }
+        // Each product page its manufacturer lets search engines list, in each language: the latest
+        // published version decides (PublicProductController::alternates).
+        Product::query()->whereNotNull('public_code')->orderBy('public_code')
+            ->with(['versions' => fn ($q) => $q->whereNotNull('published_at')->select(['id', 'product_id', 'created_at', 'published_at', 'public_page'])])
+            ->get(['id', 'public_code'])
+            ->each(function (Product $product) use (&$urls) {
+                $latest = $product->versions->first();
+                if ($latest !== null && PublicSettings::indexed($latest)) {
+                    array_push($urls, ...array_values(PublicProductController::alternates((string) $product->public_code)));
+                }
+            });
         $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n".'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
         foreach ($urls as $url) {
             $xml .= '  <url><loc>'.e($url).'</loc></url>'."\n";

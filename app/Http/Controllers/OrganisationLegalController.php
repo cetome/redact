@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Organisation;
+use App\PublicPage\PublicSettings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -23,6 +24,11 @@ class OrganisationLegalController extends Controller
             'country' => ['nullable', 'string', 'max:80'],
             'authorised_rep_name' => ['nullable', 'string', 'max:200'],
             'authorised_rep_address' => ['nullable', 'string', 'max:1000'],
+            'security_contact' => ['nullable', 'string', 'max:300', function (string $attribute, mixed $value, \Closure $fail) {
+                if (filled($value) && PublicSettings::contactHref(trim((string) $value)) === null) {
+                    $fail(__('public_page.contact_invalid'));
+                }
+            }],
             'back' => ['nullable', 'string', 'max:500'],
         ]);
 

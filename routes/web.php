@@ -3,8 +3,10 @@
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeStartController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\PublicProductController;
 use App\Http\Controllers\TemplateController;
 use App\Models\ContactMessage;
+use App\PublicPage\PublicCode;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +48,20 @@ Route::permanentRedirect('/legal', '/terms')->name('legal.notice');
 // The previous site's workbook files (/files/…xlsx): permanent redirect to the Free templates page
 // (its download page /dl is handled above by TemplateController::legacy).
 Route::get('/files/{any}', fn () => redirect('/templates', 301))->where('any', '.*');
+// Public product page (App\PublicPage): /verify/{code} is the product's latest published version, an
+// earlier one is /verify/{code}/{version}; a language picked on the page is the last segment.
+Route::middleware('throttle:120,1')->name('verify.')->group(function () {
+    $code = ['code' => PublicCode::PATTERN];
+    $lang = implode('|', array_keys(config('redact.locales')));
+    Route::get('/verify/{code}', [PublicProductController::class, 'show'])->name('show')->where($code);
+    Route::get('/verify/{code}/picture', [PublicProductController::class, 'picture'])->name('picture')->where($code);
+    Route::get('/verify/{code}/{lang}', [PublicProductController::class, 'show'])->name('show.lang')->where($code + ['lang' => $lang]);
+    Route::get('/verify/{code}/{version}', [PublicProductController::class, 'show'])->name('version')->where($code)->whereUlid('version');
+    Route::get('/verify/{code}/{version}/{lang}', [PublicProductController::class, 'show'])->name('version.lang')->where($code + ['lang' => $lang])->whereUlid('version');
+    Route::get('/verify/{code}/{version}/documents/{document}', [PublicProductController::class, 'document'])->name('document')->where($code)->whereUlid('version');
+    Route::get('/verify/{code}/{version}/bom/{import}/{file}', [PublicProductController::class, 'bom'])->name('bom')->where($code)->whereUlid('version')->whereNumber('file');
+    Route::get('/verify/{code}/{version}/vex/{vex}/{file}', [PublicProductController::class, 'vex'])->name('vex')->where($code)->whereUlid('version')->whereNumber('file');
+});
 Route::get('/.well-known/security.txt', [PublicController::class, 'securityTxt'])->name('security.txt');
 // The social card: its version is part of its name, so the networks fetch a new picture again.
 Route::get('/images/og-redact.{v}.png', [PublicController::class, 'ogImage'])->name('og.image')->where('v', '[0-9a-f]{8}');

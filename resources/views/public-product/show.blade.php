@@ -1,15 +1,14 @@
 {{--
     Public product page /verify/{code} (PublicProductController): the manufacturer's page, not
-    REDact's: their name on top, the language buttons (path segments), the page, then the
-    address, its QR code and "Made with cetome REDact" in the footer. The latest version is indexed.
+    REDact's: their name on top, the language buttons (path segments), the page (its address and
+    QR code in the label at the top), then "Made with cetome REDact" in the footer. The latest
+    version is indexed.
 --}}
 @php
     $maker = $page->manufacturer()['name'];
     $code = $product->public_code;
     $version = $page->version;
     $langUrl = fn (string $lang) => $latest ? route('verify.show.lang', [$code, $lang]) : route('verify.version.lang', [$code, $version->id, $lang]);
-    // The product's fixed address (the QR code printed on it), whatever version is shown.
-    $address = route('verify.show', $code);
     $updated = $version->public_page['live']['at'] ?? $version->published_at;
     // Indexed when the manufacturer chose so: the latest version, each language at its own address.
     // Earlier versions stay out of search results.
@@ -47,10 +46,9 @@
 
         <footer class="pp-foot">
             <div class="pp-foot-inner">
-                <p>{{ __('public_page.page.updated', ['manufacturer' => $maker, 'date' => \Illuminate\Support\Carbon::parse($updated ?? now())->locale(app()->getLocale())->isoFormat('D MMMM YYYY')]) }}<br>{{ preg_replace('#^https?://#', '', $address) }}</p>
+                <p>{{ __('public_page.page.updated', ['manufacturer' => $maker, 'date' => \Illuminate\Support\Carbon::parse($updated ?? now())->locale(app()->getLocale())->isoFormat('D MMMM YYYY')]) }}</p>
                 <div class="pp-made">
                     <span>{{ __('public_page.page.made_with') }} <a href="{{ route('home') }}">cetome REDact</a></span>
-                    <span class="pp-qr">{!! \App\PublicPage\QrCode::inline($address) !!}</span>
                 </div>
             </div>
         </footer>

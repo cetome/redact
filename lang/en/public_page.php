@@ -149,6 +149,7 @@ return [
         'not_all_met' => 'Requirements not met',
         'route' => 'Route',
         'support_until' => 'Security updates until',
+        'scan' => 'Scan or share this page',
         'standard' => 'Standard',
         'covers' => 'Covers',
         'requirements' => 'Requirements',

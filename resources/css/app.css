@@ -754,6 +754,36 @@
         color: var(--c-ink-subtle);
     }
 
+    /* About "A page your buyers can check": numbered steps beside the picture (stacked on phones). */
+    .r-verify {
+        display: grid;
+        gap: 2rem;
+        align-items: center;
+        margin-top: 2rem;
+        @media (min-width: 64rem) {
+            grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+            gap: 3rem;
+        }
+        & .r-tour-figure {
+            margin: 0;
+        }
+    }
+    .r-verify-steps {
+        display: grid;
+        gap: 1.75rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        & li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.25rem;
+        }
+        & .c-stat-value {
+            min-width: 3.25rem;
+        }
+    }
+
     /* About: the ways to use REDact. */
     .r-way {
         display: flex;

@@ -235,7 +235,7 @@ class DemoSeeder extends Seeder
      * @param  array<string, mixed>  $tree
      * @return list<string>
      */
-    private function walk(array $tree): array
+    protected function walk(array $tree): array
     {
         $nodes = collect($tree['nodes'] ?? [])->keyBy('id');
         $current = $tree['start'] ?? null;

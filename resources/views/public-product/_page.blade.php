@@ -10,6 +10,9 @@
     $settings = $page->settings;
     $code = $product->public_code;
     $live = ! $preview && $code;
+    // The product's fixed address (the QR code printed on it), whatever version is shown.
+    $address = $code ? route('verify.show', $code) : null;
+    $facts = $page->shows('assessment') || $page->shows('support');
     $date = fn ($d) => $d ? \Illuminate\Support\Carbon::parse($d)->locale(app()->getLocale())->isoFormat('D MMMM YYYY') : null;
     $levels = $page->shows('risks') ? $page->riskLevels() : collect();
     $counts = $page->shows('risks') ? $page->riskCounts() : [];
@@ -78,7 +81,13 @@
                 <p class="pp-muted">{{ __('public_page.page.version') }} <b>{{ $version->label }}</b></p>
             @endif
 
-            @if ($page->shows('assessment') || $page->shows('support'))
+            @if ($facts || $code)
+            {{-- The key facts, and the product's QR code (as printed on its label) down the left edge. --}}
+            <div class="pp-summary">
+                @if ($code)
+                    <span class="pp-summary-qr">{!! \App\PublicPage\QrCode::inline($address) !!}</span>
+                @endif
+                @if ($facts)
                 <dl class="pp-facts">
                     @if ($page->shows('assessment'))
                         @if ($page->assessedOn())
@@ -101,6 +110,11 @@
                         <div class="pp-fact"><dt class="a-micro">{{ __('public_page.page.support_until') }}</dt><dd class="pp-fact-value">{{ $date($settings->supportUntil) }}</dd></div>
                     @endif
                 </dl>
+                @endif
+                @if ($code)
+                    <p class="pp-summary-scan"><span class="a-micro">{{ __('public_page.page.scan') }}</span> <b>{{ preg_replace('#^https?://#', '', $address) }}</b></p>
+                @endif
+            </div>
             @endif
         </div>
     </section>

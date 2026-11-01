@@ -21,9 +21,25 @@
   .pp-ids b { color: var(--c-ink); }
   .pp-versions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
 
-  .pp-facts {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr)); gap: 1px; overflow: hidden;
+  /* Key facts, the QR code down the left edge, the scan strip under the facts: one box, 1px rules. */
+  .pp-summary {
+    display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1px; overflow: hidden;
     border: 1px solid var(--c-line); border-radius: var(--radius-xl); background-color: var(--c-line);
+  }
+  .pp-summary > * { grid-column: 2; }
+  .pp-summary-qr { grid-column: 1; display: flex; align-items: center; width: 7rem; background-color: var(--color-white); }
+  .pp-summary:has(.pp-facts) .pp-summary-qr { grid-row: 1 / span 2; }
+  .pp-summary-qr svg { display: block; width: 100%; height: auto; }
+  .pp-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr)); gap: 1px; }
+  .pp-summary-scan {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.75rem; margin: 0; padding: 0.6rem 1rem;
+    background-color: var(--c-surface); font-size: var(--text-small); overflow-wrap: anywhere;
+  }
+  /* Phones: the facts full width, a smaller QR code beside the strip. */
+  @media (width < 40rem) {
+    .pp-summary > .pp-facts { grid-column: 1 / -1; }
+    .pp-summary:has(.pp-facts) .pp-summary-qr { grid-row: 2; width: 4.5rem; }
+    .pp-fact:last-child:nth-child(odd) { grid-column: 1 / -1; }
   }
   .pp-fact { display: flex; flex-direction: column; gap: 0.3rem; background-color: var(--c-surface); padding: 0.8rem 1rem; }
   .pp-fact-value { font-size: var(--text-body); font-weight: 800; }
@@ -81,7 +97,6 @@
   .pp-body { flex: 1; width: 100%; max-width: 74rem; margin-inline: auto; padding: 2rem 1rem 2.5rem; }
   .pp-foot { border-top: 1px solid var(--c-line); background-color: var(--c-surface); }
   .pp-foot-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; max-width: 74rem; margin-inline: auto; padding: 1rem; font-size: var(--text-label); color: var(--c-ink-muted); }
-  .pp-qr { width: 4.5rem; height: 4.5rem; border-radius: var(--radius-md); background-color: var(--color-white); }
   .pp-made { display: flex; align-items: center; gap: 0.75rem; }
   .pp-made a { font-weight: 800; color: var(--c-ink); text-decoration: none; }
   .pp-made a:hover { color: var(--c-link); text-decoration: underline; }
@@ -95,7 +110,7 @@
   .pp-switch-help { display: block; font-size: var(--text-label); color: var(--c-ink-muted); }
   .pp-locked { display: flex; align-items: center; justify-content: space-between; gap: 1rem; border: 1px solid var(--c-line); border-radius: var(--radius-lg); background-color: var(--c-canvas-subtle); padding: 0.55rem 0.85rem; font-size: var(--text-sm); }
   .pp-qr-box { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
-  :is(.pp-qr, .pp-qr-big) svg { display: block; width: 100%; height: 100%; }
+  .pp-qr-big svg { display: block; width: 100%; height: 100%; }
   .pp-qr-big { width: 7.5rem; height: 7.5rem; border: 1px solid var(--c-line); border-radius: var(--radius-lg); background-color: var(--color-white); padding: 0.25rem; }
 }
 

@@ -149,6 +149,7 @@ return [
         'not_all_met' => 'Exigences non satisfaites',
         'route' => 'Procédure',
         'support_until' => 'Mises à jour de sécurité jusqu’au',
+        'scan' => 'Scannez ou partagez cette page',
         'standard' => 'Norme',
         'covers' => 'Couvre',
         'requirements' => 'Exigences',

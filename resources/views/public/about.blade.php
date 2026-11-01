@@ -92,25 +92,27 @@
         </div>
     </section>
 
-    {{-- The public product page (/verify, App\PublicPage): what a manufacturer publishes for buyers. --}}
+    {{-- The public product page (/verify, App\PublicPage): what a manufacturer publishes for buyers.
+         Numbered steps beside the picture of a published page (demo product, public/images/tour). --}}
     <section class="c-section-band" id="verify">
         <div class="c-container">
             <p class="c-kicker">{{ __('public.about.verify_kicker') }}</p>
             <h2 class="c-h2">{{ __('public.about.verify_title') }}</h2>
             <p class="c-lead mt-4">{{ __('public.about.verify_lead') }}</p>
-            <ul class="mt-8 grid gap-6 md:grid-cols-3">
-                @foreach (['choose' => 'toggle-right', 'preview' => 'eye', 'qr' => 'qr-code'] as $item => $icon)
-                    <li class="c-card">
-                        <div class="c-card-body r-way">
-                            <x-dynamic-component :component="'lucide-'.$icon" class="r-way-icon" aria-hidden="true" />
+            <div class="r-verify">
+                <ol class="r-verify-steps">
+                    @foreach (['choose', 'preview', 'qr'] as $item)
+                        <li>
+                            <p class="c-stat-value">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</p>
                             <div>
                                 <h3 class="c-h3">{{ __('public.about.verify.'.$item.'.title') }}</h3>
-                                <p class="c-text mt-2">{{ __('public.about.verify.'.$item.'.text') }}</p>
+                                <p class="c-text mt-1">{{ __('public.about.verify.'.$item.'.text') }}</p>
                             </div>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
+                        </li>
+                    @endforeach
+                </ol>
+                @include('public._tour-picture', ['step' => 'public-page', 'label' => __('public.about.verify_kicker')])
+            </div>
         </div>
     </section>
 

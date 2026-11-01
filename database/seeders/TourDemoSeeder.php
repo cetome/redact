@@ -27,6 +27,9 @@ class TourDemoSeeder extends DemoSeeder
 
     public const PRODUCT = 'Smart door lock (demo)';
 
+    /** The approved product whose public page is pictured on /about (PublicDemoSeeder). */
+    public const PREVIEW = PublicDemoSeeder::PRODUCT;
+
     public function run(): void
     {
         if (! App::environment('local', 'testing')) {
@@ -43,7 +46,7 @@ class TourDemoSeeder extends DemoSeeder
         $organisation = $user->organisations()->first() ?? tap(Organisation::create(['name' => 'Emotec', 'created_by' => $user->id]),
             fn (Organisation $o) => $o->members()->attach($user->id, ['role' => 'admin']));
 
-        Product::query()->where('owner_id', $user->id)->where('name', self::PRODUCT)->get()
+        Product::query()->where('owner_id', $user->id)->whereIn('name', [self::PRODUCT, self::PREVIEW])->get()
             ->each(fn (Product $p) => $p->versions()->each(fn (ProductVersion $v) => $v->delete()) && $p->forceDelete());
 
         mt_srand(18031);
@@ -57,5 +60,8 @@ class TourDemoSeeder extends DemoSeeder
         $conformity = array_keys(app(ScopingForm::class)->questions(ScopingForm::CONFORMITY));
         Product::query()->where('owner_id', $user->id)->where('name', self::PRODUCT)->get()
             ->each(fn (Product $p) => $p->versions()->each(fn (ProductVersion $v) => $v->scopingAnswers()->whereIn('question', $conformity)->delete()));
+
+        // The demo public page pictured on /about, as on production (PublicDemoSeeder).
+        $this->call(PublicDemoSeeder::class);
     }
 }

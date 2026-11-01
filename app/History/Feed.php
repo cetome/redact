@@ -276,7 +276,8 @@ final class Feed
     }
 
     /**
-     * The people who appear in the history (filter), cetome support and REDact itself last.
+     * The people who appear in the history (filter), cetome support and REDact itself last. Viewers
+     * who read e-mails get "e-mail (name)" sorted by e-mail, as two people may share a name.
      *
      * @return array<string, string> value => label
      */
@@ -287,10 +288,11 @@ final class Feed
             ->where('causer_type', (new User)->getMorphClass())->distinct()->pluck('causer_id')->all();
         // cetome staff outside the organisation only act through the console: they are "cetome support".
         $organisation = $this->organisation ?? $this->product?->organisation;
-        $people = User::query()->whereIn('id', $ids)->with('roles')->orderBy('name')->get()
+        $emails = $this->describer->showsEmails();
+        $people = User::query()->whereIn('id', $ids)->with('roles')->orderBy($emails ? 'email' : 'name')->get()
             ->reject(fn (User $user) => $user->isStaff() && ! ($organisation && $organisation->hasMember($user)) && $this->product?->owner_id !== $user->id
                 && ! ($this->product && $this->product->members()->where('user_id', $user->id)->exists()))
-            ->mapWithKeys(fn (User $user) => [(string) $user->id => (string) $user->name])->all();
+            ->mapWithKeys(fn (User $user) => [(string) $user->id => $emails ? $user->email.' ('.$user->name.')' : (string) $user->name])->all();
 
         if ((clone $base)->where('log_name', 'admin')->exists()) {
             $people['support'] = (string) __('history.support');

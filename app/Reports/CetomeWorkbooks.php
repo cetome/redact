@@ -109,11 +109,14 @@ final class CetomeWorkbooks
                 $keys[] = (string) $workbook['key'];
                 $notes = [...$notes, ...self::notesFor($name, $result)];
             }
-            $notes[] = __('workbooks.notes_file.left');
-            foreach ($this->mapping()->leftForOwner() as $line) {
-                $notes[] = '- '.$line;
+            $left = $this->mapping()->leftForOwner();
+            if ($left !== []) {
+                $notes[] = __('workbooks.notes_file.left');
+                foreach ($left as $line) {
+                    $notes[] = '- '.$line;
+                }
+                $notes[] = '';
             }
-            $notes[] = '';
             $notes[] = __('workbooks.notes_file.recalculate');
             $zip->addFromString(__('workbooks.notes_file.name').'.txt', implode("\r\n", $notes)."\r\n");
             if (! $zip->close()) {

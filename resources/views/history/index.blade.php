@@ -151,8 +151,8 @@
                                             {{ $entry->actor['initials'] }}
                                         @endif
                                     </span>
-                                    {{-- The e-mail (owners and admins only) as the name's tooltip, not repeated on every line. --}}
-                                    <span class="a-hist-name" @if ($entry->actor['email']) title="{{ $entry->actor['email'] }}" @endif>{{ $entry->actor['name'] }}@if ($entry->actor['email'])<span class="a-sr-only"> ({{ $entry->actor['email'] }})</span>@endif</span>
+                                    {{-- The e-mail (owners and admins only) under the name: two people may share a name. --}}
+                                    <span class="a-hist-name">{{ $entry->actor['name'] }}@if ($entry->actor['email'])<span class="a-hist-email">{{ $entry->actor['email'] }}</span>@endif</span>
                                 </div>
                             </td>
                             <td class="a-hist-what">

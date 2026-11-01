@@ -204,6 +204,27 @@ class HistoryTest extends TestCase
             ->assertSee($this->owner->email);
     }
 
+    public function test_two_people_with_the_same_name_are_told_apart_by_their_email(): void
+    {
+        $first = $this->member($this->product, ProductRole::Contributor, internal: true);
+        $second = $this->member($this->product, ProductRole::Contributor, internal: true);
+        $first->forceFill(['name' => 'Sam Same', 'email' => 'sam.b@emotec.example'])->save();
+        $second->forceFill(['name' => 'Sam Same', 'email' => 'sam.a@emotec.example'])->save();
+        foreach ([$first, $second] as $user) {
+            activity('report')->causedBy($user)->performedOn($this->version)->withProperties(['kind' => 'technical-file', 'format' => 'zip', 'version' => $this->version->id])->log('exported');
+        }
+
+        // The owner: each line shows the e-mail, the Person filter lists e-mails, sorted.
+        $this->signIn($this->owner)->get($this->url())->assertOk()
+            ->assertSeeInOrder(['<option value="'.$second->id.'"', 'sam.a@emotec.example (Sam Same)', '<option value="'.$first->id.'"', 'sam.b@emotec.example (Sam Same)'], false)
+            ->assertSee('<span class="a-hist-email">sam.a@emotec.example</span>', false);
+        $this->filtered(['person' => (string) $first->id])->assertSee('<span class="a-hist-email">sam.b@emotec.example</span>', false)
+            ->assertDontSee('<span class="a-hist-email">sam.a@emotec.example</span>', false);
+
+        // A contributor: names only.
+        $this->signIn($first)->get($this->url())->assertOk()->assertDontSee('sam.a@emotec.example');
+    }
+
     public function test_text_changes_show_a_word_diff(): void
     {
         Auth::login($this->owner);

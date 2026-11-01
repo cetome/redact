@@ -13,6 +13,7 @@ use App\PublicPage\PublicSettings;
 use App\PublicPage\QrCode;
 use App\Support\ProductAccess;
 use Closure;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -55,7 +56,7 @@ class PublicPageController extends Controller
         ]);
     }
 
-    public function update(Request $request, ProductVersion $version): RedirectResponse
+    public function update(Request $request, ProductVersion $version): RedirectResponse|JsonResponse
     {
         abort_unless(Gate::allows('view', $version), 404);
         abort_unless($this->canChoose($this->access($version->product), $version), 404);
@@ -96,6 +97,11 @@ class PublicPageController extends Controller
             'risk_texts' => $texts,
             'indexed' => (bool) ($data['indexed'] ?? false),
         ]);
+
+        // Autosave (form[data-autosave]): saved, nothing to redirect to.
+        if ($request->expectsJson()) {
+            return response()->json(['saved' => true]);
+        }
 
         // "Preview" saves first, then opens the preview, from which the page is published.
         if ($request->input('then') === 'preview') {

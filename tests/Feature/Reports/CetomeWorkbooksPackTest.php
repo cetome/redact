@@ -125,9 +125,10 @@ class CetomeWorkbooksPackTest extends TestCase
             $this->assertSame([], $result['skipped'], $workbook['key'].': fixes left: '.implode(', ', array_column($result['skipped'], 'id')));
             $this->assertSame([], $result['refused'], $workbook['key'].': formula cells refused');
 
-            // Formulas kept, apart from the fixed ones (each named by the mapping)
+            // Formulas kept, apart from the fixed ones (each named by the mapping; none since the
+            // templates carry their fixes, pack 1.1.0)
             $fixedColumns = [];
-            foreach ((array) $workbook['fixes'] as $fix) {
+            foreach ((array) ($workbook['fixes'] ?? []) as $fix) {
                 if (in_array($fix['type'], ['formula', 'fill'], true)) {
                     foreach ((array) $fix['range'] as $range) {
                         $sheet = str_contains($range, '!') ? explode('!', $range)[0] : $fix['sheet'];

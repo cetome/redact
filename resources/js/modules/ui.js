@@ -278,14 +278,15 @@ function refreshCounters() {
 
 // Autosave: <form data-autosave> sends itself (fetch, JSON expected) a moment after each change.
 // [data-autosave-status] inside it shows Saving / Saved / the error; its data-saving, data-saved
-// and data-failed attributes hold the words. The form still has a normal Save button for no-script.
+// and data-failed attributes hold the words (a refused value shows the server's reason instead).
+// The form still has a normal Save button for no-script.
 const timers = new WeakMap();
 function autosave(form) {
     clearTimeout(timers.get(form));
     const status = form.querySelector('[data-autosave-status]');
-    const say = (key, cls) => {
+    const say = (key, cls, text) => {
         if (status) {
-            status.textContent = status.dataset[key] || '';
+            status.textContent = text || status.dataset[key] || '';
             status.dataset.state = cls;
         }
     };
@@ -298,6 +299,12 @@ function autosave(form) {
                 headers: { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
                 credentials: 'same-origin',
             });
+            if (response.status === 422) {
+                const body = await response.json().catch(() => ({}));
+                const errors = Object.values(body.errors || {}).flat();
+                say('failed', 'failed', errors[0]);
+                return;
+            }
             if (!response.ok) {
                 throw new Error(String(response.status));
             }

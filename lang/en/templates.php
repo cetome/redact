@@ -1,13 +1,13 @@
 <?php
 
-// Free templates (/templates): the original cetome REDact workbooks, with the owner's wording from
+// Free templates (/templates): the cetome REDact workbooks (v2.0, the ones REDact fills), with the owner's wording from
 // redact.cetome.com (shortened only where it repeated itself). Few words, "RED cyber".
 
 return [
     'nav' => 'Templates',
     'meta' => [
         'title' => 'Free RED cyber templates for EN 18031 (Excel) ◼ REDact',
-        'description' => 'The original cetome REDact workbooks, free and without an account: scoping questionnaire, risk assessment, decision trees (E.DT, E.Just), E.Info and REDux.',
+        'description' => 'The cetome REDact workbooks, free and without an account: scoping questionnaire, risk assessment, decision trees (E.DT, E.Just), E.Info and REDux.',
     ],
     'kicker' => 'cetome REDact',
     'title' => 'Free templates',

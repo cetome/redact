@@ -109,6 +109,25 @@ class PublicPageTest extends TestCase
         $this->assertNull($this->version->fresh()->published_at);
     }
 
+    public function test_switched_off_fields_saved_as_you_go_are_not_asked_for(): void
+    {
+        $this->approve();
+        $this->signIn($this->owner)->putJson(route('versions.public.update', $this->version), [
+            'sections' => ['contact' => 0, 'support' => 0, 'assessment' => 1],
+            'contact' => '', 'support_until' => '',
+        ])->assertOk()->assertJson(['saved' => true]);
+
+        $this->signIn($this->owner)->get(route('versions.public.preview', $this->version))->assertOk()
+            ->assertDontSee(__('public_page.missing', ['fields' => __('public_page.sections.contact').', '.__('public_page.sections.support')]))
+            ->assertSee(__('public_page.publish'));
+        $this->signIn($this->owner)->post(route('versions.public.publish', $this->version))->assertSessionMissing('error');
+        $this->assertNotNull($this->version->fresh()->published_at);
+
+        // A refused value answers with its reason, for the autosave note.
+        $this->signIn($this->owner)->putJson(route('versions.public.update', $this->version), ['contact' => 'call us'])
+            ->assertStatus(422)->assertJsonValidationErrors('contact');
+    }
+
     public function test_the_contact_is_an_email_or_a_web_address(): void
     {
         $this->save(['contact' => 'call us'])->assertSessionHasErrors('contact');

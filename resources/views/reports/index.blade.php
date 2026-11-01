@@ -64,12 +64,16 @@
                 @endif
             </div>
 
+            {{-- Corrections the pack's mapping applies on download: none once the templates carry them. --}}
+            @php($withFixes = collect($workbooks)->contains(fn ($w) => $w['fixes'] !== []))
             <div class="a-table-wrap">
                 <table class="a-table">
                     <thead>
                         <tr>
                             <th scope="col">{{ __('workbooks.workbook') }}</th>
-                            <th scope="col" class="hidden md:table-cell">{{ __('workbooks.fixes_title') }}</th>
+                            @if ($withFixes)
+                                <th scope="col" class="hidden md:table-cell">{{ __('workbooks.fixes_title') }}</th>
+                            @endif
                             <th scope="col" class="is-shrink">{{ __('common.download') }}</th>
                         </tr>
                     </thead>
@@ -88,20 +92,22 @@
                                         </span>
                                     </span>
                                 </th>
-                                <td class="hidden align-top text-sm md:table-cell">
-                                    @if ($workbook['fixes'] === [])
-                                        <span class="a-muted">{{ __('workbooks.fixes_none') }}</span>
-                                    @else
-                                        <details class="max-w-xl">
-                                            <summary class="a-link-btn cursor-pointer">{{ trans_choice('workbooks.fixes_count', count($workbook['fixes']), ['count' => count($workbook['fixes'])]) }}</summary>
-                                            <ul class="a-stack gap-1! mt-2 list-none">
-                                                @foreach ($workbook['fixes'] as $fix)
-                                                    <li class="flex items-start gap-1.5"><x-lucide-wrench class="mt-1 size-3 shrink-0 text-ink-subtle" aria-hidden="true" /><span>{{ $fix }}</span></li>
-                                                @endforeach
-                                            </ul>
-                                        </details>
-                                    @endif
-                                </td>
+                                @if ($withFixes)
+                                    <td class="hidden align-top text-sm md:table-cell">
+                                        @if ($workbook['fixes'] === [])
+                                            <span class="a-muted">{{ __('workbooks.fixes_none') }}</span>
+                                        @else
+                                            <details class="max-w-xl">
+                                                <summary class="a-link-btn cursor-pointer">{{ trans_choice('workbooks.fixes_count', count($workbook['fixes']), ['count' => count($workbook['fixes'])]) }}</summary>
+                                                <ul class="a-stack gap-1! mt-2 list-none">
+                                                    @foreach ($workbook['fixes'] as $fix)
+                                                        <li class="flex items-start gap-1.5"><x-lucide-wrench class="mt-1 size-3 shrink-0 text-ink-subtle" aria-hidden="true" /><span>{{ $fix }}</span></li>
+                                                    @endforeach
+                                                </ul>
+                                            </details>
+                                        @endif
+                                    </td>
+                                @endif
                                 <td class="is-nowrap align-top">
                                     <span class="flex justify-end">
                                         @if ($isGuest)

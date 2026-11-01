@@ -1,13 +1,13 @@
 <?php
 
-// Modèles gratuits (/templates) : les classeurs cetome REDact d’origine, avec le texte du propriétaire
+// Modèles gratuits (/templates) : les classeurs cetome REDact (v2.0, ceux que REDact remplit), avec le texte du propriétaire
 // de redact.cetome.com (raccourci seulement où il se répétait). Peu de mots, « la RED ».
 
 return [
     'nav' => 'Modèles',
     'meta' => [
         'title' => 'Modèles gratuits pour la RED et l’EN 18031 (Excel) ◼ REDact',
-        'description' => 'Les classeurs cetome REDact d’origine, gratuits et sans compte : questionnaire de périmètre, analyse de risques, arbres de décision (E.DT, E.Just), E.Info et REDux.',
+        'description' => 'Les classeurs cetome REDact, gratuits et sans compte : questionnaire de périmètre, analyse de risques, arbres de décision (E.DT, E.Just), E.Info et REDux.',
     ],
     'kicker' => 'cetome REDact',
     'title' => 'Modèles gratuits',

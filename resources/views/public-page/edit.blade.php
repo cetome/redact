@@ -43,7 +43,12 @@
             @if ($published && $publicUrl)
                 <a href="{{ $publicUrl }}" class="a-btn a-btn-outline" target="_blank" rel="noopener"><x-lucide-external-link aria-hidden="true" />{{ __('public_page.open_page') }}</a>
             @endif
-            <a href="{{ route('versions.public.preview', $version) }}" class="a-btn a-btn-primary" data-dialog-open="public-preview"><x-lucide-eye aria-hidden="true" />{{ __('public_page.preview') }}</a>
+            {{-- Saves the choices first, so the preview (and what Publish sends) is what the form shows. --}}
+            @if ($canChoose)
+                <button type="submit" form="public-form" name="then" value="preview" class="a-btn a-btn-primary"><x-lucide-eye aria-hidden="true" />{{ __('public_page.preview') }}</button>
+            @else
+                <a href="{{ route('versions.public.preview', $version) }}" class="a-btn a-btn-primary" data-dialog-open="public-preview"><x-lucide-eye aria-hidden="true" />{{ __('public_page.preview') }}</a>
+            @endif
         </x-slot:actions>
     </x-ui.page-header>
 
@@ -95,7 +100,7 @@
             </div>
         </section>
 
-        <form method="POST" action="{{ route('versions.public.update', $version) }}" id="public-form" class="a-stack">
+        <form method="POST" action="{{ route('versions.public.update', $version) }}" id="public-form" class="a-stack" @if ($canChoose) data-autosave @endif>
             @csrf @method('PUT')
 
             {{-- What the page shows: product and manufacturer always, the rest switched. --}}
@@ -223,6 +228,7 @@
 
             @if ($canChoose)
                 <div class="a-savebar">
+                    <span class="a-autosave a-only-js" data-autosave-status data-saving="{{ __('public_page.saving') }}" data-saved="{{ __('public_page.autosaved') }}" data-failed="{{ __('public_page.save_failed') }}">{{ __('public_page.autosave') }}</span>
                     <span class="a-spacer"></span>
                     <button type="submit" class="a-btn a-btn-outline"><x-lucide-save aria-hidden="true" />{{ __('public_page.save') }}</button>
                     <button type="submit" name="then" value="preview" class="a-btn a-btn-primary"><x-lucide-eye aria-hidden="true" />{{ __('public_page.save_preview') }}</button>

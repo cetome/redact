@@ -95,6 +95,12 @@ final class Describer
         $this->timezone = $viewer->timezone ?: (string) config('app.timezone');
     }
 
+    /** The viewer reads e-mail addresses (owners, admins and support). */
+    public function showsEmails(): bool
+    {
+        return $this->showEmails;
+    }
+
     /** @param  array<string, string>  $labels */
     public function versions(array $labels): self
     {

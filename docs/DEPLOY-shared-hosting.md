@@ -181,9 +181,11 @@ purge of unconfirmed accounts.
 
 ## 7. Updating
 
-**One command:** upload the new zip next to `redact-app/`, then from that folder run
-`sh redact-app/deploy/shared-hosting/update.sh redact-<new>.zip` (maintenance mode, unzip,
-permissions, caches, migrations, queue restart, back online). The steps it runs:
+**One command:** upload the new zip (and the new content pack zip, if there is one) next to
+`redact-app/`, then from that folder run
+`sh redact-app/deploy/shared-hosting/update.sh redact-<new>.zip [redact-content-<new>.zip]`
+(maintenance mode, unzip, content pack, permissions, caches, migrations, queue restart, back online).
+The steps it runs:
 
 ```bash
 cd ~
@@ -200,8 +202,12 @@ PHP artisan up
 Removed files from older releases stay behind with `unzip -o`; that is harmless. For a perfectly
 clean tree, unzip into `redact-app-new/`, copy `.env` and `storage/` across, then swap the folder names.
 
-**Content pack updates**: replace `~/redact-content/` and run `PHP artisan cache:clear`. Each new
-product version records the pack version it was assessed with.
+**Content pack updates**: give the pack zip as the second argument of `update.sh`. It checks the
+zip holds a pack (`pack.json`) before going into maintenance mode, unpacks it where
+`REDACT_CONTENT_PATH` in `.env` points (default `../redact-content`), keeps the previous pack as
+`redact-content-old` (until the next pack update) and clears the caches. To roll back, swap the two
+folders and run `PHP artisan cache:clear`. Each new product version records the pack version it was
+assessed with.
 
 ## 8. Checks after deployment
 

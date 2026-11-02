@@ -80,7 +80,7 @@
 /* ---- Home tool --------------------------------------------------------------------------------
    Home: the cetome hero (title, lead, Try REDact, Free templates, Learn more), the RED scoping tool
    in its own section at #start (public/_tool: numbered actions, cards, live result, Start), then
-   "What happens next" as the /about slider (public/_slider). Also the invisible-ALTCHA start state
+   the steps slider as the /about slider (public/_slider). Also the invisible-ALTCHA start state
    shared with /try (guest/_altcha-auto, sandbox-start.js) and the /about tour and hosting cards. */
 @layer components {
 

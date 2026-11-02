@@ -31,7 +31,7 @@ return [
     ],
     // "What happens next" under the tool: step labels from workflow.steps, one line each.
     'next' => [
-        'title' => 'What happens next',
+        'title' => 'Accelerate your compliance',
     ],
     // The tour (public/_tour): a picture of each step of the invented demo product.
     'tour' => [
@@ -58,6 +58,11 @@ return [
             'review' => 'Independent reviewers, internal or external.',
             'declaration' => 'Generate your EU Declaration of Conformity.',
             'reports' => 'Word and Excel, ready for the technical file.',
+            'public-page' => 'Share the security status of each product with a QR code.',
+        ],
+        // Tour steps that are not workflow steps.
+        'steps' => [
+            'public-page' => 'Public page',
         ],
     ],
 

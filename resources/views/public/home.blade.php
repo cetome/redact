@@ -1,6 +1,6 @@
 {{--
     Home: the cetome hero (title, lead, "Try REDact" → the sandbox dashboard (x-try-link), "See a demo" (x-demo-link), "Free templates"; no other link), the
-    RED scoping tool at #start (public/_tool), then "What happens next": the workflow in its real
+    RED scoping tool at #start (public/_tool), then the steps slider: the workflow in its real
     order (PublicController::TOUR) as the /about slider (public/_slider). Copy: the essential only.
 --}}
 <x-layouts.guest :bare="true" :index="true" :page-title="__('public.meta.title')" :json-ld="$jsonLd">
@@ -27,7 +27,7 @@
         </div>
     </section>
 
-    {{-- What happens next: the workflow as the /about slider, one real screen per step (owner, 2026-10-23). --}}
+    {{-- The steps slider: the workflow as the /about slider, one real screen per step (owner, 2026-10-23). --}}
     <section class="c-section" id="tour" aria-labelledby="next-title">
         <div class="c-container">
             <h2 class="c-h2" id="next-title">{{ __('public.next.title') }}</h2>

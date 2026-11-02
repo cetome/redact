@@ -4,7 +4,7 @@
 //
 // - Click, ↑/↓ (←/→ too), Home/End move between steps (roving tabindex, the step shows on focus).
 // - Hidden panels keep their lazy pictures unloaded: a picture loads when its step is shown.
-// - /about#<step> (the home page "What happens next" without script) opens that step.
+// - /about#<step> (the home page steps slider without script) opens that step.
 // - Gentle autoplay while the slider is on screen: 6 s per step (a CSS progress line, its end moves on),
 //   stopped for good by any click, key, focus or hover inside, never with prefers-reduced-motion.
 // - Without script every panel shows, one under the other.

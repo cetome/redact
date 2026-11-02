@@ -9,14 +9,12 @@ use App\Models\Organisation;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 /**
  * Home: the hero ("Try REDact" → #start), the RED scoping tool at #start whose Start opens a
  * sandbox for a visitor (invisible ALTCHA, checked on the server) or creates the product for a
- * signed-in person, and "What happens next" with a picture of each step (tour).
+ * signed-in person, and the steps slider with a picture of each step (tour).
  */
 class HomeStartTest extends TestCase
 {
@@ -67,15 +65,15 @@ class HomeStartTest extends TestCase
             ->assertSee('name="answers['.$first.']"', false)
             ->assertSeeInOrder([__('public.tool.step_name'), __('public.tool.step_tick'), __('scoping.in_scope_live'), __('public.tool.start')])
             ->assertSee('<altcha-widget challenge="'.route('guest.altcha').'" name="altcha" auto="onload" display="invisible"', false)
-            // What happens next: the /about slider, the real steps in order, one screen per step.
-            ->assertSeeInOrder(array_map(fn ($s) => Lang::has('workflow.steps.'.$s) ? __('workflow.steps.'.$s) : Str::headline($s), PublicController::TOUR))
+            // The steps slider: the /about slider, the real steps in order, one screen per step.
+            ->assertSeeInOrder(array_map(PublicController::tourLabel(...), PublicController::TOUR))
             ->assertSee('data-slider', false)
             ->assertSee('role="tablist"', false)
             ->assertDontSee('data-tour-open', false)
             ->getContent();
 
-        // Every step but "Changes" (only on a version made from an earlier one), then the reports.
-        $this->assertSame([...array_values(array_diff(Assessment::ORDER, ['changes'])), 'reports'], PublicController::TOUR);
+        // Every step but "Changes" (only on a version made from an earlier one), the reports, then the public page.
+        $this->assertSame([...array_values(array_diff(Assessment::ORDER, ['changes'])), 'reports', 'public-page'], PublicController::TOUR);
         // Every step has its pictures (scripts/tour-shots.py), 1x and 2x, light and dark. They are screens of
         // the private content pack: the open-source snapshot leaves them out and the slider shows none.
         if (! is_dir(public_path('images/tour'))) {
@@ -119,7 +117,10 @@ class HomeStartTest extends TestCase
             ->assertSee('aria-orientation="vertical"', false)
             ->assertSee(__('public.tour.texts.risks'));
         $pictures = is_dir(public_path('images/tour')); // not in the open-source snapshot (private pack screens)
-        foreach (PublicController::TOUR as $step) {
+        // The public page is not in the slider there: it has its own section (#verify) with that picture.
+        $steps = array_diff(PublicController::TOUR, ['public-page']);
+        $response->assertSee('id="verify"', false)->assertDontSee('id="public-page"', false);
+        foreach ($steps as $step) {
             $response->assertSee('id="'.$step.'"', false)->assertSee('aria-controls="'.$step.'"', false);
             if ($pictures) {
                 $response->assertSee('images/tour/'.$step.'-light@2x.webp 2x', false);
@@ -136,7 +137,7 @@ class HomeStartTest extends TestCase
             ->assertSee('aria-label="'.e(__('public.tour.zoom.previous')).'"', false)
             ->assertSee('aria-label="'.e(__('public.tour.zoom.next')).'"', false)
             ->assertSee('data-zoom-close aria-label="'.e(__('common.close')).'"', false);
-        $this->assertSame(count(PublicController::TOUR), substr_count($response->getContent(), 'data-zoom-open'));
+        $this->assertSame(count($steps), substr_count($response->getContent(), 'data-zoom-open'));
     }
 
     public function test_a_visitor_starts_a_sandbox_with_the_product_and_its_answers(): void

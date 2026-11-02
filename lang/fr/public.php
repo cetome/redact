@@ -31,7 +31,7 @@ return [
     ],
     // « Et ensuite » sous l’outil : libellés des étapes tirés de workflow.steps, une ligne chacune.
     'next' => [
-        'title' => 'Et ensuite',
+        'title' => 'Accélérez votre mise en conformité',
     ],
     // La visite (public/_tour) : une image de chaque étape du produit de démonstration inventé.
     'tour' => [
@@ -58,6 +58,11 @@ return [
             'review' => 'Des relecteurs indépendants, internes ou externes.',
             'declaration' => 'Générez votre déclaration UE de conformité.',
             'reports' => 'Word et Excel, prêts pour le dossier technique.',
+            'public-page' => 'Partagez l’état de sécurité de chaque produit avec un QR code.',
+        ],
+        // Étapes de la visite qui ne sont pas des étapes du parcours.
+        'steps' => [
+            'public-page' => 'Page publique',
         ],
     ],
 

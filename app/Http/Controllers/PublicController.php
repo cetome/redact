@@ -25,10 +25,10 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class PublicController extends Controller
 {
     /**
-     * The workflow in its real order, then the reports: "What happens next" and the tour pictures.
+     * The workflow in its real order, the reports, then the public page: the home page steps slider and the tour pictures.
      * "Changes" exists only on a version made from an earlier one: not in the tour of a first assessment.
      */
-    public const TOUR = ['description', 'scoping', 'risks', 'inventory', 'evaluate', 'einfo', 'units', 'conformity', 'review', 'declaration', 'reports'];
+    public const TOUR = ['description', 'scoping', 'risks', 'inventory', 'evaluate', 'einfo', 'units', 'conformity', 'review', 'declaration', 'reports', 'public-page'];
 
     public function home(ContentPack $pack, ScopingForm $form): View
     {
@@ -47,7 +47,8 @@ class PublicController extends Controller
     /** What REDact is, how it works, the FAQ, and the pictures of each step (the tour without script). */
     public function about(): View
     {
-        return view('public.about', ['steps' => $this->tourSteps(), 'jsonLd' => [
+        // The public page has its own section there (#verify), with the same picture.
+        return view('public.about', ['steps' => $this->tourSteps(['public-page']), 'jsonLd' => [
             '@context' => 'https://schema.org',
             '@graph' => [
                 [
@@ -239,17 +240,28 @@ class PublicController extends Controller
         ];
     }
 
+    /** A tour step's name: the app's step name, or the tour's own (the public page is not a workflow step). */
+    public static function tourLabel(string $step): string
+    {
+        return (string) match (true) {
+            Lang::has('public.tour.steps.'.$step) => __('public.tour.steps.'.$step),
+            Lang::has('workflow.steps.'.$step) => __('workflow.steps.'.$step),
+            default => Str::headline($step),
+        };
+    }
+
     /**
      * The tour steps and their labels (a step just added to the workflow shows its key until its
      * label exists).
      *
+     * @param  list<string>  $except
      * @return array<string, string>
      */
-    private function tourSteps(): array
+    private function tourSteps(array $except = []): array
     {
         $steps = [];
-        foreach (self::TOUR as $step) {
-            $steps[$step] = Lang::has('workflow.steps.'.$step) ? (string) __('workflow.steps.'.$step) : Str::headline($step);
+        foreach (array_diff(self::TOUR, $except) as $step) {
+            $steps[$step] = self::tourLabel($step);
         }
 
         return $steps;

@@ -19,7 +19,7 @@ class EmailChangedMail extends AuthMail
     {
         return [
             'intro' => [__('auth.mail.email_changed_intro', ['email' => self::mask($this->newEmail)])],
-            'outro' => [__('auth.mail.email_changed_outro', ['contact' => (string) config('redact.security_contact')])],
+            'outro' => [__('auth.mail.email_changed_outro', ['contact' => trim((string) config('redact.security_contact')) ?: route('contact')])],
         ];
     }
 

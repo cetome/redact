@@ -44,7 +44,7 @@ return [
         // Unverified accounts are deleted after this many days.
         'purge_unverified_days' => 7,
         // Version of the terms a new account accepts.
-        'terms_version' => '2026-10-23',
+        'terms_version' => '2026-11-04',
         // Minimum response times, so timing never reveals whether an account exists (ms).
         'pad_send_ms' => 1000,
         'pad_code_ms' => 300,
@@ -99,22 +99,38 @@ return [
             'ai_period' => env('REDACT_FREE_AI_PERIOD', 'once'),
             'support' => false,
         ],
-        // Each paid (or granted) product: unlimited team, AI units pooled per organisation.
+        // The plans above Free (App\Billing\Catalogue): built in here, edited, priced and added to
+        // (Premium...) in the console ("Plans and prices"). products: included in the plan, the free
+        // one counted (null = no limit); team_members: per product besides its owner (null = no
+        // limit); ai_units: per period, pooled per organisation; extra_product_ai_units: AI units
+        // each additional product adds (null = as ai_units); public: offered on the pricing page
+        // with online payment (false: "Talk to us", set by staff). Price labels: shown while
+        // Stripe has no price for the plan (billing off).
         'paid' => [
-            'price_label' => env('REDACT_PRODUCT_PRICE_LABEL', '100 €'),
+            'products' => 2,
+            'team_members' => null,
             'ai_units' => (int) env('REDACT_PAID_AI_UNITS', 500),
             'ai_period' => env('REDACT_PAID_AI_PERIOD', 'month'),
+            'extra_product_ai_units' => null,
             'support' => true,
+            'public' => true,
+            'price_label' => env('REDACT_PRODUCT_PRICE_LABEL', '100 €'),
+            'price_label_yearly' => env('REDACT_PRODUCT_PRICE_LABEL_YEARLY', '1000 €'),
         ],
         'enterprise' => [
+            'products' => null,
+            'team_members' => null,
             'ai_units' => (int) env('REDACT_ENTERPRISE_AI_UNITS', 5000),
             'ai_period' => env('REDACT_ENTERPRISE_AI_PERIOD', 'month'),
+            'extra_product_ai_units' => 0,
             'support' => true,
+            'public' => false,
         ],
     ],
 
     'billing' => [
-        // Recurring price of one additional product (100 EUR / month), created in the Stripe dashboard.
+        // Before the console's "Plans and prices": the monthly price of the Paid plan, one unit per
+        // paid product (no add-on price). Prices created in the console take over.
         'price' => env('STRIPE_PRICE_PRODUCT_MONTHLY'),
         // Cashier subscription type of an organisation.
         'subscription' => 'products',
@@ -130,11 +146,12 @@ return [
 
     /*
     | Contact form (/contact, App\Http\Controllers\ContactController). Messages go to `to` from
-    | MAIL_FROM_ADDRESS (no-reply@cetome.com) with the visitor in Reply-To only; nothing is mailed to
-    | the visitor. Limits: sends per IP (every attempt counts) and messages per e-mail address.
+    | MAIL_FROM_ADDRESS with the visitor in Reply-To only; nothing is mailed to
+    | the visitor. `to` empty: messages are kept in the console (Contact) only. Limits: sends per IP
+    | (every attempt counts) and messages per e-mail address.
     */
     'contact' => [
-        'to' => env('REDACT_CONTACT_TO', 'info@cetome.com'),
+        'to' => env('REDACT_CONTACT_TO'),
         'per_ip' => (int) env('REDACT_CONTACT_PER_IP', 10),
         'per_ip_minutes' => 15,
         'per_email' => (int) env('REDACT_CONTACT_PER_EMAIL', 3),
@@ -206,7 +223,10 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'security_contact' => env('REDACT_SECURITY_CONTACT', 'security@example.com'),
+    // The address for security reports (security.txt, terms, account e-mails). .env only, never in the code.
+    'security_contact' => env('REDACT_SECURITY_CONTACT'),
+    // The page that explains how to report a security issue (the contact page links to it, new tab).
+    'security_url' => env('REDACT_SECURITY_URL'),
     // cetome's PGP key for security reports (the same as cetome.com/security and its security.txt).
     'security_pgp' => [
         'url' => env('REDACT_SECURITY_PGP_URL', 'https://cetome.com/security/cetome-security.asc'),

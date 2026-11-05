@@ -41,7 +41,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'staff' => EnsureStaff::class,
         ]);
 
-        $middleware->redirectGuestsTo(fn () => route('login'));
+        // Premium on the pricing page (/subscribe): a visitor creates an account first, then pays.
+        $middleware->redirectGuestsTo(fn (Request $request) => $request->routeIs('subscribe') && config('redact.auth.signup') ? route('register') : route('login'));
         $middleware->redirectUsersTo(fn () => route('dashboard'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {

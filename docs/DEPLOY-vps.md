@@ -78,24 +78,25 @@ echo "* * * * * redact php /srv/redact/app/artisan schedule:run >> /dev/null 2>&
 ## 5a. Mail (SPF, DKIM, DMARC)
 
 Same rules as shared hosting (`docs/DEPLOY-shared-hosting.md`, Mail): `From` and envelope sender
-exactly `no-reply@cetome.com` (cetome.com DMARC, `aspf=s`), a relay listed in cetome.com's SPF,
-DKIM for cetome.com. Prefer SMTP through the `no-reply@cetome.com` mailbox:
+exactly `no-reply@example.com` (cetome.com DMARC, `aspf=s`), a relay listed in cetome.com's SPF,
+DKIM for cetome.com. Prefer SMTP through the `no-reply@example.com` mailbox:
 
 ```dotenv
 MAIL_MAILER=smtp
 MAIL_HOST=smtp.ionos.fr
 MAIL_PORT=587
-MAIL_USERNAME=no-reply@cetome.com
+MAIL_USERNAME=no-reply@example.com
 MAIL_PASSWORD=...
-MAIL_FROM_ADDRESS=no-reply@cetome.com
+MAIL_FROM_ADDRESS=no-reply@example.com
 MAIL_FROM_NAME="cetome REDact"
-REDACT_CONTACT_TO=info@cetome.com
+REDACT_CONTACT_TO=info@example.com              # required: no address is in the code
+REDACT_SECURITY_CONTACT=security@example.com
 ```
 
 A local MTA (postfix) only if the VPS address is in cetome.com's SPF record and postfix signs with
 the cetome.com DKIM key; then `MAIL_MAILER=sendmail` and
-`MAIL_SENDMAIL_PATH="/usr/sbin/sendmail -t -i -fno-reply@cetome.com"`. Check the headers of a
-contact form message received at `REDACT_CONTACT_TO`: `spf=pass`, `dkim=pass`, `dmarc=pass`, `Return-Path: <no-reply@cetome.com>`.
+`MAIL_SENDMAIL_PATH="/usr/sbin/sendmail -t -i -fno-reply@example.com"`. Check the headers of a
+contact form message received at `REDACT_CONTACT_TO`: `spf=pass`, `dkim=pass`, `dmarc=pass`, `Return-Path: <no-reply@example.com>`.
 
 ## 5b. Billing (Stripe)
 

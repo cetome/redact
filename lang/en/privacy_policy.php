@@ -9,7 +9,7 @@
  * see 'providers' and 'training').
  */
 return [
-    'version' => 'Version 2026-10-24',
+    'version' => 'Version 2026-11-05',
 
     'links' => [
         'notice' => 'legal notice',
@@ -35,15 +35,15 @@ return [
             'cetome (see the :notice). Contact: the :contact or the postal address in the legal notice.',
         ]],
         'data' => ['What we process and why', [], [
-            'account' => ['Account', 'Name, e-mail address, organisation, language, your product news choice, the date and version of the terms you accepted, your sessions and sign-ins. You sign in with a passkey (we keep only its public key, never your biometrics) or with an e-mail link or code: there is no password. Purpose: provide and secure the service. Basis: contract. Kept while the account exists. An address never confirmed is deleted after :unverified_days days.'],
+            'account' => ['Account', 'Name, e-mail address, organisation, language, the date and version of the terms you accepted, your sessions and sign-ins. You sign in with a passkey (we keep only its public key, never your biometrics) or with an e-mail link or code: there is no password. Purpose: provide and secure the service. Basis: contract. Kept while the account exists. An address never confirmed is deleted after :unverified_days days.'],
             'content' => ['Products and documents', 'What your team enters (product descriptions, inventory, assessments, components) and uploads (documents, pictures, bills of materials). Purpose: provide the service. Basis: contract. We act as processor for any personal data they contain. Kept until you delete them.'],
             'history' => ['Activity history', 'Who changed what and when in your products and organisation, shown to your team. Purpose: audit trail and security. Basis: contract and legitimate interest. Kept :activity_months months, security events (sign-ins, passkeys) :security_months months.'],
             'logs' => ['Request logs', 'Pages visited, response status and time, language, browser type and a keyed hash of the IP address (never the raw address). Purpose: security, support and aggregated usage statistics. Basis: legitimate interest. Kept :requests_months months.'],
             'sandbox' => ['Sandbox', 'Work done without an account is deleted :hours hours after the last activity, unless you create an account.'],
-            'payment' => ['Payment', 'For paid plans, Stripe collects the billing name and address, VAT number and payment method on its own pages: card numbers never reach REDact. We keep the Stripe customer reference, the card type and its last 4 digits, and the subscription. Invoices are shown from Stripe. Before each payment we record the consent to start the service at once (date, person, terms version, keyed hash of the IP address), kept as proof while the organisation exists. Basis: contract and accounting obligations.'],
+            'payment' => ['Payment', 'For paid plans, Stripe collects the billing name and address, VAT number and payment method on its own pages: card numbers never reach REDact. We keep the Stripe customer reference, the card type and its last 4 digits, and the subscription. Invoices are shown from Stripe. Before each payment we record your confirmation that you subscribe for your business (date, person, terms version, keyed hash of the IP address), kept as proof while the organisation exists. Basis: contract and accounting obligations.'],
             'ai' => ['AI processing', 'Only when a person in your team uses an AI feature, the relevant product data and document extracts are sent to the AI provider of the service, :ai_provider, which processes them on our behalf to produce the proposal. :ai_training Guests never use the AI and your organisation can turn it off. Paid and Enterprise organisations may use their own model or key: their content then goes to the provider they chose, under their own contract with it.'],
             'vulnerabilities' => ['Known-vulnerability lookups', 'Only component identifiers (name, version, supplier, package URL, CPE, CVE identifiers) are sent to ENISA\'s EUVD, NIST\'s NVD and OSV.dev. The CISA catalogue of known exploited vulnerabilities is downloaded as a whole. Never a product, organisation or person name.'],
-            'emails' => ['E-mails', 'Sign-in links and codes, invitations, review notifications, and product news only if you opted in. Sent through IONOS.'],
+            'emails' => ['E-mails', 'Sign-in links and codes, invitations, review notifications. No newsletter. Sent through IONOS.'],
             'contact' => ['Contact form', 'Your name, e-mail address, company, topic and message, with a keyed hash of the IP address and the browser type. Purpose: answer you. Basis: legitimate interest (pre-contractual steps when you ask about an offer). Kept :contact_months months.'],
         ]],
         'sharing' => ['Who can see your data', [

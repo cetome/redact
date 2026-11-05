@@ -10,6 +10,7 @@ use App\Models\SbomImport;
 use App\Models\VexImport;
 use App\PublicPage\PublicPageData;
 use App\PublicPage\PublicSettings;
+use App\Support\StoredPicture;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -98,6 +99,16 @@ class PublicProductController extends Controller
             'X-Content-Type-Options' => 'nosniff',
             'Content-Security-Policy' => "default-src 'none'; sandbox",
         ]);
+    }
+
+    /** The organisation's logo, when a published version of the product shows it. */
+    public function logo(string $code): StreamedResponse
+    {
+        $product = $this->product($code);
+        $shown = $this->published($product)->contains(fn (ProductVersion $v) => PublicSettings::live($v)?->shows('logo') ?? false);
+        abort_unless($shown && $product->organisation->logo_path, 404);
+
+        return StoredPicture::response((string) $product->organisation->logo_path, 'logo.png', 'public, max-age=300');
     }
 
     public function document(string $code, string $version, Document $document): Response

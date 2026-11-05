@@ -11,6 +11,7 @@ return [
     'account' => 'Account',
     'sign_in' => 'Sign in',
     'sign_up' => 'Create an account',
+    'support' => 'Support',
     'sign_out' => 'Sign out',
     'terms' => 'Terms of use',
     'privacy' => 'Privacy policy',

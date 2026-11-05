@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use Laravel\Cashier\Billable;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
@@ -17,9 +18,11 @@ use Spatie\Activitylog\Support\LogOptions;
  *
  * @property string $id
  * @property string $name
+ * @property string|null $logo_path its logo (Settings, PictureController)
  * @property bool $ai_enabled
  * @property array<string, mixed>|null $settings
- * @property string $plan free | enterprise (App\Billing\Plan)
+ * @property string $plan free, or a plan set by staff: a contract, or a trial until plan_ends_at (App\Billing\Plan)
+ * @property Carbon|null $plan_ends_at
  * @property array<string, mixed>|null $limits per-organisation overrides set by staff
  * @property int|null $created_by
  * @property string|null $stripe_id
@@ -49,12 +52,13 @@ class Organisation extends Model
             'ai_enabled' => 'boolean',
             'settings' => 'array',
             'limits' => 'array',
+            'plan_ends_at' => 'datetime',
         ];
     }
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnly(['name', 'ai_enabled', 'plan', 'limits', 'legal_name', 'address', 'country', 'authorised_rep_name', 'authorised_rep_address', 'security_contact'])->logOnlyDirty()
+        return LogOptions::defaults()->logOnly(['name', 'ai_enabled', 'plan', 'plan_ends_at', 'limits', 'legal_name', 'address', 'country', 'authorised_rep_name', 'authorised_rep_address', 'security_contact'])->logOnlyDirty()
             ->dontLogEmptyChanges()->useLogName('organisation');
     }
 

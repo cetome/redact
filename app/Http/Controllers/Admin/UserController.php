@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Admin\AccountEraser;
 use App\Admin\Csv;
 use App\Admin\UserDirectory;
 use App\Admin\UserInsight;
@@ -15,6 +16,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Throwable;
 
 class UserController extends AdminController
 {
@@ -51,7 +53,7 @@ class UserController extends AdminController
         return Csv::download('redact-users-'.now()->format('Y-m-d-His').'.csv', UserDirectory::csvHeader(), $directory->csvRows($filters));
     }
 
-    public function show(Request $request, User $user): View
+    public function show(Request $request, User $user, AccountEraser $eraser): View
     {
         $filters = array_filter(
             $this->rememberedFilters($request, $this->timelineKey($user), $this->timelineRules()),
@@ -81,7 +83,71 @@ class UserController extends AdminController
             'isSelf' => $user->is($request->user()),
             'canManage' => $this->canManage($request, $user),
             'roles' => self::ROLES,
+            'erase' => $this->erasePlan($request, $user, $eraser),
         ]);
+    }
+
+    /**
+     * "Delete the account" (super-admin, never their own account or a staff one): what goes with it,
+     * what stops it, and the payment a refund would give back (read from Stripe, none if it fails).
+     *
+     * @return array<string, mixed>|null
+     */
+    private function erasePlan(Request $request, User $user, AccountEraser $eraser): ?array
+    {
+        if (! $this->isSuperAdmin($request) || $user->is($request->user()) || $user->isStaff()) {
+            return null;
+        }
+        $plan = $eraser->plan($user);
+        $paid = $plan['organisations']->filter(fn ($o) => $o->hasStripeId())->values();
+        $refundable = [];
+        $stripeError = false;
+        if ($paid->isNotEmpty() && $plan['blockers'] === []) {
+            try {
+                $refundable = $eraser->refundable($paid);
+            } catch (Throwable $e) {
+                report($e);
+                $stripeError = true;
+            }
+        }
+
+        return $plan + ['paid' => $paid, 'refundable' => $refundable, 'stripeError' => $stripeError];
+    }
+
+    /**
+     * Deletes the account for good (App\Admin\AccountEraser): typed e-mail address as confirmation,
+     * refund = 1 refunds the last payment first. Stripe refusing stops everything.
+     */
+    public function erase(Request $request, User $user, AccountEraser $eraser): RedirectResponse
+    {
+        $this->requireSuperAdmin($request);
+        abort_if($user->is($request->user()) || $user->isStaff(), 404);
+        $data = $request->validateWithBag('erase', [
+            'email' => ['required', 'string', 'max:191'],
+            'refund' => ['required', Rule::in(['0', '1'])],
+        ]);
+        if (mb_strtolower(trim($data['email'])) !== mb_strtolower($user->email)) {
+            return back()->withErrors(['email' => __('admin.users.erase.email_mismatch')], 'erase');
+        }
+
+        $email = $user->email;
+        try {
+            $summary = $eraser->erase($user, $this->staffUser($request), $data['refund'] === '1');
+        } catch (Throwable $e) {
+            report($e);
+
+            return back()->with('error', __('admin.users.erase.failed', ['error' => $e->getMessage()]));
+        }
+
+        activity('admin')
+            ->causedBy($this->staffUser($request))
+            ->event('user_erased')
+            ->withProperties($summary + ['email' => $email, 'refund' => $data['refund'] === '1'])
+            ->log('user erased');
+
+        return redirect()->route('admin.users.index')->with('status', $summary['refunds'] !== []
+            ? __('admin.users.erase.done_refund', ['email' => $email, 'amount' => implode(', ', $summary['refunds'])])
+            : __('admin.users.erase.done', ['email' => $email]));
     }
 
     /** The timeline filter form (POST): remembered for this person, then back to their page. */

@@ -15,11 +15,11 @@ return [
     'documents' => 'Déposer des documents produit nécessite un compte. L’assistance IA est incluse dans l’offre payante.',
     'team' => 'Inviter des collègues et des relecteurs demande un compte gratuit. Votre travail vous suit.',
     'try_link' => 'Essayer sans compte',
-    // « Voir une démo » (App\Guest\DemoProduct) : l’évaluation complète d’un produit fictif dans un bac à sable.
+    // « Voir une démo » (App\Guest\DemoProduct) : l’évaluation complète d’un produit d’exemple dans un bac à sable.
     'demo' => [
         'button' => 'Voir une démo',
         'card' => 'Une ampoule connectée, évaluée de bout en bout.',
-        'loaded' => 'Démo chargée : une ampoule connectée fictive, prête à explorer.',
+        'loaded' => 'Démo chargée : un exemple d’ampoule connectée, prêt à explorer.',
         'full' => 'Votre bac à sable contient déjà un produit. Supprimez-le pour charger la démo.',
     ],
     // Premier écran après « Commencer avec ce produit » sur l’accueil (un message flash, une fois).

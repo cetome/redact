@@ -1,20 +1,20 @@
 {{-- Plan and billing of an organisation (admins): summary, products and their allowance, next invoice, invoices, Stripe portal. --}}
 @php
-    $price = \App\Billing\Plan::priceLabel();
+    // What one more product costs: the subscription's plan and interval, else the featured plan per month.
+    $price = $plan->hasActiveSubscription() ? $plan->extraPriceLabel() : \App\Billing\Plan::priceLabel();
+    $per = $plan->per();
     $state = $plan->subscriptionState();
     $ai = $plan->aiAllowance();
 @endphp
 <x-layouts.app :title="__('plans.billing.title')">
-    <x-ui.page-header :title="__('plans.billing.title')" :subtitle="__('plans.billing.lead', ['organisation' => $organisation->name, 'price' => $price])">
+    <x-ui.page-header :title="__('plans.billing.title')" :subtitle="__('plans.billing.lead', ['organisation' => $organisation->name, 'price' => $price, 'per' => $per])">
         <x-slot:eyebrow>{{ $organisation->name }}</x-slot:eyebrow>
         <x-slot:actions>
-            @if ($billingEnabled && $organisation->hasStripeId())
-                <form method="POST" action="{{ route('billing.portal', $organisation) }}">
-                    @csrf
-                    <button type="submit" class="a-btn a-btn-outline"><x-lucide-external-link aria-hidden="true" />{{ __('plans.billing.manage') }}</button>
-                </form>
+            @if ($plan->canBuy() && ! $plan->hasActiveSubscription())
+                <a href="{{ route('billing.subscribe', $organisation) }}" class="a-btn a-btn-primary"><x-lucide-sparkles aria-hidden="true" />{{ __('plans.subscribe.title', ['plan' => __('public.pricing.plans.paid.name')]) }}</a>
+            @else
+                <a href="{{ route('products.create') }}" class="a-btn a-btn-primary"><x-lucide-plus aria-hidden="true" />{{ __('plans.billing.add') }}</a>
             @endif
-            <a href="{{ route('products.create') }}" class="a-btn a-btn-primary"><x-lucide-plus aria-hidden="true" />{{ __('plans.billing.add') }}</a>
         </x-slot:actions>
     </x-ui.page-header>
 
@@ -37,17 +37,18 @@
                     @csrf
                     <div class="a-panel-head"><h2 class="a-h3" id="reactivate-title">{{ __('plans.billing.reactivate_title') }}</h2></div>
                     <div class="a-panel-body a-stack gap-3!">
-                        <p class="a-plan-hint"><x-lucide-lock aria-hidden="true" /><span>{{ trans_choice('plans.billing.reactivate_text', $plan->lockedPaidCount(), ['count' => $plan->lockedPaidCount(), 'price' => $price]) }}</span></p>
+                        <p class="a-plan-hint"><x-lucide-lock aria-hidden="true" /><span>{{ trans_choice('plans.billing.reactivate_text', $plan->lockedPaidCount(), ['count' => $plan->lockedPaidCount(), 'price' => $price, 'per' => $per]) }}</span></p>
                         @if ($plan->hasActiveSubscription())
                             <label class="a-check">
                                 <input type="checkbox" name="confirm" value="1" required>
-                                <span>{{ __('plans.billing.reactivate_check', ['price' => $price]) }}</span>
+                                <span>{{ __('plans.billing.reactivate_check', ['price' => $price, 'per' => $per]) }}</span>
                             </label>
                             @error('confirm')<p class="a-error">{{ $message }}</p>@enderror
                         @else
+                            @include('billing._choice')
                             <p class="a-help">{{ __('plans.add.checkout_help') }}</p>
                         @endif
-                        @include('billing._withdrawal')
+                        @include('billing._business')
                     </div>
                     <div class="a-panel-foot">
                         <button type="submit" class="a-btn a-btn-primary"><x-lucide-rotate-ccw aria-hidden="true" />{{ __('plans.locked.reactivate') }}</button>
@@ -55,14 +56,26 @@
                 </form>
             @endif
 
+            @if ($plan->canBuy() && $plan->hasActiveSubscription() && ! $plan->subscription?->onGracePeriod())
+                @include('billing._products')
+            @endif
+
             <section class="a-panel" aria-labelledby="summary-title">
                 <div class="a-panel-head"><h2 class="a-h3" id="summary-title">{{ __('plans.billing.summary') }}</h2></div>
                 <dl class="a-panel-body a-dl">
                     <dt>{{ __('plans.billing.plan') }}</dt>
-                    <dd>{{ $plan->label() }}</dd>
+                    <dd>
+                        {{ $plan->label() }}
+                        @if ($plan->interval)
+                            · {{ __('plans.interval.'.$plan->interval) }}
+                        @endif
+                        @if ($plan->onTrial())
+                            <span class="a-row-sub">{{ __('plans.trial.until', ['date' => $plan->trialEndsAt->isoFormat('D MMMM YYYY')]) }}</span>
+                        @endif
+                    </dd>
                     <dt>{{ __('plans.billing.products') }}</dt>
                     <dd>
-                        {{ __('plans.billing.products_value', ['free' => $plan->freeUsed, 'paid' => $plan->paidUsed, 'granted' => $plan->grantedUsed]) }}
+                        {{ $plan->productsSummary() }}
                         @if ($plan->unusedPaidSlots() > 0)
                             <span class="a-row-sub">{{ trans_choice('plans.billing.unused', $plan->unusedPaidSlots(), ['count' => $plan->unusedPaidSlots()]) }}</span>
                         @endif
@@ -74,7 +87,7 @@
                     <dd>
                         {{ __('plans.states.'.$state, ['date' => $plan->subscription?->ends_at?->isoFormat('D MMMM YYYY')]) }}
                         @if ($plan->subscription?->valid())
-                            · {{ trans_choice('plans.billing.quantity', (int) $plan->subscription->quantity, ['count' => (int) $plan->subscription->quantity]) }}
+                            · {{ trans_choice('plans.billing.quantity', $plan->paidSlots, ['count' => $plan->paidSlots]) }}
                         @endif
                     </dd>
                     @if ($upcoming)
@@ -86,9 +99,6 @@
                     <dt>{{ __('plans.billing.support') }}</dt>
                     <dd>{{ $plan->support() ? __('plans.billing.support_yes') : __('plans.billing.support_no') }}</dd>
                 </dl>
-                @if ($billingEnabled && $organisation->hasStripeId())
-                    <p class="a-panel-foot a-help">{{ __('plans.billing.manage_help') }}</p>
-                @endif
             </section>
 
             <section class="a-table-wrap" aria-labelledby="products-title">
@@ -122,6 +132,19 @@
         </div>
 
         <aside class="a-stack self-start">
+            @if ($billingEnabled && $organisation->hasStripeId())
+                {{-- The card, the billing details, the receipts, cancelling: Stripe's customer portal. --}}
+                <section class="a-panel" aria-labelledby="payment-title">
+                    <div class="a-panel-head"><h2 class="a-h3" id="payment-title">{{ __('plans.billing.payment_title') }}</h2></div>
+                    <div class="a-panel-body a-stack gap-3!">
+                        <p class="a-help">{{ __('plans.billing.payment_text') }}</p>
+                        <form method="POST" action="{{ route('billing.portal', $organisation) }}">
+                            @csrf
+                            <button type="submit" class="a-btn a-btn-outline w-full"><x-lucide-external-link aria-hidden="true" />{{ __('plans.billing.manage') }}</button>
+                        </form>
+                    </div>
+                </section>
+            @endif
             <section class="a-panel" aria-labelledby="invoices-title">
                 <div class="a-panel-head"><h2 class="a-h3" id="invoices-title">{{ __('plans.billing.invoices') }}</h2></div>
                 @if ($invoices->isEmpty())

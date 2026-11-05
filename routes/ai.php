@@ -38,6 +38,8 @@ Route::prefix('/versions/{version}')->group(function () {
 });
 
 // An organisation's Settings page: the AI model card (bring your own key or model, App\Ai\OrganisationAi).
-Route::get('/organisations/{organisation}/settings', [OrganisationAiController::class, 'show'])->name('organisations.settings');
+// Settings (the organisation card, its admins) and AI model (everyone, read-only for members): two tabs.
+Route::get('/organisations/{organisation}/settings', [OrganisationAiController::class, 'settings'])->name('organisations.settings');
+Route::get('/organisations/{organisation}/ai', [OrganisationAiController::class, 'show'])->name('organisations.ai');
 Route::put('/organisations/{organisation}/settings/ai', [OrganisationAiController::class, 'update'])->name('organisations.settings.ai')->middleware('throttle:20,1');
 Route::post('/organisations/{organisation}/settings/ai/test', [OrganisationAiController::class, 'test'])->name('organisations.settings.ai.test')->middleware('throttle:6,1');

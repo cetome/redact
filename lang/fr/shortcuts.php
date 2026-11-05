@@ -11,8 +11,8 @@ return [
     'page_empty' => 'Aucun raccourci propre à cette page.',
     'then' => 'puis',
     'sequence_help' => 'Appuyez sur g, puis sur la lettre, dans la seconde.',
-    'off' => 'Les raccourcis sont désactivés dans votre compte. Seuls l’enregistrement et cette liste fonctionnent.',
-    'manage' => 'Activer ou désactiver les raccourcis dans votre compte',
+    'off' => 'Les raccourcis sont désactivés (Compte, Accessibilité). Seuls l’enregistrement et cette liste fonctionnent.',
+    'manage' => 'Activer ou désactiver les raccourcis : Compte, Accessibilité',
     'keys' => [
         'help' => 'Afficher cette liste',
         'search' => 'Rechercher dans la page',

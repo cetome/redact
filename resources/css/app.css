@@ -841,6 +841,83 @@
     }
 }
 
+/* Sign in and Create an account (auth/login, auth/register, FAST's /login): the blue band, then one
+   card with the two tabs on top, the passkey first, "or", the e-mail. */
+@layer components {
+    .r-auth { padding-block: 2.5rem 3.5rem; }
+    /* The whole width for the title: "Create an account." stays on one line with its dot. */
+    .r-auth-hero .c-hero-main { @media (width >= 64rem) { grid-column: 1 / -1; } }
+    .r-auth-card {
+        max-width: 32rem; margin-inline: auto; border: 1px solid var(--c-line); border-radius: var(--radius-2xl);
+        background-color: var(--c-surface); padding: 1.5rem;
+        @media (width >= 40rem) { padding: 2rem; }
+    }
+    .r-auth-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+    .r-auth-tab {
+        border: 1px solid var(--c-line); border-radius: var(--radius-lg); background-color: var(--c-surface);
+        padding: 0.4rem 0.8rem; font-size: var(--text-label); font-weight: 600; line-height: 1.2; color: var(--c-ink); text-decoration: none;
+        &:hover { border-color: var(--c-primary); color: var(--c-link); }
+        &[aria-current="page"] { border-color: var(--c-primary); background-color: var(--c-primary); color: #fff; }
+    }
+    .r-auth-text { margin: 0 0 1rem; font-size: var(--text-small); color: var(--c-ink-muted); }
+    /* FAST's form card fields: a plain bold label, a bordered rounded box. */
+    .r-auth-card .c-label { margin-bottom: 0.35rem; font-weight: 700; letter-spacing: normal; text-transform: none; line-height: 1.3; }
+    .r-auth-card .c-input {
+        border: 1px solid var(--c-line-strong); border-radius: var(--radius-lg); background-color: var(--c-surface);
+        padding: 0.65rem 0.9rem; font-size: var(--text-base);
+        &:focus { border-color: var(--c-primary); box-shadow: 0 0 0 3px var(--a-info-bg, rgb(0 68 170 / 0.15)); outline: none; }
+    }
+    .r-auth-card .r-auth-code { font-size: 1.75rem; }
+    .r-auth-help { margin-top: 0.4rem; font-size: var(--text-label); color: var(--c-ink-muted); }
+    /* Passkey | E-mail code (FAST's login-method): two halves, the chosen one white. */
+    .r-auth-method {
+        display: flex; margin: 0.75rem 0 1.25rem; padding: 0.25rem; border: 1px solid var(--c-line);
+        border-radius: var(--radius-lg); background-color: var(--c-canvas-subtle);
+        &[style*="display: none"] { display: none; }
+    }
+    .r-auth-seg {
+        flex: 1; padding: 0.55rem 0.75rem; border: 0; border-radius: calc(var(--radius-lg) - 0.2rem); background: transparent;
+        font: inherit; font-size: var(--text-small); font-weight: 700; color: var(--c-ink-muted); cursor: pointer;
+        &:hover { color: var(--c-link); }
+        &.is-active { background-color: var(--c-surface); color: var(--c-link); box-shadow: 0 1px 2px rgb(15 23 42 / 0.08); }
+        &:focus-visible { outline: 2px solid var(--c-primary); outline-offset: 2px; }
+    }
+    .r-auth-or {
+        display: flex; align-items: center; gap: 0.75rem; margin-block: 1.25rem; font-size: var(--text-micro); font-weight: 800;
+        letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-ink-muted);
+        &::before, &::after { content: ""; flex: 1; border-top: 1px solid var(--c-line); }
+    }
+    .r-auth-after { max-width: 32rem; margin: 1.5rem auto 0; display: grid; gap: 0.6rem; }
+    /* "Sign in faster next time" (auth/passkey-suggestion): one centred card like the sign-in page,
+       the three reasons in a tinted box, no rules between lines. */
+    .a-passkey-card {
+        display: flex; flex-direction: column; gap: 1rem; max-width: 30rem; margin: 2rem auto;
+        border: 1px solid var(--c-line); border-radius: var(--radius-2xl); background-color: var(--c-surface);
+        padding: 1.75rem 1.5rem; text-align: center;
+        @media (width >= 40rem) { padding: 2.25rem 2.5rem; }
+    }
+    .a-passkey-card .a-field { text-align: left; }
+    .a-passkey-icon {
+        display: grid; place-items: center; width: 3.5rem; height: 3.5rem; margin-inline: auto; border-radius: 50%;
+        background-color: var(--a-info-bg); color: var(--c-primary);
+        & svg { width: 1.75rem; height: 1.75rem; }
+    }
+    .a-passkey-title { margin: 0; font-size: 1.5rem; font-weight: 800; line-height: 1.2; color: var(--c-ink); }
+    .a-passkey-lead { margin: 0; color: var(--c-ink-muted); }
+    .a-passkey-points {
+        margin: 0; padding: 0.9rem 1rem; list-style: none; display: grid; gap: 0.6rem; text-align: left;
+        border: 1px solid var(--c-line); border-radius: var(--radius-xl); background-color: var(--a-info-bg); font-size: var(--text-sm);
+        & li { display: flex; align-items: flex-start; gap: 0.6rem; }
+        & svg { width: 1.05rem; height: 1.05rem; margin-top: 0.15rem; flex-shrink: 0; color: var(--c-primary); }
+    }
+    .a-passkey-actions { display: grid; gap: 0.5rem; & .a-btn { width: 100%; } }
+    .a-passkey-never { margin: 0; & .a-link-btn { font-size: var(--text-label); color: var(--c-ink-muted); text-decoration: underline; } }
+    .a-passkey-note { margin: 0; font-size: var(--text-label); color: var(--c-ink-muted); }
+
+    /* The 6-digit code: large, spaced, centred (the e-mail shows it the same way). */
+    .r-auth-code { font-size: 1.75rem; font-weight: 800; letter-spacing: 0.4em; text-align: center; font-variant-numeric: tabular-nums; }
+}
+
 /* A Try or Dashboard link opening the sandbox (x-try-link, sandbox-start.js). */
 @layer components {
     a.is-opening { cursor: progress; opacity: 0.75; }

@@ -155,7 +155,7 @@ final class DeclarationData
     // ---- Point 2: manufacturer --------------------------------------------------------------------
 
     /**
-     * The demo product's fictitious manufacturer (App\Guest\DemoProduct), never the organisation's
+     * The demo product's example manufacturer (App\Guest\DemoProduct), never the organisation's
      * legal details; null for any other product.
      *
      * @return array{name: string, address: string}|null
@@ -433,7 +433,7 @@ final class DeclarationData
             $items[] = ['key' => $key, 'label' => $label, 'href' => $href];
         };
 
-        // The demo product: a fictitious product, never a valid declaration (DEMO marking).
+        // The demo product: an example product, never a valid declaration (DEMO marking).
         if ($this->isDemo()) {
             $add('demo', __('declaration.demo.open'), null);
         }
@@ -473,7 +473,7 @@ final class DeclarationData
         return $this->openItems() !== [];
     }
 
-    /** The watermark of a declaration printed now: "DEMO — fictitious product", "DRAFT — not valid", or null when valid. */
+    /** The watermark of a declaration printed now: "DEMO — example product", "DRAFT — not valid", or null when valid. */
     public function watermark(): ?string
     {
         return match (true) {

@@ -1,10 +1,10 @@
 {
     "bomFormat": "CycloneDX",
     "specVersion": "1.6",
-    "serialNumber": "urn:uuid:f670a6bb-df9f-56ef-992c-329010df4daa",
+    "serialNumber": "urn:uuid:a3f25fe8-324f-525f-99b7-b536b61926cf",
     "version": 1,
     "metadata": {
-        "timestamp": "2026-10-31T17:05:20Z",
+        "timestamp": "2026-11-04T18:46:04Z",
         "lifecycles": [
             {
                 "phase": "build"
@@ -439,6 +439,27 @@
                 {
                     "type": "website",
                     "url": "https://github.com/egulias/EmailValidator"
+                }
+            ]
+        },
+        {
+            "type": "library",
+            "bom-ref": "pkg:composer/enshrined/svg-sanitize@1.1.1",
+            "group": "enshrined",
+            "name": "svg-sanitize",
+            "version": "1.1.1",
+            "purl": "pkg:composer/enshrined/svg-sanitize@1.1.1",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "GPL-2.0-or-later"
+                    }
+                }
+            ],
+            "externalReferences": [
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/darylldoyle/svg-sanitizer.git"
                 }
             ]
         },
@@ -3219,6 +3240,7 @@
                 "pkg:composer/altcha-org/altcha@2.3.0",
                 "pkg:composer/bacon/bacon-qr-code@3.1.1",
                 "pkg:composer/dompdf/dompdf@3.1.6",
+                "pkg:composer/enshrined/svg-sanitize@1.1.1",
                 "pkg:composer/laravel/cashier@16.9.0",
                 "pkg:composer/laravel/framework@13.39.0",
                 "pkg:composer/laravel/passkeys@0.2.1",
@@ -3314,6 +3336,10 @@
                 "pkg:composer/doctrine/lexer@3.0.3",
                 "pkg:composer/symfony/polyfill-intl-idn@1.43.0"
             ]
+        },
+        {
+            "ref": "pkg:composer/enshrined/svg-sanitize@1.1.1",
+            "dependsOn": []
         },
         {
             "ref": "pkg:composer/fruitcake/php-cors@1.4.0",

@@ -3,6 +3,7 @@
 namespace App\Auth;
 
 use App\Http\Middleware\EnsureSessionIsValid;
+use App\Http\Middleware\RequireRecentAuth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -93,17 +94,26 @@ class SignIn
         }
 
         $session->put('auth.confirmed_at', time());
+        if ($session->pull(RequireRecentAuth::AGAIN)) {
+            $session->flash('status', __('auth.confirm.again'));
+        }
 
         SecurityLog::log('identity confirmed', $user, ['method' => $method], $user);
     }
 
-    /** Where to go after an e-mail sign-in: the passkey suggestion while the account has none. */
+    /**
+     * Where to go after an e-mail sign-in: the passkey suggestion while the account has none. Coming
+     * to buy (Premium on the pricing page, url.intended /subscribe): the subscribe page first, the
+     * passkey after the payment (BillingController::success), owner 2026-11-04. Never again once the
+     * person chose "Don't ask me again" (passkey_prompt_off_at, owner 2026-11-05).
+     */
     public function homeAfterEmail(Request $request, User $user): string
     {
-        if (! $user->passkeys()->exists()) {
+        if ($user->passkey_prompt_off_at === null && ! $user->passkeys()->exists()) {
             $request->session()->put(self::SUGGEST_PASSKEY, true);
-
-            return route('auth.passkey.suggest');
+            if (! str_starts_with((string) $request->session()->get('url.intended'), route('subscribe'))) {
+                return route('auth.passkey.suggest');
+            }
         }
 
         return redirect()->intended(route('dashboard'))->getTargetUrl();

@@ -46,6 +46,7 @@ return [
     'sections' => [
         'product' => 'Produit et version',
         'manufacturer' => 'Fabricant',
+        'logo' => 'Logo de l’organisation',
         'assessment' => 'Évaluation',
         'support' => 'Mises à jour de sécurité jusqu’au',
         'contact' => 'Contact sécurité',
@@ -58,6 +59,7 @@ return [
     'section_help' => [
         'product' => 'Nom, photo, modèles, versions matérielle et logicielle, autres versions publiées.',
         'manufacturer' => 'Raison sociale, adresse, mandataire dans l’UE (étape Déclaration).',
+        'logo' => 'Le logo de votre organisation à côté du fabricant (Paramètres de l’organisation).',
         'assessment' => 'Date, parties de l’EN 18031, exigences applicables, résultat, procédure d’évaluation.',
         'support' => 'La date jusqu’à laquelle cette version reçoit des mises à jour de sécurité.',
         'contact' => 'Où signaler une vulnérabilité, avec un bouton « Signaler une vulnérabilité ».',

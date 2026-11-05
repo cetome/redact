@@ -27,9 +27,24 @@ class OrganisationAiController extends Controller
 {
     public function __construct(private readonly OrganisationAi $ai) {}
 
-    public function show(Request $request, Organisation $organisation): View
+    /** Settings: the organisation's logo, name and manufacturer (its admins; members go to Team). */
+    public function settings(Request $request, Organisation $organisation): View|RedirectResponse
     {
         $user = $this->member($request, $organisation);
+        if (! $organisation->isAdmin($user)) {
+            return redirect()->route('organisations.team', $organisation);
+        }
+
+        return view('organisations.settings', ['organisation' => $organisation]);
+    }
+
+    /** AI model: what answers the organisation's AI buttons (its admins; members go to Team). */
+    public function show(Request $request, Organisation $organisation): View|RedirectResponse
+    {
+        $user = $this->member($request, $organisation);
+        if (! $organisation->isAdmin($user)) {
+            return redirect()->route('organisations.team', $organisation);
+        }
         $stored = $this->ai->stored($organisation);
         $choices = [];
         foreach (array_keys(OrganisationAi::CHOICES) as $choice) {
@@ -39,7 +54,7 @@ class OrganisationAiController extends Controller
             ];
         }
 
-        return view('organisations.settings', [
+        return view('organisations.ai', [
             'organisation' => $organisation,
             'isAdmin' => $organisation->isAdmin($user),
             'allowed' => $this->ai->allowed($organisation),
@@ -98,7 +113,7 @@ class OrganisationAiController extends Controller
             'before' => $before, 'after' => $this->summary($organisation->fresh()), 'key_replaced' => $key !== null,
         ])->log('organisation ai model changed');
 
-        return redirect()->route('organisations.settings', $organisation)->with('status', __('org_ai.answers.'.$choice));
+        return redirect()->route('organisations.ai', $organisation)->with('status', __('org_ai.answers.'.$choice));
     }
 
     public function test(Request $request, Organisation $organisation, AiClient $client): RedirectResponse
@@ -110,7 +125,7 @@ class OrganisationAiController extends Controller
             'ok' => $result['ok'], 'choice' => $this->ai->active($organisation) ? $this->ai->choice($organisation) : 'default', 'ms' => $result['ms'],
         ])->log('organisation ai connection tested');
 
-        return redirect()->route('organisations.settings', $organisation)->with('org_ai_test', $result);
+        return redirect()->route('organisations.ai', $organisation)->with('org_ai_test', $result);
     }
 
     /** @return array<string, mixed> never the key */

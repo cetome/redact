@@ -15,7 +15,7 @@ class AuthMailTest extends TestCase
     {
         $mail = new SignInMail('Ada', 'en', 'https://redact.test/login/link/abc', '012345');
 
-        $mail->assertHasSubject('Your REDact sign-in link');
+        $mail->assertHasSubject('Your REDact sign-in link and code');
         $mail->assertSeeInHtml('https://redact.test/login/link/abc');
         $mail->assertSeeInHtml('012345');
         $mail->assertSeeInText('https://redact.test/login/link/abc');
@@ -47,6 +47,6 @@ class AuthMailTest extends TestCase
         $sent = app('mailer')->getSymfonyTransport()->messages()->last()->getOriginalMessage();
 
         $this->assertSame('cetome REDact', $sent->getFrom()[0]->getName());
-        $this->assertSame('no-reply@cetome.com', $sent->getFrom()[0]->getAddress());
+        $this->assertSame('no-reply@example.test', $sent->getFrom()[0]->getAddress());
     }
 }

@@ -10,12 +10,15 @@
             @if ($tree->clause())<span>{{ __('evaluations.clause', ['clause' => $tree->clause()]) }}</span>@endif
             @if ($tree->figure())<span>{{ $tree->figure() }}</span>@endif
         </p>
-        @if ($others)
+        @if (count($parts) > 1)
             <x-slot:actions>
                 <nav class="a-seg" aria-label="{{ __('trees.other_parts') }}">
-                    <span class="a-seg-btn" aria-current="page">{{ $name }}</span>
-                    @foreach ($others as $other)
-                        <a class="a-seg-btn" href="{{ route('trees.show', [$other, $tree->requirement()]) }}">{{ app(\App\Content\ContentPack::class)->standardName($other) }}</a>
+                    @foreach ($parts as $part)
+                        @if ($part === $standard)
+                            <span class="a-seg-btn" aria-current="page">{{ $name }}</span>
+                        @else
+                            <a class="a-seg-btn" href="{{ route('trees.show', [$part, $tree->requirement()]) }}">{{ app(\App\Content\ContentPack::class)->standardName($part) }}</a>
+                        @endif
                     @endforeach
                 </nav>
             </x-slot:actions>

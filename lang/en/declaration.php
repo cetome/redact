@@ -57,9 +57,9 @@ return [
     ],
     // The demo product (App\Guest\DemoProduct): every document it prints is marked.
     'demo' => [
-        'watermark' => 'DEMO — fictitious product',
-        'open' => 'Demo: a fictitious product, never placed on the market',
-        'manufacturer' => 'The demo’s fictitious manufacturer.',
+        'watermark' => 'DEMO — example product',
+        'open' => 'Demo: an example product, never placed on the market',
+        'manufacturer' => 'The demo’s example manufacturer.',
     ],
     'draft' => [
         'watermark' => 'DRAFT — not valid',

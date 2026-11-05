@@ -1,13 +1,14 @@
 {{--
     Contact form (App\Http\Controllers\ContactController), after cetome.com's: name, e-mail, company,
-    a topic (/contact/{topic} preselects one), the message. The ALTCHA proof is solved invisibly on page load
+    a topic (/contact/{topic} preselects one), the message. Signed in: only the topic and the message,
+    the rest is the account's (shown in one line). The ALTCHA proof is solved invisibly on page load
     (contact-form.js); when the check fails, or the server refused it, the widget is shown as a
     checkbox. The honeypot ("website") sits off-screen. Sent: the same page says so.
 --}}
 @php
     $altchaVisible = $errors->has('altcha');
     $months = max(1, (int) round(((int) config('redact.retention.contact_messages_days', 365)) / 30.4));
-    $security = (string) config('redact.security_contact');
+    $securityUrl = trim((string) config('redact.security_url'));
 @endphp
 <x-layouts.guest :bare="true" :index="true" :inline-errors="true" :page-title="__('contact.meta.title')" :description="__('contact.meta.description')" :json-ld="$jsonLd" :canonical="route('contact')">
     <section class="c-hero r-hero-short">
@@ -40,6 +41,11 @@
                             <input type="text" id="contact-website" name="website" value="" tabindex="-1" autocomplete="off">
                         </div>
 
+                        @if ($account)
+                            {{-- Signed in: who writes is the account (ContactController::send). --}}
+                            <p class="c-text sm:col-span-2 text-ink-muted">{{ __('contact.signed_in_as') }}
+                                <strong class="text-ink">{{ $name }}</strong> · {{ $email }}@if ($company !== '') · {{ $company }}@endif</p>
+                        @else
                         <div class="c-field">
                             <label for="contact-name" class="c-label">{{ __('contact.fields.name') }}</label>
                             <input type="text" id="contact-name" name="name" class="c-input" value="{{ old('name', $name) }}" maxlength="100" autocomplete="name" required
@@ -60,6 +66,7 @@
                                 placeholder="{{ __('contact.placeholders.company') }}" @error('company') aria-invalid="true" aria-describedby="contact-company-error" @enderror>
                             @error('company')<p id="contact-company-error" class="c-error">{{ $message }}</p>@enderror
                         </div>
+                        @endif
 
                         <div class="c-field">
                             <label for="contact-topic" class="c-label">{{ __('contact.fields.topic') }}</label>
@@ -102,7 +109,11 @@
             <aside class="border-line lg:col-span-4 lg:border-l lg:pl-8">
                 <h2 class="c-kicker">{{ __('contact.next_title') }}</h2>
                 <p class="c-text">{{ __('contact.next') }}</p>
-                <p class="c-text mt-4">{!! __('contact.security', ['email' => '<a class="c-link" href="mailto:'.e($security).'">'.e($security).'</a>']) !!}</p>
+                {{-- A security issue: the security page (how to report, the PGP key), in a new tab. --}}
+                @if ($securityUrl !== '')
+                    <p class="c-text mt-4">{{ __('contact.security') }}
+                        <a class="c-link" href="{{ $securityUrl }}" target="_blank" rel="noopener">{{ preg_replace('#^https?://(www\.)?#', '', rtrim($securityUrl, '/')) }}<x-lucide-external-link class="ml-1 inline size-3.5 align-[-2px]" aria-hidden="true" /><span class="sr-only"> {{ __('contact.new_tab') }}</span></a></p>
+                @endif
             </aside>
         </div>
     </section>

@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Throwable;
 
 /**
  * The contact form (/contact), after cetome.com's (/api/contact/): the same fields plus a topic, the
@@ -24,8 +25,11 @@ use Illuminate\View\View;
  *   4. Validation; single-line values lose their control characters first (no header injection).
  *   5. ALTCHA proof of work, solved invisibly on page load, its own keys (ContactAltcha), spent once.
  *   6. Messages per e-mail address.
- * The message is stored (staff console, Contact) and mailed from a queued job (SendContactMessage):
- * the visitor never waits on the mail server.
+ * Signed in, only the topic and the message are asked: the name, the address and the organisation
+ * are the account's (owner 2026-11-05).
+ * The message is stored (staff console, Contact) and mailed at once, as cetome.com's mail() does
+ * (From MAIL_FROM_ADDRESS, envelope sender aligned for SPF/DMARC, Reply-To the visitor); when the
+ * mail server refuses, the queue retries it (SendContactMessage).
  */
 class ContactController extends Controller
 {
@@ -42,6 +46,8 @@ class ContactController extends Controller
         return view('public.contact', [
             'topics' => ContactMessage::TOPICS,
             'topic' => in_array($topic, ContactMessage::TOPICS, true) ? $topic : '',
+            'account' => $user,
+            'company' => $user?->organisations()->orderBy('name')->value('name') ?? '',
             'name' => $user->name ?? '',
             'email' => $user->email ?? '',
             'sent' => (bool) $request->session()->get('contact_sent', false),
@@ -72,10 +78,12 @@ class ContactController extends Controller
             return $this->sent();
         }
 
+        // Signed in: who writes is the account, whatever the form says.
+        $account = $this->account($request);
         $request->merge([
-            'name' => self::line($request->input('name'), 100),
-            'email' => self::line($request->input('email'), 150),
-            'company' => self::line($request->input('company'), 150),
+            'name' => self::line($account !== null ? $account->name : $request->input('name'), 100),
+            'email' => self::line($account !== null ? $account->email : $request->input('email'), 150),
+            'company' => self::line($account !== null ? $account->organisations()->orderBy('name')->value('name') : $request->input('company'), 150),
         ]);
 
         $data = $request->validate([
@@ -120,7 +128,13 @@ class ContactController extends Controller
             'user_agent' => self::line($request->userAgent(), 255) ?: null,
         ]);
 
-        SendContactMessage::dispatch($stored->id);
+        // At once, as cetome.com's mail(); the queue only when the mail server refuses.
+        try {
+            (new SendContactMessage($stored->id))->handle();
+        } catch (Throwable $e) {
+            report($e);
+            SendContactMessage::dispatch($stored->id);
+        }
 
         return $this->sent();
     }

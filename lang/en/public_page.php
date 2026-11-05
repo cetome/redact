@@ -46,6 +46,7 @@ return [
     'sections' => [
         'product' => 'Product and version',
         'manufacturer' => 'Manufacturer',
+        'logo' => 'Organisation logo',
         'assessment' => 'Assessment',
         'support' => 'Security updates until',
         'contact' => 'Security contact',
@@ -58,6 +59,7 @@ return [
     'section_help' => [
         'product' => 'Name, picture, models, hardware and firmware versions, other published versions.',
         'manufacturer' => 'Legal name, address, EU authorised representative (Declaration step).',
+        'logo' => 'Your organisation’s logo next to the manufacturer (Settings of the organisation).',
         'assessment' => 'Date, EN 18031 parts, applicable requirements, result, conformity route.',
         'support' => 'The date this version gets security updates until.',
         'contact' => 'Where to report a vulnerability, with a “Report a vulnerability” button.',

@@ -86,18 +86,18 @@ class BillingTest extends TestCase
         $this->stripeReturns('GET /v1/customers/cus_test', ['id' => 'cus_test', 'object' => 'customer', 'name' => 'ACME']);
         $this->stripeReturns('POST /v1/checkout/sessions', ['id' => 'cs_test', 'object' => 'checkout.session', 'url' => 'https://checkout.stripe.com/c/pay/cs_test']);
 
-        $this->get(route('products.create'))->assertOk()
-            ->assertSee('Your free product is in use. Each additional product is 100 € per month.')
+        // New product at the limit: the subscribe page (FAST's /subscribe), then Stripe.
+        $this->get(route('products.create'))->assertRedirect(route('billing.subscribe', $this->organisation));
+        $this->get(route('billing.subscribe', $this->organisation))->assertOk()
             ->assertSee(__('plans.add.checkout'))->assertSee(route('billing.checkout', $this->organisation));
         $this->get(route('dashboard'))->assertOk()->assertSee(__('plans.upgrade'))->assertSee(__('plans.line.billing'));
 
-        // The immediate start (EU withdrawal right) must be asked for: nothing reaches Stripe without it.
-        $this->assertStringContainsString('name="withdrawal"', $this->get(route('products.create'))->getContent());
-        $this->post(route('billing.checkout', $this->organisation))->assertSessionHasErrors('withdrawal');
+        // The business confirmation must be given: nothing reaches Stripe without it.
+        $this->assertStringContainsString(e(__('plans.consent.business')), $this->get(route('billing.subscribe', $this->organisation))->getContent());
         $this->assertSame([], $this->stripeCalls('POST', '/v1/checkout/sessions'));
         $this->assertSame(0, BillingConsent::query()->count());
 
-        $this->post(route('billing.checkout', $this->organisation), ['withdrawal' => '1'])->assertRedirect('https://checkout.stripe.com/c/pay/cs_test');
+        $this->post(route('billing.checkout', $this->organisation), ['business' => '1'])->assertRedirect('https://checkout.stripe.com/c/pay/cs_test');
         $consent = BillingConsent::query()->sole();
         $this->assertSame([$this->organisation->id, $this->owner->id, 'checkout', 1, config('redact.auth.terms_version')], [$consent->organisation_id, $consent->user_id, $consent->action, $consent->quantity, $consent->terms_version]);
         $this->assertSame(LogRequest::hashIp('127.0.0.1'), $consent->ip_hash);
@@ -112,11 +112,11 @@ class BillingTest extends TestCase
         $this->assertEquals(true, $params['tax_id_collection']['enabled']);
         $this->assertSame('required', $params['billing_address_collection']);
         // Stripe writes the session id into the path: no query string.
-        $this->assertSame(url('/organisations/'.$this->organisation->id.'/billing/success/{CHECKOUT_SESSION_ID}'), $params['success_url']);
+        $this->assertSame(url('/billing/'.$this->organisation->id.'/success/{CHECKOUT_SESSION_ID}'), $params['success_url']);
         $this->assertSame(route('billing.cancelled', $this->organisation), $params['cancel_url']);
 
         // Cancelled on Stripe: back with a message, nothing changed.
-        $this->get(route('billing.cancelled', $this->organisation))->assertRedirect(route('products.create'))
+        $this->get(route('billing.cancelled', $this->organisation))->assertRedirect(route('billing.subscribe', $this->organisation))
             ->assertSessionHas('status', __('plans.billing.cancelled'));
     }
 
@@ -152,6 +152,44 @@ class BillingTest extends TestCase
         $this->assertSame(1, $this->organisation->subscriptions()->count());
     }
 
+    public function test_the_names_typed_in_checkout_fill_the_missing_ones_only(): void
+    {
+        // An account known by its e-mail address, its organisation named after it.
+        $this->owner->forceFill(['name' => ''])->save();
+        $this->organisation->forceFill(['name' => $this->owner->email, 'created_by' => $this->owner->id])->save();
+        $this->stripeReturns('GET /v1/checkout/sessions/cs_test', [
+            'id' => 'cs_test', 'object' => 'checkout.session', 'customer' => 'cus_test', 'status' => 'complete',
+            'subscription' => $this->stripeSubscription('cus_test', 1),
+            'customer_details' => ['email' => $this->owner->email, 'name' => 'Acme Lighting SAS', 'business_name' => 'Acme Lighting SAS', 'individual_name' => 'Ada Lovelace'],
+        ]);
+
+        $this->get(route('billing.success', [$this->organisation, 'cs_test']))->assertRedirect();
+        $this->assertSame('Ada Lovelace', $this->owner->fresh()->name);
+        $this->assertSame('Acme Lighting SAS', $this->organisation->fresh()->name);
+
+        // Names someone chose are never overwritten (the webhook, later, with other names).
+        $this->postStripeWebhook(['id' => 'evt_names', 'type' => 'checkout.session.completed', 'data' => ['object' => [
+            'id' => 'cs_test', 'object' => 'checkout.session', 'customer' => 'cus_test',
+            'customer_details' => ['email' => $this->owner->email, 'name' => 'Someone Else', 'business_name' => 'Other Corp'],
+        ]]])->assertOk();
+        $this->assertSame('Ada Lovelace', $this->owner->fresh()->name);
+        $this->assertSame('Acme Lighting SAS', $this->organisation->fresh()->name);
+    }
+
+    public function test_the_webhook_fills_the_names_when_the_payer_never_came_back(): void
+    {
+        $this->owner->forceFill(['name' => ''])->save();
+        $this->organisation->forceFill(['name' => $this->owner->email, 'created_by' => $this->owner->id])->save();
+
+        // Bought as a person: "name" is the person, no business name, the organisation keeps its name.
+        $this->postStripeWebhook(['id' => 'evt_names', 'type' => 'checkout.session.completed', 'data' => ['object' => [
+            'id' => 'cs_test', 'object' => 'checkout.session', 'customer' => 'cus_test',
+            'customer_details' => ['email' => strtoupper($this->owner->email), 'name' => '  Grace   Hopper ', 'business_name' => null],
+        ]]])->assertOk();
+        $this->assertSame('Grace Hopper', $this->owner->fresh()->name);
+        $this->assertSame($this->owner->email, $this->organisation->fresh()->name);
+    }
+
     public function test_a_session_of_another_customer_is_ignored(): void
     {
         $this->stripeReturns('GET /v1/checkout/sessions/cs_other', [
@@ -172,18 +210,17 @@ class BillingTest extends TestCase
         $this->stripeReturns('POST /v1/subscriptions/sub_test', fn (array $params) => $this->stripeSubscription('cus_test', (int) $params['quantity']));
 
         $this->get(route('products.create'))->assertOk()
-            ->assertSee('This adds 100 €/month (prorated) to your subscription, which has 1 paid product today.')
+            ->assertSee('This adds 100 € per month (prorated) to your subscription, which has 1 paid product today.')
             ->assertSee(__('plans.add.confirm'));
 
         // The price must be confirmed.
         $this->post(route('billing.products.add', $this->organisation))->assertSessionHasErrors('confirm');
         $this->assertSame([], $this->stripeCalls('POST', '/v1/subscriptions/sub_test'));
 
-        $this->post(route('billing.products.add', $this->organisation), ['confirm' => '1'])->assertSessionHasErrors('withdrawal');
         $this->assertSame([], $this->stripeCalls('POST', '/v1/subscriptions/sub_test'));
 
-        $this->post(route('billing.products.add', $this->organisation), ['confirm' => '1', 'withdrawal' => '1'])
-            ->assertRedirect(route('products.create'))->assertSessionHas('status', __('plans.billing.added', ['price' => '100 €']));
+        $this->post(route('billing.products.add', $this->organisation), ['confirm' => '1', 'business' => '1'])
+            ->assertRedirect(route('products.create'))->assertSessionHas('status', __('plans.billing.added', ['price' => '100 €', 'per' => 'per month']));
 
         $params = $this->stripeCalls('POST', '/v1/subscriptions/sub_test')[0]['params'];
         $this->assertEquals(2, $params['quantity']);
@@ -233,6 +270,20 @@ class BillingTest extends TestCase
         $this->postStripeWebhook(['id' => 'evt_3', 'type' => 'customer.subscription.updated', 'data' => ['object' => $this->stripeSubscription('cus_test', 1)]])->assertOk();
         $this->assertTrue(ProductAccess::for($this->owner, $paid->product->fresh())->canEdit($paid));
         $this->assertTrue(Plan::fresh($this->organisation)->aiIncluded());
+    }
+
+    public function test_a_late_active_event_never_switches_an_ended_subscription_back_on(): void
+    {
+        $this->subscribe(1);
+        $this->organisation->subscription('products')->markAsCanceled();
+        $this->assertFalse(Plan::fresh($this->organisation)->hasActiveSubscription());
+
+        // Stripe resends an "updated: active" from before the cancellation: Stripe now says canceled.
+        $this->stripeReturns('GET /v1/subscriptions/sub_test', ['object' => 'subscription', 'status' => 'canceled', 'canceled_at' => time()] + $this->stripeSubscription('cus_test', 1));
+        $this->postStripeWebhook(['id' => 'evt_late', 'type' => 'customer.subscription.updated', 'data' => ['object' => $this->stripeSubscription('cus_test', 1)]])->assertOk();
+
+        $this->assertFalse(Plan::fresh($this->organisation)->hasActiveSubscription());
+        $this->assertSame('canceled', $this->organisation->subscriptions()->first()->stripe_status);
     }
 
     public function test_the_ai_stays_on_after_a_cancellation_while_a_granted_product_remains(): void
@@ -345,8 +396,7 @@ class BillingTest extends TestCase
 
         $this->get(route('billing.show', $this->organisation))->assertOk()
             ->assertSee('2 paid products are read-only. Reactivating them costs 100 € per month each.');
-        $this->post(route('billing.reactivate', $this->organisation))->assertSessionHasErrors('withdrawal');
-        $this->post(route('billing.reactivate', $this->organisation), ['withdrawal' => '1'])->assertRedirect('https://checkout.stripe.com/c/pay/cs_re');
+        $this->post(route('billing.reactivate', $this->organisation), ['business' => '1'])->assertRedirect('https://checkout.stripe.com/c/pay/cs_re');
         $this->assertSame(['reactivate', 2], [BillingConsent::query()->sole()->action, BillingConsent::query()->sole()->quantity]);
         $this->assertEquals(2, $this->stripeCalls('POST', '/v1/checkout/sessions')[0]['params']['line_items'][0]['quantity']);
 

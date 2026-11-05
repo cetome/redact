@@ -19,6 +19,8 @@ class OrganisationLegalController extends Controller
         abort_unless($organisation->isAdmin($request->user()), 404);
 
         $data = $request->validate([
+            // Settings sends the name too; the Declaration step does not.
+            'name' => ['sometimes', 'required', 'string', 'max:160'],
             'legal_name' => ['nullable', 'string', 'max:200'],
             'address' => ['nullable', 'string', 'max:1000'],
             'country' => ['nullable', 'string', 'max:80'],
@@ -36,6 +38,9 @@ class OrganisationLegalController extends Controller
             fn ($value) => filled($value) ? trim(str_replace("\r", '', (string) $value)) : null,
             collect($data)->except('back')->all(),
         ))->save();
+        if (isset($data['name'])) {
+            return redirect()->route('organisations.settings', $organisation)->with('status', __('organisation.saved'));
+        }
 
         // Back to the page that sent the form, when it is one of ours.
         $back = (string) ($data['back'] ?? '');

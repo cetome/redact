@@ -50,7 +50,7 @@ return [
         'secret' => env('STRIPE_WEBHOOK_SECRET'),
         'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
         // REDact also logs failed payments (App\Listeners\Billing\LogStripeWebhook).
-        'events' => array_merge(WebhookCommand::DEFAULT_EVENTS, ['invoice.payment_failed']),
+        'events' => array_merge(WebhookCommand::DEFAULT_EVENTS, ['invoice.payment_failed', 'checkout.session.completed']),
     ],
 
     /*

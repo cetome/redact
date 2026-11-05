@@ -11,7 +11,7 @@ use Illuminate\View\View;
 
 /**
  * Shown after an e-mail sign-in while the account has no passkey: a strong
- * nudge to add one, with "Skip for now".
+ * nudge to add one, with "Not now" (asked again next time) and "Don't ask me again".
  */
 class PasskeySuggestionController extends Controller
 {
@@ -34,5 +34,15 @@ class PasskeySuggestionController extends Controller
         $request->session()->forget(SignIn::SUGGEST_PASSKEY);
 
         return redirect()->intended(route('dashboard'));
+    }
+
+    /** "Don't ask me again": no suggestion at sign-in any more. Passkeys stay on the account page. */
+    public function never(Request $request): RedirectResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+        $user->forceFill(['passkey_prompt_off_at' => now()])->save();
+
+        return $this->skip($request);
     }
 }

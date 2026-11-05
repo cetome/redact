@@ -13,6 +13,9 @@
     <x-slot:legal>
         <a href="{{ route('legal.terms') }}">{{ __('nav.terms') }}</a>
         <a href="{{ route('legal.privacy') }}">{{ __('nav.privacy') }}</a>
-        <a href="{{ url('/.well-known/security.txt') }}">{{ __('nav.security') }}</a>
+        {{-- The security page (how to report an issue), as on the contact page; security.txt stays for scanners. --}}
+        @if (filled(config('redact.security_url')))
+            <a href="{{ config('redact.security_url') }}" target="_blank" rel="noopener">{{ __('nav.security') }}</a>
+        @endif
     </x-slot:legal>
 </x-brand.footer>

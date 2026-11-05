@@ -57,9 +57,9 @@ return [
     ],
     // Le produit de démonstration (App\Guest\DemoProduct) : chaque document qu’il produit est marqué.
     'demo' => [
-        'watermark' => 'DÉMO — produit fictif',
-        'open' => 'Démo : un produit fictif, jamais mis sur le marché',
-        'manufacturer' => 'Le fabricant fictif de la démo.',
+        'watermark' => 'DÉMO — produit d’exemple',
+        'open' => 'Démo : un produit d’exemple, jamais mis sur le marché',
+        'manufacturer' => 'Le fabricant d’exemple de la démo.',
     ],
     'draft' => [
         'watermark' => 'PROJET — non valable',

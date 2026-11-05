@@ -59,5 +59,10 @@
 @endif
 <link rel="icon" href="{{ asset('brand/redact-favicon.svg') }}" type="image/svg+xml">
 <link rel="apple-touch-icon" href="{{ asset('brand/redact-touch-icon.png') }}">
+@if (auth()->user() && ! auth()->user()->is_guest)
+    {{-- The account's theme (Account > Accessibility): theme-init.js applies it, the header button
+         saves it. A sandbox (guest) has no account page: its theme stays in the browser. --}}
+    <meta name="redact-theme" content="{{ auth()->user()->theme }}" data-url="{{ route('account.theme') }}">
+@endif
 <script src="{{ asset('js/theme-init.js') }}" nonce="{{ app('csp-nonce') }}"></script>
 @vite(['resources/css/app.css', 'resources/js/app.js'])

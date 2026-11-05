@@ -53,7 +53,7 @@ class InvitedSignUpTest extends TestCase
     private function register(): User
     {
         $this->post('/register', [
-            'name' => 'Grace Hopper', 'email' => 'Grace@Example.test', 'organisation' => 'Hopper Radio',
+            'email' => 'Grace@Example.test', 'organisation' => 'Hopper Radio',
             'terms' => '1', 'altcha' => 'ok',
         ])->assertRedirect(route('login.code'));
 
@@ -131,7 +131,7 @@ class InvitedSignUpTest extends TestCase
     private function claim(): void
     {
         $response = $this->post(route('guest.claim.send'), [
-            'name' => 'Grace Hopper', 'email' => 'grace@example.test', 'organisation' => '', 'terms' => '1', 'altcha' => 'ok',
+            'email' => 'grace@example.test', 'organisation' => '', 'terms' => '1', 'altcha' => 'ok',
         ]);
         $code = null;
         Mail::assertSent(VerificationCodeMail::class, function (VerificationCodeMail $mail) use (&$code) {

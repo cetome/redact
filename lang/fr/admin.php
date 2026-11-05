@@ -113,6 +113,28 @@ return [
     ],
 
     'users' => [
+        // Supprimer un compte définitivement (App\Admin\AccountEraser).
+        'erase' => [
+            'title' => 'Supprimer le compte',
+            'lead' => 'Supprime :email définitivement, avec :',
+            'organisation' => ':name : :count produit, ses versions et fichiers|:name : :count produits, leurs versions et fichiers',
+            'nothing' => 'Aucune organisation à lui seul : seul le compte est supprimé.',
+            'stripe' => 'Stripe : le client est supprimé et l’abonnement prend fin immédiatement. Stripe garde les factures et les paiements pour la comptabilité.',
+            'stripe_error' => 'Stripe n’a pas pu être lu : le dernier paiement est inconnu. La suppression sans remboursement reste possible.',
+            'no_payment' => 'Rien à rembourser : aucun abonnement actif, ou sa période n’est pas encore payée.',
+            'shared' => 'La personne quitte les organisations partagées avec d’autres, où son travail reste.',
+            'owns_products' => 'La personne possède des produits dans :organisation, partagée avec d’autres : transférez-les d’abord.',
+            'last_admin' => 'La personne est la seule administratrice de :organisation, partagée avec d’autres : nommez d’abord un autre membre administrateur.',
+            'email' => 'Saisissez :email pour confirmer',
+            'email_mismatch' => 'L’adresse saisie n’est pas celle de ce compte.',
+            'refund' => 'Supprimer et rembourser :amount (:days jours non utilisés sur :total, sur :paid payés le :date)',
+            'no_refund' => 'Supprimer sans rembourser',
+            'delete' => 'Supprimer le compte',
+            'confirm' => 'Supprimer :email et tout ce qui est listé ? C’est définitif.',
+            'done' => ':email est supprimé.',
+            'done_refund' => ':email est supprimé. Remboursé : :amount.',
+            'failed' => 'Rien n’a été supprimé : :error',
+        ],
         'title' => 'Utilisateurs',
         'back' => 'Tous les utilisateurs',
         'search_placeholder' => 'Nom, e-mail ou organisation',

@@ -14,29 +14,29 @@ use Illuminate\Support\Str;
 use Laravel\Cashier\Subscription;
 
 /**
- * What an organisation's plan allows (config redact.plans, staff overrides in organisations.limits).
+ * What an organisation's plan allows (config redact.plans and the console's catalogue,
+ * App\Billing\Catalogue; staff overrides in organisations.limits).
  *
- *  - The FIRST product is free forever: owner + 1 team member, a one-time AI trial, full rules,
+ *  - The FIRST product is free forever: owner + 1 team member, no AI by default, full rules,
  *    downloads and imports (never limited by a plan).
- *  - Each additional product is either PAID (Stripe subscription "products", one unit per
- *    product) or GRANTED by cetome (override `extra_products`, e.g. partners): unlimited team,
- *    a monthly AI allowance per product, pooled at organisation level, support.
- *  - `enterprise` (custom contract, set by staff): no product or team limit.
+ *  - A plan (Premium, Enterprise, Business...) includes a number of products (the free one counted),
+ *    a team size, AI units per period and support. It comes from, in this order: a contract set
+ *    by staff (organisations.plan, no end date), the Stripe subscription "products" (its plan
+ *    price, plus one add-on unit or one more plan unit per additional product), a trial set by
+ *    staff (organisations.plan until plan_ends_at, no card), or none (Free).
+ *  - Staff may also grant extra products (override `extra_products`, e.g. partners).
  *
  * A product records the allowance it was created on (products.plan_slot). Products created
  * before plans existed (null) are grandfathered: never read-only, unlimited team; they use the
- * free slot first, so only NEW creations beyond the limits are refused. When the subscription
- * ends (cancelled, unpaid) or shrinks, the paid products it no longer covers become read-only
- * (newest first), never deleted; the free product stays editable.
+ * free slot first, so only NEW creations beyond the limits are refused. Paid and granted products
+ * share the paid and granted allowance; when it shrinks (subscription cancelled or reduced, trial
+ * over), the newest ones become read-only, never deleted; the free product stays editable.
  */
 final class Plan
 {
     public const FREE = 'free';
 
     public const ENTERPRISE = 'enterprise';
-
-    /** @var list<string> */
-    public const PLANS = [self::FREE, self::ENTERPRISE];
 
     public const SLOT_FREE = 'free';
 
@@ -53,12 +53,24 @@ final class Plan
     /** Keys staff may override per organisation (admin console). */
     public const OVERRIDES = ['extra_products', 'team_members', 'ai_units', 'ai_period', 'support'];
 
+    /** Where the plan comes from. */
+    public const SOURCE_CONTRACT = 'contract';
+
+    public const SOURCE_SUBSCRIPTION = 'subscription';
+
+    public const SOURCE_TRIAL = 'trial';
+
     /**
      * @param  list<string>  $locked  ids of the products the plan no longer covers (read-only)
+     * @param  int  $extraUnits  products the subscription pays beyond what its plan includes
      */
     private function __construct(
         public readonly Organisation $organisation,
-        public readonly string $plan,
+        public readonly ?PlanDefinition $definition,
+        public readonly ?string $source,
+        public readonly ?CarbonInterface $trialEndsAt,
+        public readonly ?string $interval,
+        public readonly int $extraUnits,
         public readonly int $freeSlots,
         public readonly int $grantedSlots,
         public readonly int $paidSlots,
@@ -68,8 +80,7 @@ final class Plan
         public readonly ?Subscription $subscription,
         public readonly array $locked,
         public readonly int $grandfathered = 0,
-        public readonly int $coveredGranted = 0,
-        public readonly int $coveredPaid = 0,
+        public readonly int $coveredFree = 0,
     ) {}
 
     /** The plan of $organisation, worked out once per request (pages ask many times). */
@@ -92,65 +103,118 @@ final class Plan
         if (app()->bound('request')) {
             request()->attributes->remove('plan.'.$organisation->getKey());
         }
+        $catalogue = app(Catalogue::class);
+        $freeSlots = max(0, (int) config('redact.plans.free.products', 1));
 
-        $plan = in_array($organisation->plan, self::PLANS, true) ? $organisation->plan : self::FREE;
-        $subscription = Subscription::query()
+        // Set by staff: a contract (no end date) or a trial until plan_ends_at.
+        $assigned = $organisation->plan !== self::FREE ? $catalogue->plan($organisation->plan) : null;
+        $endsAt = $organisation->plan_ends_at;
+        if ($assigned !== null && $endsAt !== null && $endsAt->isPast()) {
+            $assigned = null;
+        }
+
+        $subscription = Subscription::query()->with('items')
             ->where('organisation_id', $organisation->getKey())
             ->where('type', (string) config('redact.billing.subscription', 'products'))
             ->orderByDesc('created_at')->orderByDesc('id')->first();
-        $paidSlots = $subscription?->valid() ? max(0, (int) $subscription->quantity) : 0;
+        [$subscribed, $paidSlots, $extraUnits, $interval] = $subscription?->valid()
+            ? self::readSubscription($subscription, $catalogue, $freeSlots)
+            : [null, 0, 0, null];
+
+        [$definition, $source] = match (true) {
+            $assigned !== null && $endsAt === null => [$assigned, self::SOURCE_CONTRACT],
+            $subscribed !== null => [$subscribed, self::SOURCE_SUBSCRIPTION],
+            $assigned !== null => [$assigned, self::SOURCE_TRIAL],
+            default => [null, null],
+        };
+        $grantedSlots = max(0, (int) (self::override($organisation, 'extra_products') ?? 0))
+            + ($definition !== null && $source !== self::SOURCE_SUBSCRIPTION ? $definition->slotsBeyond($freeSlots) : 0);
 
         /** @var Collection<int, Product> $products */
         // The demo product (is_demo) takes no slot, never counts and is never locked.
         $products = $organisation->products()->notDemo()->orderBy('created_at')->orderBy('id')->get(['id', 'plan_slot', 'created_at']);
-        $granted = $products->where('plan_slot', self::SLOT_GRANTED)->values();
-        $paid = $products->where('plan_slot', self::SLOT_PAID)->values();
-        $grantedSlots = max(0, (int) (self::override($organisation, 'extra_products') ?? 0));
+        $extras = $products->filter(fn (Product $p) => in_array($p->plan_slot, [self::SLOT_GRANTED, self::SLOT_PAID], true))->values();
 
         // Free products beyond the free allowance (e.g. a sandbox merged into an account that already
-        // has its free product): a spare granted or paid slot covers them, otherwise the newest are
+        // has its free product): a spare paid or granted slot covers them, otherwise the newest are
         // read-only like any product beyond its plan. Grandfathered products (no slot) use the free
         // allowance first and are never locked.
-        $freeSlots = max(0, (int) config('redact.plans.free.products', 1));
         $grandfathered = $products->filter(fn (Product $p) => $p->plan_slot === null)->count();
         $free = $products->where('plan_slot', self::SLOT_FREE)->values();
         $freeAllowance = max(0, $freeSlots - $grandfathered);
-        $excess = max(0, $free->count() - $freeAllowance);
-        // Enterprise and a self-hosted install have no product limit: nothing is ever locked.
-        $unlimited = $plan === self::ENTERPRISE || self::selfHosted();
-        $coveredGranted = $unlimited ? 0 : min($excess, max(0, $grantedSlots - $granted->count()));
-        $coveredPaid = $unlimited ? 0 : min($excess - $coveredGranted, max(0, $paidSlots - $paid->count()));
+        // A plan without a product limit and a self-hosted install: nothing is ever locked.
+        $unlimited = ($definition?->unlimited() ?? false) || self::selfHosted();
+        $capacity = $grantedSlots + $paidSlots;
+        $coveredFree = $unlimited ? 0 : min(max(0, $free->count() - $freeAllowance), max(0, $capacity - $extras->count()));
 
-        // Enterprise covers everything; otherwise the newest products beyond their allowance are read-only.
+        // Paid and granted products share their allowance: the newest beyond it are read-only.
         $locked = $unlimited ? [] : array_values(array_merge(
-            $free->slice($freeAllowance + $coveredGranted + $coveredPaid)->pluck('id')->all(),
-            $granted->slice($grantedSlots)->pluck('id')->all(),
-            $paid->slice($paidSlots)->pluck('id')->all(),
+            $free->slice($freeAllowance + $coveredFree)->pluck('id')->all(),
+            $extras->slice($capacity)->pluck('id')->all(),
         ));
 
         return new self(
             organisation: $organisation,
-            plan: $plan,
+            definition: $definition,
+            source: $source,
+            trialEndsAt: $source === self::SOURCE_TRIAL ? $endsAt : null,
+            interval: $source === self::SOURCE_SUBSCRIPTION ? $interval : null,
+            extraUnits: $source === self::SOURCE_SUBSCRIPTION ? $extraUnits : 0,
             freeSlots: $freeSlots,
             grantedSlots: $grantedSlots,
             paidSlots: $paidSlots,
             freeUsed: $products->filter(fn (Product $p) => $p->plan_slot === null || $p->plan_slot === self::SLOT_FREE)->count(),
-            grantedUsed: $granted->count(),
-            paidUsed: $paid->count(),
+            grantedUsed: $extras->where('plan_slot', self::SLOT_GRANTED)->count(),
+            paidUsed: $extras->where('plan_slot', self::SLOT_PAID)->count(),
             subscription: $subscription,
             locked: $locked,
             grandfathered: $grandfathered,
-            coveredGranted: $coveredGranted,
-            coveredPaid: $coveredPaid,
+            coveredFree: $coveredFree,
         );
     }
 
-    /** Stripe is set up (keys and the product price): self-service paid products. */
+    /**
+     * The plan a valid subscription pays for, the paid product slots it gives (what the plan
+     * includes beyond the free product, plus one per add-on unit or extra plan unit), those extra
+     * units, and its interval.
+     *
+     * @return array{0: PlanDefinition, 1: int, 2: int, 3: string}
+     */
+    private static function readSubscription(Subscription $subscription, Catalogue $catalogue, int $freeSlots): array
+    {
+        // Stripe price => quantity (a subscription never holds the same price twice).
+        $items = $subscription->items->isNotEmpty()
+            ? $subscription->items->pluck('quantity', 'stripe_price')->all()
+            : [(string) $subscription->stripe_price => $subscription->quantity];
+
+        $plan = null;
+        $interval = 'month';
+        $planUnits = 0;
+        $extra = 0;
+        foreach ($items as $price => $quantity) {
+            $quantity = (int) $quantity;
+            $described = $catalogue->describe((string) $price);
+            $plan ??= $described['plan'];
+            if ($described['item'] === Catalogue::ITEM_PLAN) {
+                $interval = $described['interval'];
+                $planUnits += max(0, $quantity);
+            } else {
+                $extra += max(0, $quantity);
+            }
+        }
+        $definition = $catalogue->plan($plan) ?? $catalogue->plan(Catalogue::DEFAULT)
+            ?? new PlanDefinition(Catalogue::DEFAULT, 2, null, 500, 'month', 500, true, true, true, true);
+        $extraUnits = max(0, $planUnits - 1) + $extra;
+
+        return [$definition, $definition->slotsBeyond($freeSlots) + $extraUnits, $extraUnits, $interval];
+    }
+
+    /** Stripe is set up (keys and a plan price): self-service plans. */
     public static function billingEnabled(): bool
     {
         return (string) config('cashier.key') !== ''
             && (string) config('cashier.secret') !== ''
-            && (string) config('redact.billing.price') !== '';
+            && app(Catalogue::class)->billable();
     }
 
     /**
@@ -179,9 +243,26 @@ final class Plan
         return in_array($topic, ContactMessage::TOPICS, true) ? route('contact.topic', $topic) : route('contact');
     }
 
-    public static function priceLabel(): string
+    /** What one additional product costs on the featured plan (pricing page, terms), per $interval. */
+    public static function priceLabel(string $interval = 'month'): string
     {
-        return (string) config('redact.plans.paid.price_label', '100 €');
+        $catalogue = app(Catalogue::class);
+
+        return $catalogue->label($catalogue->featured()->key ?? Catalogue::DEFAULT, Catalogue::ITEM_EXTRA, $interval);
+    }
+
+    /** What one additional product costs this organisation (its plan, per its interval). */
+    public function extraPriceLabel(): string
+    {
+        $catalogue = app(Catalogue::class);
+
+        return $catalogue->label($this->definition->key ?? ($catalogue->featured()->key ?? Catalogue::DEFAULT), Catalogue::ITEM_EXTRA, $this->interval ?? 'month');
+    }
+
+    /** "per month" or "per year": the organisation's billing interval (monthly without one). */
+    public function per(): string
+    {
+        return __('plans.per.'.($this->interval ?? 'month'));
     }
 
     /** A staff override, or null when the config default applies. */
@@ -192,24 +273,37 @@ final class Plan
         return $limits[$key] ?? null;
     }
 
-    public function isEnterprise(): bool
+    /** The plan's key ("paid", "enterprise"...), or "free". */
+    public function key(): string
     {
-        return $this->plan === self::ENTERPRISE;
+        return $this->definition->key ?? self::FREE;
     }
 
     /**
-     * No product or team limit: Enterprise, or a self-hosted install (its own servers: the SaaS
-     * plans do not apply; the hosted service sets REDACT_SELF_HOSTED=false).
+     * A plan set by staff without an end date (Enterprise or another contract): no online
+     * payment, the contract decides.
      */
-    public function unlimited(): bool
+    public function isEnterprise(): bool
     {
-        return $this->isEnterprise() || self::selfHosted();
+        return $this->source === self::SOURCE_CONTRACT;
     }
 
-    /** Has the organisation paid or granted products (unlimited team, monthly AI, support)? */
+    /** A plan set by staff until a date (no card). */
+    public function onTrial(): bool
+    {
+        return $this->source === self::SOURCE_TRIAL;
+    }
+
+    /** No product limit: a plan without one, or a self-hosted install (the SaaS plans do not apply). */
+    public function unlimited(): bool
+    {
+        return ($this->definition?->unlimited() ?? false) || self::selfHosted();
+    }
+
+    /** Has the organisation a plan or extra products (team, AI, support)? */
     public function hasExtras(): bool
     {
-        return $this->isEnterprise() || $this->grantedSlots + $this->paidSlots > 0;
+        return $this->definition !== null || $this->grantedSlots + $this->paidSlots > 0;
     }
 
     /** The allowance the next product is created on (free first, then granted, then paid), null when none is left. */
@@ -218,15 +312,15 @@ final class Plan
         if ($this->freeUsed < $this->freeSlots) {
             return self::SLOT_FREE;
         }
-        // Slots already covering extra free products are taken.
-        if ($this->unlimited() || $this->grantedUsed + $this->coveredGranted < $this->grantedSlots) {
+        if ($this->unlimited()) {
             return self::SLOT_GRANTED;
         }
-        if ($this->paidUsed + $this->coveredPaid < $this->paidSlots) {
-            return self::SLOT_PAID;
+        // Slots already covering extra free products are taken.
+        if ($this->grantedUsed + $this->paidUsed + $this->coveredFree >= $this->grantedSlots + $this->paidSlots) {
+            return null;
         }
 
-        return null;
+        return $this->grantedUsed < $this->grantedSlots ? self::SLOT_GRANTED : self::SLOT_PAID;
     }
 
     public function productLimitReached(): bool
@@ -239,6 +333,16 @@ final class Plan
         return $this->freeUsed + $this->grantedUsed + $this->paidUsed;
     }
 
+    /** "3 of 4": the products created against all the organisation may have, or "3, no limit". */
+    public function productsSummary(): string
+    {
+        $limit = $this->productLimit();
+
+        return $limit === null
+            ? __('plans.billing.products_unlimited', ['used' => $this->productCount()])
+            : __('plans.billing.products_value', ['used' => $this->productCount(), 'total' => $limit]);
+    }
+
     /** Products the plan holds (null = no limit). Grandfathered products above it stay. */
     public function productLimit(): ?int
     {
@@ -248,13 +352,15 @@ final class Plan
     /** Paid product slots not used by a product yet (bought, product not created). */
     public function unusedPaidSlots(): int
     {
-        return max(0, $this->paidSlots - $this->paidUsed - $this->coveredPaid);
+        $spare = $this->grantedSlots + $this->paidSlots - $this->grantedUsed - $this->paidUsed - $this->coveredFree;
+
+        return max(0, min($this->paidSlots, $spare));
     }
 
-    /** Paid products the subscription no longer covers (what "Reactivate" pays for again). */
+    /** Paid or granted products the plan no longer covers (what "Reactivate" pays for again). */
     public function lockedPaidCount(): int
     {
-        return $this->unlimited() ? 0 : max(0, $this->paidUsed - $this->paidSlots);
+        return $this->unlimited() ? 0 : max(0, $this->grantedUsed + $this->paidUsed - $this->grantedSlots - $this->paidSlots);
     }
 
     public function isLocked(Product $product): bool
@@ -282,11 +388,61 @@ final class Plan
         return $subscription->onGracePeriod() ? 'cancelling' : 'active';
     }
 
-    /** Can an organisation admin buy another product slot in Stripe right now? */
+    /** Can an organisation admin buy a plan or another product in Stripe right now? */
     public function canBuy(): bool
     {
         return self::billingEnabled() && ! $this->isEnterprise()
             && in_array($this->subscriptionState(), ['none', 'ended', 'active'], true);
+    }
+
+    /**
+     * The app bar's "Upgrade" (owner 2026-11-04: subscribe without going back to the pricing page):
+     * the person administers an organisation on Free that can buy online.
+     */
+    public static function showsUpgrade(?User $user): bool
+    {
+        if ($user === null || $user->is_guest || ! self::billingEnabled()) {
+            return false;
+        }
+        $organisation = $user->organisations()->get()->first(fn (Organisation $o) => $o->isAdmin($user));
+        if ($organisation === null) {
+            return false;
+        }
+        $plan = self::for($organisation);
+
+        return $plan->definition === null && $plan->canBuy() && ! $plan->hasActiveSubscription();
+    }
+
+    /**
+     * The most products bought online, the free one counted (owner 2026-11-04): 11. With Premium (2
+     * included, 100 € a month or 1000 € a year, the same for each one more) that is 10 000 € a year,
+     * or 1000 € a month. Beyond it: "Talk to us".
+     */
+    public const MAX_ONLINE_PRODUCTS = 11;
+
+    /**
+     * The organisation whose plan and billing the person manages (account menu, owner 2026-11-04):
+     * one they administer, the paying one first. Null for a guest, a member only, or when there is
+     * nothing to bill (no online payment and no Stripe customer).
+     */
+    public static function billingOrganisation(?User $user): ?Organisation
+    {
+        if ($user === null || $user->is_guest) {
+            return null;
+        }
+        $organisations = $user->organisations()->get()->filter(fn (Organisation $o) => $o->isAdmin($user));
+        $organisation = $organisations->first(fn (Organisation $o) => $o->hasStripeId()) ?? $organisations->first();
+        if ($organisation === null || (! self::billingEnabled() && ! $organisation->hasStripeId())) {
+            return null;
+        }
+
+        return $organisation;
+    }
+
+    /** The subscription already pays for the most products sold online: one more is "Talk to us". */
+    public function onlineMaximumReached(): bool
+    {
+        return $this->freeSlots + $this->paidSlots >= self::MAX_ONLINE_PRODUCTS;
     }
 
     /** Add a slot to the existing subscription (confirm screen) rather than a new Checkout. */
@@ -301,19 +457,28 @@ final class Plan
         $count = $this->freeSlots + $this->grantedSlots + $this->paidSlots;
 
         return self::billingEnabled() && ! $this->isEnterprise()
-            ? __('plans.refusal.products_pay', ['price' => self::priceLabel()])
+            ? __('plans.refusal.products_pay', ['price' => $this->extraPriceLabel(), 'per' => $this->per()])
             : trans_choice('plans.refusal.products', max(1, $count), ['count' => max(1, $count)]);
     }
 
     // ---- Team -------------------------------------------------------------------------------
 
-    /** People a product's team may hold besides its owner (null = no limit): only the free product is limited. */
+    /**
+     * People a product's team may hold besides its owner (null = no limit): the plan's team size
+     * for every product, or, without a plan, the free product's.
+     */
     public function teamLimit(Product $product): ?int
     {
-        if ($this->unlimited() || $product->plan_slot !== self::SLOT_FREE) {
+        if ($this->unlimited()) {
             return null;
         }
         $override = self::override($this->organisation, 'team_members');
+        if ($this->definition !== null) {
+            return $override !== null ? max(0, (int) $override) : $this->definition->teamMembers;
+        }
+        if ($product->plan_slot !== self::SLOT_FREE) {
+            return null;
+        }
 
         return max(0, (int) ($override ?? config('redact.plans.free.team_members', 1)));
     }
@@ -365,21 +530,24 @@ final class Plan
     // ---- AI ---------------------------------------------------------------------------------
 
     /**
-     * The organisation's AI units: a one-time trial on the free product alone, a monthly
-     * allowance per paid or granted product (pooled), or the enterprise allowance. "own": not
-     * limited by the plan: a self-hosted install (its own AI key, no staff AI override), or an
-     * organisation answered by its own key or model (App\Ai\OrganisationAi: paid and Enterprise on the SaaS).
+     * The organisation's AI units: the plan's allowance plus what each additional product adds
+     * (pooled), extra products granted alone (the default plan's per-product units), or the free
+     * allowance (none by default, or a one-time trial). "own": not limited by the plan: a
+     * self-hosted install (its own AI key, no staff AI override), or an organisation answered by
+     * its own key or model (App\Ai\OrganisationAi: paid and Enterprise on the SaaS).
      *
      * @return array{units: int, period: string, used: int, left: int, trial: bool, renews: ?CarbonInterface, own: bool}
      */
     public function aiAllowance(): array
     {
-        if ($this->isEnterprise()) {
-            $units = (int) config('redact.plans.enterprise.ai_units', 5000);
-            $period = (string) config('redact.plans.enterprise.ai_period', 'month');
-        } elseif ($this->grantedSlots + $this->paidSlots > 0) {
-            $units = (int) config('redact.plans.paid.ai_units', 500) * ($this->grantedSlots + $this->paidSlots);
-            $period = (string) config('redact.plans.paid.ai_period', 'month');
+        $granted = max(0, (int) (self::override($this->organisation, 'extra_products') ?? 0));
+        if ($this->definition !== null) {
+            $units = $this->definition->aiUnits + $this->definition->extraProductAiUnits * ($this->extraUnits + $granted);
+            $period = $this->definition->aiPeriod;
+        } elseif ($this->grantedSlots > 0) {
+            $default = app(Catalogue::class)->plan(Catalogue::DEFAULT);
+            $units = ($default->extraProductAiUnits ?? (int) config('redact.plans.paid.ai_units', 500)) * $this->grantedSlots;
+            $period = $default->aiPeriod ?? 'month';
         } else {
             $units = (int) config('redact.plans.free.ai_units', 50);
             $period = (string) config('redact.plans.free.ai_period', 'once');
@@ -442,7 +610,7 @@ final class Plan
             : __('plans.refusal.ai_rolling', ['units' => $allowance['units']]);
     }
 
-    /** Does the plan include AI at all (free plan: no; paid, granted, enterprise or a staff override: yes)? */
+    /** Does the plan include AI at all (free plan: no; a plan, granted products or a staff override: yes)? */
     public function aiIncluded(): bool
     {
         $allowance = $this->aiAllowance();
@@ -469,13 +637,23 @@ final class Plan
         if ($override !== null) {
             return (bool) $override;
         }
+        if ($this->definition !== null) {
+            return $this->definition->support;
+        }
 
         return (bool) ($this->hasExtras() ? config('redact.plans.paid.support', true) : config('redact.plans.free.support', false));
     }
 
-    /** "Free plan", "Paid plan", "Enterprise plan", "Self-hosted". */
+    /** "Free plan", "Paid plan", "Enterprise plan", "Premium", "Self-hosted". */
     public function label(): string
     {
-        return __('plans.name.'.($this->isEnterprise() ? 'enterprise' : (self::selfHosted() ? 'self_hosted' : ($this->hasExtras() ? 'paid' : 'free'))));
+        if (self::selfHosted() && $this->source !== self::SOURCE_CONTRACT) {
+            return __('plans.name.self_hosted');
+        }
+        if ($this->definition !== null) {
+            return $this->definition->name();
+        }
+
+        return __('plans.name.'.($this->hasExtras() ? 'paid' : 'free'));
     }
 }

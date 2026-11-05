@@ -77,8 +77,8 @@ class ClaimSandbox
 
                     continue;
                 }
-                $organisation->update(['name' => CreateAccount::organisationName($data['name'], $data['organisation'])]);
-                // The demo's fictitious manufacturer (DemoProduct) never becomes the person's legal identity.
+                $organisation->update(['name' => CreateAccount::organisationName($data['name'] !== '' ? $data['name'] : $data['email'], $data['organisation'])]);
+                // The demo's example manufacturer (DemoProduct) never becomes the person's legal identity.
                 $settings = (array) $organisation->settings;
                 if (! empty($settings[DemoProduct::MANUFACTURER_FLAG])) {
                     unset($settings[DemoProduct::MANUFACTURER_FLAG]);

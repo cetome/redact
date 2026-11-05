@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\View\View;
 
 /**
- * Self-service sign-up. The answer is the same whether or not the address
+ * Self-service sign-up: the e-mail address only (the name is typed later on the
+ * account page, like FAST). The answer is the same whether or not the address
  * already has an account: an existing account simply gets a sign-in e-mail.
  */
 class RegisterController extends Controller
@@ -39,15 +40,11 @@ class RegisterController extends Controller
         $start = microtime(true);
 
         $data = $request->validate([
-            'name' => ['required', 'string', 'max:120'],
             'email' => ['required', 'string', 'email', 'max:191'],
             'organisation' => ['nullable', 'string', 'max:160'],
-            'terms' => ['accepted'],
-            'product_news' => ['nullable', 'boolean'],
             'altcha' => ['required', 'string'],
         ], [
             'altcha.required' => __('auth.register.altcha_required'),
-            'terms.accepted' => __('auth.register.terms_required'),
         ]);
 
         $ipKey = 'signup-ip:'.ClientKey::ip($request);
@@ -67,10 +64,8 @@ class RegisterController extends Controller
         if ($user === null) {
             try {
                 $user = $createAccount([
-                    'name' => trim($data['name']),
                     'email' => $email,
                     'organisation' => trim((string) ($data['organisation'] ?? '')),
-                    'product_news' => (bool) ($data['product_news'] ?? false),
                     'locale' => app()->getLocale(),
                 ]);
                 $newAccount = true;

@@ -1,5 +1,5 @@
 {{--
-    The account page, in tabs: /account (profile), /account/security|sessions|data|delete. Only the
+    The account page, in tabs: /account (profile), /account/security|sessions|accessibility|data|delete. Only the
     selected tab is rendered (works without script, linkable), and every form comes back to its
     own tab (AccountController::tabUrl(), or back() to the URL it was posted from).
 --}}
@@ -10,6 +10,7 @@
         'profile' => ['user', null],
         'security' => ['key-round', $passkeys->count()],
         'sessions' => ['monitor-smartphone', $sessions->count()],
+        'accessibility' => ['accessibility', null],
         'data' => ['download', null],
         'delete' => ['trash-2', null],
     ];

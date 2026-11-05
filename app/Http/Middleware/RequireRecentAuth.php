@@ -15,6 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class RequireRecentAuth
 {
+    /** Session flag: a form was stopped for the confirmation, it has to be sent again. */
+    public const AGAIN = 'auth.confirm_again';
+
     public function handle(Request $request, Closure $next): Response
     {
         $window = (int) config('redact.auth.recent_auth') * 60;
@@ -27,7 +30,15 @@ class RequireRecentAuth
             return response()->json(['message' => __('auth.recent_required')], 423);
         }
 
-        $request->session()->put('url.intended', $request->fullUrl());
+        // A page (GET) is opened again after the confirmation. A form (DELETE, POST…) cannot be replayed
+        // by a redirect, which would GET its address (405): back to the page it was sent from, where
+        // the person clicks again (SignIn::confirmed says so).
+        if ($request->isMethod('GET')) {
+            $request->session()->put('url.intended', $request->fullUrl());
+        } else {
+            $request->session()->put('url.intended', url()->previous(route('dashboard')));
+            $request->session()->put(self::AGAIN, true);
+        }
 
         return redirect()->route('auth.confirm');
     }

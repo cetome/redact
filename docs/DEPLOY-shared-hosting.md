@@ -88,11 +88,12 @@ REDACT_CONTENT_PATH=/homepages/12/d123456789/htdocs/redact-content
 MAIL_MAILER=smtp
 MAIL_HOST=smtp.ionos.fr
 MAIL_PORT=587
-MAIL_USERNAME=no-reply@cetome.com
+MAIL_USERNAME=no-reply@example.com
 MAIL_PASSWORD=...
-MAIL_FROM_ADDRESS=no-reply@cetome.com
+MAIL_FROM_ADDRESS=no-reply@example.com
 MAIL_FROM_NAME="cetome REDact"
-REDACT_CONTACT_TO=info@cetome.com  # contact form messages (default)
+REDACT_CONTACT_TO=info@example.com  # contact form messages (required: no address is in the code)
+REDACT_SECURITY_CONTACT=security@example.com  # security.txt, terms, account e-mails
 
 PASSKEYS_USER_HANDLE_SECRET=<64 random characters, never change it>
 ALTCHA_HMAC_KEY=<64 random characters>
@@ -115,30 +116,30 @@ chmod -R u+rwX storage bootstrap/cache
 ### Mail (SPF, DKIM, DMARC)
 
 cetome.com's DMARC record asks for strict SPF alignment (`aspf=s`, quarantine): every REDact mail
-(sign-in codes, invitations, the contact form) is `From: no-reply@cetome.com`
+(sign-in codes, invitations, the contact form) is `From: no-reply@example.com`
 and must leave with the **envelope sender** (`Return-Path`, SMTP `MAIL FROM`) exactly
-`no-reply@cetome.com`, from a server listed in cetome.com's SPF record, signed with DKIM for
+`no-reply@example.com`, from a server listed in cetome.com's SPF record, signed with DKIM for
 cetome.com. Otherwise the message fails DMARC and is quarantined or dropped, for some recipients
 and not others (cetome.com's `inc/forms.php` found it that way). A visitor's address is only ever
 in `Reply-To`, never in `From`.
 
 - **smtp (recommended, the settings above)**: Symfony Mailer uses the From address as `MAIL FROM`,
   and `App\Listeners\Mail\AlignEnvelopeSender` pins `Return-Path` to `MAIL_FROM_ADDRESS` on every
-  message. Log in as the `no-reply@cetome.com` mailbox (an IONOS relay refuses or rewrites another
+  message. Log in as the `no-reply@example.com` mailbox (an IONOS relay refuses or rewrites another
   sender). Port 587 uses STARTTLS (`MAIL_SCHEME` empty); for 465 set `MAIL_SCHEME=smtps`. Check
   that DKIM signing is on for cetome.com in the IONOS panel.
 - **sendmail (the host's local mailer, like PHP `mail()`)**: give the envelope sender explicitly,
-  as cetome.com does with `mail(..., '-fno-reply@cetome.com')`; without it the host uses its own
+  as cetome.com does with `mail(..., '-fno-reply@example.com')`; without it the host uses its own
   domain:
 
   ```dotenv
   MAIL_MAILER=sendmail
-  MAIL_SENDMAIL_PATH="/usr/sbin/sendmail -t -i -fno-reply@cetome.com"
+  MAIL_SENDMAIL_PATH="/usr/sbin/sendmail -t -i -fno-reply@example.com"
   ```
 
   (With `-t`, Symfony would add `-f` itself; writing it keeps it right whatever the transport does.)
 - **Check** once deployed: send a message from `/contact` and, in the copy that reaches `REDACT_CONTACT_TO`, read
-  the headers of what arrives: `Return-Path: <no-reply@cetome.com>`, and in
+  the headers of what arrives: `Return-Path: <no-reply@example.com>`, and in
   `Authentication-Results` `spf=pass smtp.mailfrom=cetome.com`, `dkim=pass header.d=cetome.com`,
   `dmarc=pass`. The message to `REDACT_CONTACT_TO` must show the visitor in `Reply-To` only.
 
@@ -176,7 +177,7 @@ purge of unconfirmed accounts.
 
 1. Open `https://redact.example.com/register`, create your account, confirm the e-mail.
 2. Add a passkey from the welcome page (the staff console requires one).
-3. Over SSH: `PHP artisan redact:make-staff you@cetome.com --super`
+3. Over SSH: `PHP artisan redact:make-staff you@example.com --super`
 4. The console is at `/admin`.
 
 ## 7. Updating
@@ -184,8 +185,9 @@ purge of unconfirmed accounts.
 **One command:** upload the new zip (and the new content pack zip, if there is one) next to
 `redact-app/`, then from that folder run
 `sh redact-app/deploy/shared-hosting/update.sh redact-<new>.zip [redact-content-<new>.zip]`
-(maintenance mode, unzip, content pack, permissions, caches, migrations, queue restart, back online).
-The steps it runs:
+(maintenance mode, unzip, content pack, permissions, caches, migrations, back online, queue restart).
+If a step fails, it stops there, prints `FAILED at: <step>` and leaves the site in maintenance mode:
+fix the cause and run it again, or bring the site back with `PHP artisan up`. The steps it runs:
 
 ```bash
 cd ~
@@ -195,8 +197,8 @@ cd redact-app
 find . -type d -exec chmod 755 {} + ; find . -type f -exec chmod 644 {} + ; chmod -R u+rwX storage bootstrap/cache ; chmod 600 .env
 PHP artisan migrate --force
 PHP artisan optimize:clear && PHP artisan optimize
-PHP artisan queue:restart
 PHP artisan up
+PHP artisan queue:restart                         # a failure here only prints a warning
 ```
 
 Removed files from older releases stay behind with `unzip -o`; that is harmless. For a perfectly
@@ -214,7 +216,7 @@ assessed with.
 - `https://redact.example.com/up` answers 200.
 - `https://redact.example.com/.env` and `/../storage` answer 403/404.
 - Response headers contain `Content-Security-Policy`, `Strict-Transport-Security`, `X-Frame-Options: DENY`.
-- Sign-up e-mail arrives (check the spam folder and the DMARC alignment of `no-reply@cetome.com`).
+- Sign-up e-mail arrives (check the spam folder and the DMARC alignment of `no-reply@example.com`).
 - A message from `/contact` reaches `REDACT_CONTACT_TO` (nothing is mailed to the sender), with
   `spf=pass`, `dkim=pass`, `dmarc=pass` (Mail, above); `/admin/contact` lists it as sent.
 - The cron works: a message sent from `/contact` goes from *queued* to *sent* in `/admin/contact`

@@ -33,16 +33,6 @@
                     <form method="POST" action="{{ route('guest.claim.send') }}" class="a-stack">
                         @csrf
                         <div class="a-field">
-                            <label for="name" class="a-label">{{ __('auth.fields.name') }}</label>
-                            <input id="name" name="name" type="text" class="a-input" required maxlength="120"
-                                autocomplete="name" value="{{ old('name', $form['name'] ?? '') }}"
-                                @error('name') aria-invalid="true" aria-describedby="name-error" @enderror>
-                            @error('name')
-                                <p id="name-error" class="a-error">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="a-field">
                             <label for="email" class="a-label">{{ __('auth.fields.work_email') }}</label>
                             <input id="email" name="email" type="email" class="a-input" required maxlength="191"
                                 autocomplete="email" value="{{ old('email', $form['email'] ?? '') }}"
@@ -53,26 +43,6 @@
                         </div>
 
 
-                        <div class="a-stack gap-2!">
-                            <label class="a-check">
-                                <input type="checkbox" name="terms" value="1" required @checked(old('terms'))
-                                    @error('terms') aria-invalid="true" @enderror>
-                                <span>
-                                    {{ __('auth.register.terms_before') }}
-                                    <a href="{{ route('legal.terms') }}" class="a-link-btn" target="_blank" rel="noopener">{{ __('auth.register.terms_link') }}</a>
-                                    {{ __('auth.register.terms_and') }}
-                                    <a href="{{ route('legal.privacy') }}" class="a-link-btn" target="_blank" rel="noopener">{{ __('auth.register.privacy_link') }}</a>
-                                </span>
-                            </label>
-                            @error('terms')
-                                <p class="a-error">{{ $message }}</p>
-                            @enderror
-
-                            <label class="a-check">
-                                <input type="checkbox" name="product_news" value="1" @checked(old('product_news', $form['product_news'] ?? false))>
-                                <span>{{ __('auth.register.product_news') }}</span>
-                            </label>
-                        </div>
 
                         <div>
                             <altcha-widget challenge="{{ route('guest.altcha') }}" name="altcha" auto="onfocus"
@@ -83,6 +53,7 @@
                         </div>
 
                         <button type="submit" class="a-btn a-btn-primary a-btn-block">{{ __('guest.claim.submit') }}</button>
+                        @include('auth._terms-line')
                     </form>
                 </div>
             </div>

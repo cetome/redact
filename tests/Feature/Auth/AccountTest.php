@@ -42,7 +42,6 @@ class AccountTest extends TestCase
         $this->assertSame('Ada Lovelace', $user->name);
         $this->assertSame('fr', $user->locale);
         $this->assertSame('Europe/London', $user->timezone);
-        $this->assertTrue($user->wants_product_news);
 
         $this->put('/account', ['name' => 'X', 'locale' => 'de', 'timezone' => 'Mars/Base'])
             ->assertSessionHasErrors(['locale', 'timezone']);

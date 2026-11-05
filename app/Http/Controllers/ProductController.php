@@ -33,7 +33,13 @@ class ProductController extends Controller
         if (! $user->is_guest) {
             $open = $organisations->reject(fn ($o) => Plan::for($o)->productLimitReached())->values();
             if ($open->isEmpty()) {
-                return $this->upgrade($user, $organisations->first(fn ($o) => $o->isAdmin($user)) ?? $organisations->first());
+                $organisation = $organisations->first(fn ($o) => $o->isAdmin($user)) ?? $organisations->first();
+                $plan = Plan::for($organisation);
+                if ($organisation->isAdmin($user) && $plan->canBuy() && ! $plan->hasActiveSubscription()) {
+                    return redirect()->route('billing.subscribe', $organisation);
+                }
+
+                return $this->upgrade($user, $organisation);
             }
             $organisations = $open;
         }

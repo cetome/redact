@@ -37,7 +37,9 @@
         <env name="STRIPE_PRICE_PRODUCT_MONTHLY" value=""/>
         <env name="DB_URL" value=""/>
         <env name="MAIL_MAILER" value="array"/>
-        <env name="MAIL_FROM_ADDRESS" value=""/>
+        <env name="MAIL_FROM_ADDRESS" value="no-reply@example.test"/>
+        <env name="REDACT_CONTACT_TO" value="team@example.test"/>
+        <env name="REDACT_SECURITY_CONTACT" value="security@example.test"/>
         <env name="MAIL_FROM_NAME" value=""/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>

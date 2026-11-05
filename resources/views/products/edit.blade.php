@@ -47,7 +47,7 @@
                             {{-- A paid product: the admin may also take one unit off the subscription (never automatic). --}}
                             <label class="a-check mb-2">
                                 <input type="checkbox" name="reduce_subscription" value="1" aria-describedby="reduce-help">
-                                <span>{{ __('plans.billing.reduce', ['price' => \App\Billing\Plan::priceLabel()]) }}</span>
+                                <span>{{ __('plans.billing.reduce', ['price' => \App\Billing\Plan::for($product->organisation)->extraPriceLabel(), 'per' => \App\Billing\Plan::for($product->organisation)->per()]) }}</span>
                             </label>
                             <p id="reduce-help" class="a-help mb-2">{{ __('plans.billing.reduce_help') }}</p>
                         @endif

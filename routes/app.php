@@ -13,6 +13,7 @@ use App\Http\Controllers\IdentificationController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\OrganisationTeamController;
+use App\Http\Controllers\PictureController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PublicPageController;
@@ -78,6 +79,14 @@ Route::get('/organisations/{organisation}/portfolio/{days}', [PortfolioControlle
     ->whereIn('days', array_map('strval', UsageAnalytics::PERIODS));
 
 // Organisation team: everyone in the organisation and their products (admins manage, members read).
+// Pictures (PictureController): the organisation's logo (its admins), a person's picture (their own).
+Route::get('/organisations/{organisation}/logo', [PictureController::class, 'logo'])->name('organisations.logo');
+Route::post('/organisations/{organisation}/logo', [PictureController::class, 'storeLogo'])->name('organisations.logo.store')->middleware('throttle:20,10');
+Route::delete('/organisations/{organisation}/logo', [PictureController::class, 'destroyLogo'])->name('organisations.logo.destroy');
+Route::get('/people/{person}/picture', [PictureController::class, 'picture'])->name('people.picture')->whereNumber('person');
+Route::post('/account/picture', [PictureController::class, 'storePicture'])->name('account.picture.store')->middleware('throttle:20,10');
+Route::delete('/account/picture', [PictureController::class, 'destroyPicture'])->name('account.picture.destroy');
+
 Route::get('/team', [OrganisationTeamController::class, 'mine'])->name('organisations.team.mine')->middleware(EnsureOrganisation::class);
 Route::prefix('/organisations/{organisation}/team')->name('organisations.team')->group(function () {
     Route::get('/', [OrganisationTeamController::class, 'index']);
@@ -195,6 +204,7 @@ Route::prefix('/versions/{version}')->name('versions.')->group(function () {
 });
 
 // EN 18031 decision trees (viewer)
-Route::get('/trees', [DecisionTreeController::class, 'index'])->name('trees.index');
-Route::get('/trees/{standard}', [DecisionTreeController::class, 'standard'])->name('trees.standard');
-Route::get('/trees/{standard}/{requirement}', [DecisionTreeController::class, 'show'])->name('trees.show');
+// The decision trees at /dt (owner 2026-11-04).
+Route::get('/dt', [DecisionTreeController::class, 'index'])->name('trees.index');
+Route::get('/dt/{standard}', [DecisionTreeController::class, 'standard'])->name('trees.standard');
+Route::get('/dt/{standard}/{requirement}', [DecisionTreeController::class, 'show'])->name('trees.show');

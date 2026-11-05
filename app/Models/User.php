@@ -7,6 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -27,16 +28,19 @@ use Spatie\Permission\Traits\HasRoles;
  * product roles live on product_members.
  *
  * @property int $id
- * @property string $name
+ * @property string $name what to call the account: its name, or its e-mail address while it has none
+ * @property string|null $picture_path shown instead of the initials (Account, PictureController)
  * @property string $email
  * @property bool $active
  * @property int $session_epoch
  * @property string $locale
  * @property Carbon|null $email_verified_at
  * @property Carbon|null $last_login_at
+ * @property Carbon|null $passkey_prompt_off_at "Don't ask me again" on the passkey suggestion
  * @property string $timezone
  * @property bool $is_guest
  * @property bool $shortcuts_enabled
+ * @property string $theme light, dark or system (the device's), Account > Accessibility
  * @property Carbon|null $guest_expires_at
  * @property-read int|null $products_count
  */
@@ -61,6 +65,7 @@ class User extends Authenticatable implements HasLocalePreference, PasskeyUser
         return [
             'email_verified_at' => 'datetime',
             'last_login_at' => 'datetime',
+            'passkey_prompt_off_at' => 'datetime',
             'terms_accepted_at' => 'datetime',
             'active' => 'boolean',
             'wants_product_news' => 'boolean',
@@ -78,6 +83,23 @@ class User extends Authenticatable implements HasLocalePreference, PasskeyUser
             ->logOnlyDirty()
             ->dontLogEmptyChanges()
             ->useLogName('account');
+    }
+
+    /**
+     * Sign-up asks only the e-mail address (owner, 2026-11-04, like FAST): until the person types a
+     * name on their account page, the account is called by its address.
+     *
+     * @return Attribute<string, never>
+     */
+    protected function name(): Attribute
+    {
+        return Attribute::get(fn (?string $value) => trim((string) $value) !== '' ? (string) $value : (string) ($this->attributes['email'] ?? ''));
+    }
+
+    /** Whether the person gave a name (else $name is their e-mail address). */
+    public function hasName(): bool
+    {
+        return trim((string) ($this->attributes['name'] ?? '')) !== '';
     }
 
     /** The language of the e-mails sent to this account (Mail::to($user), queued or not). */

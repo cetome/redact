@@ -22,7 +22,7 @@ use Illuminate\Http\Request;
  *
  * "Load the demo" (POST /demo, accounts, free or paid): the read-only demo product (products.is_demo,
  * plan slot "demo": never counted) in the person's organisation (DemoProduct::organisationOf()), one
- * per organisation: a second load opens the one it has. Its declaration names the demo's fictitious
+ * per organisation: a second load opens the one it has. Its declaration names the demo's example
  * manufacturer, never the organisation's legal details. Guests: 404 (they use /try/demo).
  */
 class DemoController extends Controller

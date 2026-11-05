@@ -11,8 +11,8 @@ return [
     'page_empty' => 'No shortcuts of its own on this page.',
     'then' => 'then',
     'sequence_help' => 'Press g, then the letter, within a second.',
-    'off' => 'Shortcuts are off in your account. Only saving and this list work.',
-    'manage' => 'Turn shortcuts on or off in your account',
+    'off' => 'Shortcuts are off (Account, Accessibility). Only saving and this list work.',
+    'manage' => 'Turn shortcuts on or off: Account, Accessibility',
     'keys' => [
         'help' => 'Show this list',
         'search' => 'Search this page',

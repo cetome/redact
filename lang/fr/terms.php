@@ -3,12 +3,12 @@
 /*
  * Conditions d'utilisation et mentions légales (/terms). Éditeur et hébergeur tels que cetome.com/legal/ les indique (cetome, France).
  * Variables remplies par la vue depuis la configuration : :hours = durée du bac à sable, :email = contact sécurité
- * (lien mailto), :price = prix d'un produit payant, :ai_units = unités d'IA par mois et par produit payant,
+ * (lien mailto), :price = prix d'un produit payant, :plan_yearly / :more_yearly = les prix annuels, :ai_units = unités d'IA par mois et par produit payant,
  * :free_team = l'équipe du produit gratuit (« Propriétaire + 1 membre »), :talk = lien « contactez-nous »
  * (formulaire de contact, sujet auto-hébergé, comme la page des tarifs).
  */
 return [
-    'version' => 'Version 2026-10-23',
+    'version' => 'Version 2026-11-04',
 
     'links' => [
         'pgp' => 'clé PGP',
@@ -42,7 +42,7 @@ return [
         ]],
         'plans' => ['Offres', [
             'Gratuite : le premier produit de votre organisation, gratuit pour toujours (:free_team), avec les règles cetome, les téléchargements et les imports. Sans IA.',
-            'Payante : :price par mois hors TVA pour 2 produits (le produit gratuit et un produit payant), puis :price par mois pour chaque produit supplémentaire. Les produits payants incluent une équipe illimitée, le support et l\'IA (:ai_units unités d\'IA par mois et par produit payant, partagées par l\'organisation).',
+            'Premium : :price par mois hors TVA pour 2 produits (le produit gratuit et un produit payant), puis :price par mois pour chaque produit supplémentaire, ou, en paiement annuel, :plan_yearly par an pour les 2 produits et :more_yearly par an pour chaque produit supplémentaire. Les produits payants incluent une équipe illimitée, le support et l\'IA (:ai_units unités d\'IA par mois et par produit payant, partagées par l\'organisation).',
             'Entreprise (auto-hébergée ou dédiée, sur demande) : par contrat séparé, :talk.',
         ]],
         'billing' => ['Paiement et factures', [
@@ -55,8 +55,8 @@ return [
         'prices' => ['Évolution des prix', [
             'Nous annonçons tout changement de prix par e-mail au moins 30 jours avant son application. Vous pouvez résilier d\'ici là.',
         ]],
-        'consumers' => ['Consommateurs', [
-            'REDact s\'adresse aux entreprises. Si vous vous abonnez en tant que consommateur dans l\'Union européenne, vous pouvez vous rétracter dans les 14 jours suivant l\'abonnement, sans motif, par le formulaire de contact. Avant de payer, vous demandez expressément que le service commence immédiatement et reconnaissez perdre ce droit une fois le service pleinement exécuté : si vous vous rétractez dans les 14 jours, vous payez la période utilisée.',
+        'businesses' => ['Réservé aux entreprises', [
+            'REDact est vendu uniquement aux entreprises. En vous abonnant, vous confirmez agir pour votre entreprise et non en tant que consommateur : le droit de rétractation des consommateurs ne s\'applique pas.',
         ]],
         'ai' => ['Assistance IA', [
             'L\'IA est facultative. Ses résultats sont toujours signalés comme IA et ne sont que des propositions : rien n\'entre dans votre évaluation sans l\'accord d\'une personne. L\'IA ne rend jamais de verdict et le fabricant reste responsable de ce qu\'il accepte. Votre organisation peut désactiver l\'IA. Les organisations payantes et Entreprise peuvent utiliser leur propre modèle ou leur propre clé : leur contenu va alors au fournisseur qu\'elles ont choisi, selon leur propre contrat avec lui.',
@@ -78,7 +78,7 @@ return [
             'Le service est fourni en l\'état. REDact ne garantit ni la conformité de vos produits, ni la décision d\'un organisme notifié, d\'un laboratoire ou d\'une autorité de surveillance du marché. Dans les limites permises par la loi, cetome n\'est pas responsable des dommages indirects, pertes d\'activité ou sanctions réglementaires, et sa responsabilité totale est limitée aux sommes que vous avez payées pour REDact dans les 12 mois précédant la réclamation.',
         ]],
         'law' => ['Modifications, droit applicable et tribunaux', [
-            'Nous vous informerons à l\'avance de toute modification importante de ces conditions. Le droit français s\'applique. Tout litige relève des tribunaux de Lyon (France), sauf si la loi donne à un consommateur un autre tribunal.',
+            'Nous vous informerons à l\'avance de toute modification importante de ces conditions. Le droit français s\'applique. Tout litige relève des tribunaux de Lyon (France).',
         ]],
     ],
 ];

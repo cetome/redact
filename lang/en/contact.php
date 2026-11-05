@@ -19,6 +19,7 @@ return [
         'topic' => 'Topic',
         'message' => 'Message',
     ],
+    'signed_in_as' => 'From your account:',
     'optional' => 'optional',
     'placeholders' => [
         'name' => 'Your name',
@@ -43,7 +44,8 @@ return [
 
     'next_title' => 'What happens next',
     'next' => 'We reply by e-mail, in English or French.',
-    'security' => 'A security issue in REDact? Write to :email.',
+    'security' => 'A security issue in REDact? How to report it:',
+    'new_tab' => '(opens in a new tab)',
 
     'sent_title' => 'Message sent',
     'sent_text' => 'Thanks. We will reply by e-mail.',

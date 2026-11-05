@@ -13,7 +13,7 @@
     $rows = [
         'hosting' => [$c('your_servers'), $c('cetome'), $c('cetome'), $c('your_servers')],
         'rules' => [$no, $yes, $yes, $yes],
-        'products' => [$c('unlimited'), e((string) ($free['products'] ?? 1)), $c('included', ['count' => $included, 'price' => $price]), $c('unlimited')],
+        'products' => [$c('unlimited'), e((string) ($free['products'] ?? 1)), $c('included', ['count' => $included, 'price' => $more]), $c('unlimited')],
         'team' => [$c('unlimited'), e(trans_choice('public.pricing.cells.owner_plus', $members, ['members' => $members])), $c('on_paid'), $c('unlimited')],
         'ai' => [$c('own_key'), $freeAi > 0 ? $c('trial', ['units' => $freeAi]) : $no, $c('units_or_own', ['units' => $paidAi]), $c('on_request')],
         'templates' => [$no, $yes, $yes, $yes],

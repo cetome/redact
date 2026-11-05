@@ -186,4 +186,21 @@ class PasskeyTest extends TestCase
         $this->passkey($user);
         $this->get(route('auth.passkey.suggest'))->assertRedirect(route('dashboard'));
     }
+
+    public function test_dont_ask_me_again_stops_the_suggestion_at_sign_in(): void
+    {
+        $user = $this->makeUser();
+        $request = Request::create('/');
+        $request->setLaravelSession(app('session.store'));
+
+        $this->assertSame(route('auth.passkey.suggest'), app(SignIn::class)->homeAfterEmail($request, $user));
+
+        $this->signedIn($user)->get(route('auth.passkey.suggest'))->assertOk()->assertSee(__('auth.suggest.never'));
+        $this->post(route('auth.passkey.never'))->assertRedirect(route('dashboard'));
+        $this->assertNotNull($user->refresh()->passkey_prompt_off_at);
+
+        $request = Request::create('/');
+        $request->setLaravelSession(app('session.store'));
+        $this->assertSame(route('dashboard'), app(SignIn::class)->homeAfterEmail($request, $user), 'Not asked again.');
+    }
 }

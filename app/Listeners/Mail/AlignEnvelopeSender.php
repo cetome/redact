@@ -7,7 +7,7 @@ use Symfony\Component\Mime\Address;
 
 /**
  * Every message leaves with the envelope sender (Return-Path, SMTP MAIL FROM, sendmail -f) set to
- * MAIL_FROM_ADDRESS (no-reply@cetome.com), whatever a Mailable sets.
+ * MAIL_FROM_ADDRESS, whatever a Mailable sets.
  *
  * cetome.com's DMARC record asks for strict SPF alignment (aspf=s): the envelope sender must be
  * exactly the From domain, cetome.com. Symfony Mailer takes the envelope sender from the Sender,

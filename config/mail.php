@@ -111,7 +111,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS') ?: 'no-reply@cetome.com',
+        // .env only (MAIL_FROM_ADDRESS), never an address in the code.
+        'address' => env('MAIL_FROM_ADDRESS') ?: null,
         // Always "cetome REDact" unless a real name is set (never the framework default "Laravel").
         'name' => (static fn ($name) => in_array(trim((string) $name), ['', 'Laravel', '${APP_NAME}'], true) ? 'cetome REDact' : $name)(env('MAIL_FROM_NAME')),
     ],

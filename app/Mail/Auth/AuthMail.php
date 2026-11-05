@@ -42,7 +42,9 @@ abstract class AuthMail extends Mailable
             text: 'mail.auth.message-text',
             with: [
                 'subjectLine' => $this->subjectLine(),
-                'greeting' => __('auth.mail.greeting', ['name' => $this->recipientName]),
+                // No name yet (sign-up asks only the address): "Hello," rather than the address.
+                'greeting' => trim($this->recipientName) === '' || str_contains($this->recipientName, '@')
+                    ? __('auth.mail.greeting_plain') : __('auth.mail.greeting', ['name' => $this->recipientName]),
                 'body' => $this->body(),
             ],
         );

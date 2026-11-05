@@ -113,6 +113,28 @@ return [
     ],
 
     'users' => [
+        // Delete an account for good (App\Admin\AccountEraser).
+        'erase' => [
+            'title' => 'Delete the account',
+            'lead' => 'Deletes :email for good, with:',
+            'organisation' => ':name: :count product, versions and files|:name: :count products, versions and files',
+            'nothing' => 'No organisation of their own: only the account goes.',
+            'stripe' => 'Stripe: the customer is deleted and the subscription ends now. Stripe keeps the invoices and payments for the accounts.',
+            'stripe_error' => 'Stripe could not be read: the last payment is unknown. Deleting without a refund still works.',
+            'no_payment' => 'Nothing to refund: no active subscription, or its period is not paid yet.',
+            'shared' => 'They leave the organisations shared with others, where their work stays.',
+            'owns_products' => 'They own products in :organisation, shared with others: transfer them first.',
+            'last_admin' => 'They are the only admin of :organisation, shared with others: make another member admin first.',
+            'email' => 'Type :email to confirm',
+            'email_mismatch' => 'The address typed is not this account’s.',
+            'refund' => 'Delete and refund :amount (:days of :total days unused, of :paid paid :date)',
+            'no_refund' => 'Delete without refund',
+            'delete' => 'Delete the account',
+            'confirm' => 'Delete :email and everything listed? This cannot be undone.',
+            'done' => ':email is deleted.',
+            'done_refund' => ':email is deleted. Refunded: :amount.',
+            'failed' => 'Nothing was deleted: :error',
+        ],
         'title' => 'Users',
         'back' => 'All users',
         'search_placeholder' => 'Name, e-mail or organisation',

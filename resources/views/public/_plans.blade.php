@@ -1,9 +1,10 @@
 {{--
     The four offers, shared by the home page and /pricing (one source): open source (the engine),
     web-based Free and Paid, self-hosted with cetome rules. Numbers from PublicController::plans()
-    (config('redact.plans'), App\Billing\Plan): $price, $included, $free, $paid, $contactUrl, $billing, $pricingContactUrl, $openSourceUrl.
+    (the catalogue's featured plan, App\Billing\Catalogue): $paidName, $price, $more, $yearly, $moreYearly, $included, $free, $paid,
+    $contactUrl, $billing, $pricingContactUrl, $openSourceUrl.
     Owner, 2026-10-23: free = 1 product without AI; paid = :price a month with 2 products included,
-    +:price a month for each further product.
+    +:price a month for each further product. 2026-11-04: or 1000 € a year, +1000 € a year each.
 --}}
 @php
     $members = (int) ($free['team_members'] ?? 1);
@@ -16,7 +17,8 @@
     <li class="r-plan">
         <p class="r-plan-tag">{{ __('public.pricing.plans.open.tag') }}</p>
         <h3 class="r-plan-name"><x-lucide-code class="r-plan-icon" aria-hidden="true" />{{ __('public.pricing.plans.open.name') }}</h3>
-        <p class="r-plan-price">{{ __('public.pricing.plans.open.price') }}</p>
+        <p class="r-plan-price">{{ __('public.pricing.plans.open.price') }}
+            <span class="r-plan-unit">{{ __('public.pricing.plans.open.unit') }}</span></p>
         <ul class="r-plan-points">
             @foreach ((array) __('public.pricing.plans.open.points') as $point)
                 <li><x-lucide-check aria-hidden="true" />{{ $point }}</li>
@@ -33,7 +35,8 @@
     <li class="r-plan">
         <p class="r-plan-tag">{{ __('public.pricing.plans.free.tag') }}</p>
         <h3 class="r-plan-name"><x-lucide-globe class="r-plan-icon" aria-hidden="true" />{{ __('public.pricing.plans.free.name') }}</h3>
-        <p class="r-plan-price">{{ __('public.pricing.plans.free.price') }}</p>
+        <p class="r-plan-price">{{ __('public.pricing.plans.free.price') }}
+            <span class="r-plan-unit">{{ __('public.pricing.plans.free.unit') }}</span></p>
         <ul class="r-plan-points">
             <li><x-lucide-check aria-hidden="true" />{{ trans_choice('public.pricing.plans.free.products', $freeProducts, ['count' => $freeProducts]) }}</li>
             @foreach ((array) __('public.pricing.plans.free.points') as $point)
@@ -52,12 +55,15 @@
     {{-- Web-based, paid: the price a month with $included products (highlighted: full border and tint). --}}
     <li class="r-plan is-featured">
         <p class="r-plan-tag">{{ __('public.pricing.plans.paid.tag') }}</p>
-        <h3 class="r-plan-name"><x-lucide-sparkles class="r-plan-icon" aria-hidden="true" />{{ __('public.pricing.plans.paid.name') }}</h3>
+        <h3 class="r-plan-name"><x-lucide-sparkles class="r-plan-icon" aria-hidden="true" />{{ $paidName }}</h3>
         <p class="r-plan-price">{{ $price }}
             <span class="r-plan-unit">{{ __('public.pricing.per_month') }} · {{ __('public.pricing.excl_vat') }}</span></p>
         <ul class="r-plan-points">
             <li><x-lucide-check aria-hidden="true" />{{ __('public.pricing.plans.paid.included', ['count' => $included]) }}</li>
-            <li><x-lucide-plus aria-hidden="true" />{{ __('public.pricing.plans.paid.more', ['price' => $price]) }}</li>
+            <li><x-lucide-plus aria-hidden="true" />{{ __('public.pricing.plans.paid.more', ['price' => $more]) }}</li>
+            @if ($yearly !== null)
+                <li><x-lucide-calendar aria-hidden="true" />{{ __('public.pricing.plans.paid.yearly', ['price' => $yearly, 'more' => $moreYearly]) }}</li>
+            @endif
             <li><x-lucide-check aria-hidden="true" />{{ __('public.pricing.plans.paid.ai', ['units' => $paidAi]) }}</li>
             @foreach ((array) __('public.pricing.plans.paid.points') as $point)
                 <li><x-lucide-check aria-hidden="true" />{{ $point }}</li>
@@ -68,7 +74,10 @@
         </ul>
         {{-- Without Stripe (no check-out yet): "Talk to us" on the pricing topic of the contact form. --}}
         @if ($billing)
-            <x-account-link class="c-btn c-btn-primary r-plan-cta" :account-label="__('public.pricing.plans.paid.cta_account')" :account-href="route('products.create')">{{ __('public.pricing.plans.paid.cta') }}</x-account-link>
+            {{-- The subscribe page (monthly or yearly, how many products, then Stripe): a visitor creates an
+                 account first (bootstrap/app.php), a sandbox guest keeps their work first. --}}
+            @php $account = auth()->check() && ! auth()->user()->is_guest; @endphp
+            <a href="{{ auth()->user()?->is_guest ? route('guest.claim') : route('subscribe') }}" class="c-btn c-btn-primary r-plan-cta">{{ $account ? __('public.pricing.plans.paid.cta_account') : __('public.pricing.plans.paid.cta') }}</a>
         @else
             <a href="{{ $pricingContactUrl }}" class="c-btn c-btn-primary r-plan-cta">{{ __('plans.talk') }}</a>
         @endif

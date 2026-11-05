@@ -45,10 +45,10 @@ class LegalPagesTest extends TestCase
 
     public function test_the_terms_cover_the_saas_in_both_languages(): void
     {
-        $sections = ['plans', 'billing', 'cancellation', 'prices', 'consumers', 'ai', 'use', 'licence', 'liability', 'law', 'sandbox'];
+        $sections = ['plans', 'billing', 'cancellation', 'prices', 'businesses', 'ai', 'use', 'licence', 'liability', 'law', 'sandbox'];
         $facts = [
-            'en' => ['Version 2026-10-23', 'Enterprise (self-hosted or dedicated, on request)', '100 € per month excluding VAT for 2 products', 'reverse charge', 'end of the paid period', 'read-only', '30 days', '14 days', 'never gives a verdict', 'reverse engineer', 'AGPL-3.0', '12 months before the claim', 'courts of Lyon', 'Owner + 1 team member', '500 AI units'],
-            'fr' => ['Version 2026-10-23', 'Entreprise (auto-hébergée ou dédiée, sur demande)', '100 € par mois hors TVA pour 2 produits', 'autoliquidation', 'fin de la période payée', 'lecture seule', '30 jours', '14 jours', 'ne rend jamais de verdict', 'ingénierie inverse', 'AGPL-3.0', '12 mois précédant la réclamation', 'tribunaux de Lyon', 'Propriétaire + 1 membre', '500 unités'],
+            'en' => ['Version 2026-11-04', 'Enterprise (self-hosted or dedicated, on request)', '100 € per month excluding VAT for 2 products', 'reverse charge', 'end of the paid period', 'read-only', '30 days', 'sold to businesses only', 'never gives a verdict', 'reverse engineer', 'AGPL-3.0', '12 months before the claim', 'courts of Lyon', 'Owner + 1 team member', '500 AI units'],
+            'fr' => ['Version 2026-11-04', 'Entreprise (auto-hébergée ou dédiée, sur demande)', '100 € par mois hors TVA pour 2 produits', 'autoliquidation', 'fin de la période payée', 'lecture seule', '30 jours', 'uniquement aux entreprises', 'ne rend jamais de verdict', 'ingénierie inverse', 'AGPL-3.0', '12 mois précédant la réclamation', 'tribunaux de Lyon', 'Propriétaire + 1 membre', '500 unités'],
         ];
 
         foreach ($facts as $locale => $expected) {
@@ -67,8 +67,8 @@ class LegalPagesTest extends TestCase
     public function test_the_privacy_policy_covers_the_saas_in_both_languages(): void
     {
         $facts = [
-            'en' => ['Version 2026-10-24', 'passkey', 'e-mail link or code', 'Kept 13 months', 'Kept 24 months', 'Kept 12 months', 'card numbers never reach REDact', 'Google LLC / Google Ireland (Gemini API, paid tier)', 'does not use prompts and responses to train its models', 'consent to start the service at once', 'EUVD', 'NVD', 'OSV.dev', 'IONOS SE', 'Stripe', 'shown in the product and organisation history', 'cross-site request forgery', 'CNIL', 'Subprocessors'],
-            'fr' => ['Version 2026-10-24', 'clé d\'accès', 'lien ou un code', 'Conservés 13 mois', 'Conservé 24 mois', 'Conservés 12 mois', 'les numéros de carte n\'arrivent jamais à REDact', 'Google LLC / Google Ireland (API Gemini, offre payante)', 'pour entraîner ses modèles', 'démarrage immédiat du service', 'EUVD', 'NVD', 'OSV.dev', 'IONOS SE', 'Stripe', 'visible dans l\'historique du produit et de l\'organisation', 'falsification de requêtes intersites', 'CNIL', 'Sous-traitants'],
+            'en' => ['Version 2026-11-05', 'passkey', 'e-mail link or code', 'Kept 13 months', 'Kept 24 months', 'Kept 12 months', 'card numbers never reach REDact', 'Google LLC / Google Ireland (Gemini API, paid tier)', 'does not use prompts and responses to train its models', 'subscribe for your business', 'EUVD', 'NVD', 'OSV.dev', 'IONOS SE', 'Stripe', 'shown in the product and organisation history', 'cross-site request forgery', 'CNIL', 'Subprocessors'],
+            'fr' => ['Version 2026-11-05', 'clé d\'accès', 'lien ou un code', 'Conservés 13 mois', 'Conservé 24 mois', 'Conservés 12 mois', 'les numéros de carte n\'arrivent jamais à REDact', 'Google LLC / Google Ireland (API Gemini, offre payante)', 'pour entraîner ses modèles', 'vous abonnez pour votre entreprise', 'EUVD', 'NVD', 'OSV.dev', 'IONOS SE', 'Stripe', 'visible dans l\'historique du produit et de l\'organisation', 'falsification de requêtes intersites', 'CNIL', 'Sous-traitants'],
         ];
         config(['redact.ai.provider' => 'gemini']);
 

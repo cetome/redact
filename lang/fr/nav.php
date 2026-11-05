@@ -11,6 +11,7 @@ return [
     'account' => 'Compte',
     'sign_in' => 'Se connecter',
     'sign_up' => 'Créer un compte',
+    'support' => 'Assistance',
     'sign_out' => 'Se déconnecter',
     'terms' => "Conditions d'utilisation",
     'privacy' => 'Politique de confidentialité',

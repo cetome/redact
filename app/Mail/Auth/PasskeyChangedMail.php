@@ -26,7 +26,7 @@ class PasskeyChangedMail extends AuthMail
         return [
             'intro' => [__($key, ['name' => $this->passkeyName])],
             'button' => ['label' => __('auth.mail.review_account'), 'url' => route('account.show')],
-            'outro' => [__('auth.mail.passkey_outro', ['contact' => (string) config('redact.security_contact')])],
+            'outro' => [__('auth.mail.passkey_outro', ['contact' => trim((string) config('redact.security_contact')) ?: route('contact')])],
         ];
     }
 }

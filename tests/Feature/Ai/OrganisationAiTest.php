@@ -58,19 +58,19 @@ class OrganisationAiTest extends AiTestCase
     public function test_admins_choose_members_read_and_outsiders_get_404(): void
     {
         $this->selfHosted();
-        $page = route('organisations.settings', $this->organisation);
+        $page = route('organisations.ai', $this->organisation);
         $this->actingAs($this->owner)->get($page)->assertOk()->assertSee(__('org_ai.card'))
             ->assertSee(__('org_ai.choices.claude'))->assertSee(__('org_ai.form.save'))->assertSee(__('org_ai.form.test'))
-            ->assertSee(route('organisations.settings', $this->organisation));
+            ->assertSee(route('organisations.ai', $this->organisation));
 
         $member = User::factory()->create();
         $this->organisation->members()->attach($member->id, ['role' => 'member']);
-        $this->actingAs($member)->get($page)->assertOk()->assertSee(__('org_ai.read_only'))->assertDontSee(__('org_ai.form.save'));
+        // Organisation admins only: a member is sent to Team, which shows no AI model tab.
+        $this->actingAs($member)->get($page)->assertRedirect(route('organisations.team', $this->organisation));
         $this->save(['choice' => 'claude', 'api_key' => self::KEY], $member)->assertNotFound();
         $this->actingAs($member)->post(route('organisations.settings.ai.test', $this->organisation))->assertNotFound();
-        // Members now see Team and Settings, never the History tab.
         $this->actingAs($member)->get(route('organisations.team', $this->organisation))->assertOk()
-            ->assertSee($page)->assertDontSee(route('organisations.history', $this->organisation));
+            ->assertDontSee($page)->assertDontSee(route('organisations.history', $this->organisation))->assertDontSee(route('organisations.settings', $this->organisation));
 
         $stranger = User::factory()->create();
         $this->actingAs($stranger)->get($page)->assertNotFound();
@@ -81,7 +81,7 @@ class OrganisationAiTest extends AiTestCase
     {
         $this->selfHosted();
         $this->save(['choice' => 'claude', 'model' => '', 'api_key' => self::KEY])
-            ->assertRedirect(route('organisations.settings', $this->organisation))->assertSessionHas('status', __('org_ai.answers.claude'));
+            ->assertRedirect(route('organisations.ai', $this->organisation))->assertSessionHas('status', __('org_ai.answers.claude'));
 
         $organisation = $this->organisation->fresh();
         $runtime = $this->ai()->runtime($organisation);
@@ -92,7 +92,7 @@ class OrganisationAiTest extends AiTestCase
         $raw = (string) DB::table('organisations')->where('id', $organisation->id)->value('settings');
         $this->assertStringNotContainsString(self::KEY, $raw);
         $this->assertSame(self::KEY, Crypt::decryptString(json_decode($raw, true)['ai']['api_key']));
-        $html = $this->actingAs($this->owner)->get(route('organisations.settings', $organisation))->assertOk()
+        $html = $this->actingAs($this->owner)->get(route('organisations.ai', $organisation))->assertOk()
             ->assertSee('…ABCD')->assertSee('claude-sonnet-5-5')->getContent();
         $this->assertStringNotContainsString(self::KEY, $html);
         $this->assertStringNotContainsString(self::KEY, (string) DB::table('activity_log')->pluck('properties')->implode(' '));
@@ -154,7 +154,7 @@ class OrganisationAiTest extends AiTestCase
 
         $fake = $this->fakeAi([['ok' => true]]);
         $this->actingAs($this->owner)->post(route('organisations.settings.ai.test', $this->organisation))->assertRedirect();
-        $this->actingAs($this->owner)->get(route('organisations.settings', $this->organisation))->assertSee('Connected: llama3.3 answered in');
+        $this->actingAs($this->owner)->get(route('organisations.ai', $this->organisation))->assertSee('Connected: llama3.3 answered in');
         $fake->assertProviderConfig(['api_key' => '', 'url' => 'http://localhost:11434/v1', 'site' => ['http_referer' => null, 'x_title' => null]]);
         $this->assertSame(0, AiUsage::query()->count());
     }
@@ -172,7 +172,7 @@ class OrganisationAiTest extends AiTestCase
     {
         $this->saas('free');
         config(['redact.plans.free.ai_units' => 0]);
-        $this->actingAs($this->owner)->get(route('organisations.settings', $this->organisation))->assertOk()
+        $this->actingAs($this->owner)->get(route('organisations.ai', $this->organisation))->assertOk()
             ->assertSee(__('plans.ai.paid_only'))->assertSee(__('plans.ai.add_product'))
             ->assertDontSee(__('org_ai.form.save'))->assertDontSee(__('org_ai.choices.claude'));
         $this->save(['choice' => 'claude', 'api_key' => self::KEY])->assertNotFound();
@@ -186,7 +186,7 @@ class OrganisationAiTest extends AiTestCase
         $this->saas('free');
         $this->subscription(1);
         $this->assertTrue($this->ai()->allowed($this->organisation->fresh()), 'A paid slot in force.');
-        $this->actingAs($this->owner)->get(route('organisations.settings', $this->organisation))->assertOk()
+        $this->actingAs($this->owner)->get(route('organisations.ai', $this->organisation))->assertOk()
             ->assertSee(__('org_ai.lead_saas'))->assertSee(__('org_ai.choices.claude'))->assertSee(__('org_ai.form.save'));
 
         $this->save(['choice' => 'mistral', 'api_key' => 'mistral-key-1234'])->assertSessionHasNoErrors();

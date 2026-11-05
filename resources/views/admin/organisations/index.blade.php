@@ -39,7 +39,7 @@
                             <a href="{{ route('admin.organisations.show', $organisation) }}" class="a-row-link" data-row-link>{{ $organisation->name }}</a>
                         </th>
                         <td>
-                            <span class="a-badge {{ $organisation->plan === 'enterprise' ? 'a-badge-dark' : 'a-badge-neutral' }}">{{ __('plans.name.'.($organisation->plan === 'enterprise' ? 'enterprise' : 'free')) }}</span>
+                            <span class="a-badge {{ $organisation->plan === 'free' ? 'a-badge-neutral' : 'a-badge-dark' }}">{{ \App\Billing\Plan::for($organisation)->label() }}</span>
                             @if ($organisation->limits)
                                 <span class="a-badge a-badge-outline" title="{{ json_encode($organisation->limits) }}">{{ __('plans.admin.overrides') }}</span>
                             @endif
@@ -48,7 +48,7 @@
                         <td class="is-num">{{ $organisation->members_count }}</td>
                         <td class="is-nowrap">
                             @if ($subscription)
-                                {{ $subscription->stripe_status }} · {{ (int) $subscription->quantity }}
+                                {{ $subscription->stripe_status }} · {{ \App\Billing\Plan::for($organisation)->paidSlots }}
                             @else
                                 <span class="a-muted">—</span>
                             @endif

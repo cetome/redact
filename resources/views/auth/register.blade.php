@@ -1,66 +1,41 @@
-<x-layouts.guest :title="__('auth.register.title')">
-    <h1 class="c-h1">{{ __('auth.register.heading') }}</h1>
-    <p class="c-lead mt-4">{{ __('auth.register.lead') }}</p>
+{{-- Create an account (FAST's /login, second tab): the e-mail address only, the human check (invisible), the terms line. --}}
+<x-layouts.guest :bare="true" :title="__('auth.register.title')">
+    @include('auth._frame-top', ['tab' => 'register'])
 
-    <div class="c-card mt-8">
-        <div class="c-card-body">
-            <form method="POST" action="{{ route('register.store') }}" class="space-y-6">
+    <section class="c-container r-auth">
+        <div class="r-auth-card">
+            @include('auth._tabs', ['tab' => 'register'])
+            <p class="r-auth-text">{{ __('auth.register.text') }}</p>
+
+            <form method="POST" action="{{ route('register.store') }}" class="space-y-5" data-contact-form>
                 @csrf
                 <div class="c-field">
-                    <label for="name" class="c-label">{{ __('auth.fields.name') }}</label>
-                    <input id="name" name="name" type="text" class="c-input" required maxlength="120"
-                        autocomplete="name" value="{{ old('name') }}"
-                        @error('name') aria-invalid="true" aria-describedby="name-error" @enderror>
-                    @error('name')
-                        <p id="name-error" class="c-error">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="c-field">
-                    <label for="email" class="c-label">{{ __('auth.fields.work_email') }}</label>
-                    <input id="email" name="email" type="email" class="c-input" required maxlength="191"
+                    <label for="email" class="c-label">{{ __('auth.register.email') }}</label>
+                    <input id="email" name="email" type="email" class="c-input" required maxlength="191" autofocus
                         autocomplete="email" value="{{ old('email') }}"
-                        @error('email') aria-invalid="true" aria-describedby="email-error" @enderror>
+                        aria-describedby="email-help" @error('email') aria-invalid="true" @enderror>
+                    <p id="email-help" class="r-auth-help">{{ __('auth.register.email_help') }}</p>
                     @error('email')
-                        <p id="email-error" class="c-error">{{ $message }}</p>
-                    @enderror
-                </div>
-
-
-                <div class="space-y-3">
-                    <label class="flex items-start gap-3">
-                        <input type="checkbox" name="terms" value="1" class="c-check mt-1" required @checked(old('terms'))
-                            @error('terms') aria-invalid="true" @enderror>
-                        <span>
-                            {{ __('auth.register.terms_before') }}
-                            <a href="{{ route('legal.terms') }}" class="c-link" target="_blank" rel="noopener">{{ __('auth.register.terms_link') }}</a>
-                            {{ __('auth.register.terms_and') }}
-                            <a href="{{ route('legal.privacy') }}" class="c-link" target="_blank" rel="noopener">{{ __('auth.register.privacy_link') }}</a>
-                        </span>
-                    </label>
-                    @error('terms')
                         <p class="c-error">{{ $message }}</p>
                     @enderror
-
-                    <label class="flex items-start gap-3">
-                        <input type="checkbox" name="product_news" value="1" class="c-check mt-1" @checked(old('product_news'))>
-                        <span>{{ __('auth.register.product_news') }}</span>
-                    </label>
                 </div>
 
                 <div>
-                    <altcha-widget challenge="{{ route('altcha.challenge') }}" name="altcha" auto="onfocus"
+                    {{-- Invisible: the proof of work runs on page load; a checkbox only when it fails. --}}
+                    <altcha-widget challenge="{{ route('altcha.challenge') }}" name="altcha" auto="onload" @unless ($errors->has('altcha')) display="invisible" @endunless
                         language="{{ \App\Support\Locales::detail('altcha') }}"></altcha-widget>
                     @error('altcha')
                         <p class="c-error mt-2">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <button type="submit" class="c-btn c-btn-primary c-btn-block">{{ __('auth.register.submit') }}</button>
+                <button type="submit" class="c-btn c-btn-primary" data-contact-submit><span data-contact-label data-busy="{{ __('auth.register.sending') }}">{{ __('auth.register.submit') }}</span></button>
+                @include('auth._terms-line')
             </form>
         </div>
-    </div>
 
-    <p class="c-text mt-8">{{ __('auth.register.have_account') }} <a href="{{ route('login') }}" class="c-link">{{ __('auth.register.sign_in') }}</a></p>
-    <x-guest-try-link />
+        <div class="r-auth-after">
+            <x-guest-try-link />
+        </div>
+    </section>
 </x-layouts.guest>

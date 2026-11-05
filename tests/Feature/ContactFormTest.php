@@ -9,11 +9,13 @@ use AltchaOrg\Altcha\SolveChallengeOptions;
 use App\Auth\Altcha;
 use App\Auth\ContactAltcha;
 use App\Http\Middleware\LogRequest;
+use App\Jobs\Contact\SendContactMessage;
 use App\Models\ContactMessage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Mail\Transport\ArrayTransport;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Testing\TestResponse;
 use Symfony\Component\Mailer\SentMessage as SymfonySentMessage;
 use Symfony\Component\Mime\Address;
@@ -23,7 +25,7 @@ use Tests\TestCase;
 
 /**
  * The contact form (/contact): the page, the defences (honeypot, ALTCHA, limits), what is stored,
- * and the two e-mails as they leave (From no-reply@cetome.com, envelope sender aligned, visitor in
+ * and the two e-mails as they leave (From no-reply@example.test, envelope sender aligned, visitor in
  * Reply-To only, no header injection, nothing mailed to the visitor).
  */
 class ContactFormTest extends TestCase
@@ -35,9 +37,9 @@ class ContactFormTest extends TestCase
         parent::setUp();
         config([
             'mail.default' => 'array',
-            'mail.from.address' => 'no-reply@cetome.com',
+            'mail.from.address' => 'no-reply@example.test',
             'mail.from.name' => 'cetome REDact',
-            'redact.contact.to' => 'info@cetome.com',
+            'redact.contact.to' => 'team@example.test',
             'redact.contact.per_ip' => 10,
             'redact.contact.per_email' => 3,
         ]);
@@ -130,16 +132,20 @@ class ContactFormTest extends TestCase
         $data = $this->seedSampleData();
         $customer = $data['customer'];
 
-        $this->signIn($customer)->get(route('contact'))->assertOk()
-            ->assertSee('value="'.$customer->email.'"', false)
-            ->assertSee('value="'.$customer->name.'"', false)
+        // Only the topic and the message are asked: the rest is the account's.
+        $this->signIn($customer)->get(route('contact.topic', 'support'))->assertOk()
+            ->assertSee(__('contact.signed_in_as'))->assertSee($customer->email)
+            ->assertDontSee('name="email"', false)->assertDontSee('name="name"', false)->assertDontSee('name="company"', false)
+            ->assertSee('<option value="support" selected', false)
             ->assertDontSee('#'.$customer->id);
 
-        $this->signIn($customer)->from(route('contact'))->post(route('contact.send'), $this->form(['name' => $customer->name, 'email' => $customer->email]))
+        // Whatever the form says, who writes is the account.
+        $this->signIn($customer)->from(route('contact'))->post(route('contact.send'), $this->form(['name' => 'Someone Else', 'email' => 'else@example.test', 'company' => 'Other']))
             ->assertRedirect(route('contact'));
 
         $row = ContactMessage::sole();
-        $this->assertSame($customer->id, $row->user_id);
+        $this->assertSame([$customer->id, $customer->name, $customer->email, 'Acme Radio'], [$row->user_id, $row->name, $row->email, $row->company]);
+        $this->assertSame([$customer->email], $this->addresses($this->email($this->sent()->first())->getReplyTo()));
 
         $staffMail = $this->email($this->sent()->first());
         $html = (string) $staffMail->getHtmlBody();
@@ -252,13 +258,13 @@ class ContactFormTest extends TestCase
 
         // 1. To cetome.
         $staff = $this->email($sent[0]);
-        $this->assertSame(['info@cetome.com'], $this->addresses($staff->getTo()));
-        $this->assertSame(['no-reply@cetome.com'], $this->addresses($staff->getFrom()));
+        $this->assertSame(['team@example.test'], $this->addresses($staff->getTo()));
+        $this->assertSame(['no-reply@example.test'], $this->addresses($staff->getFrom()));
         $this->assertSame('cetome REDact', $staff->getFrom()[0]->getName());
         $this->assertSame(['jane@maker.test'], $this->addresses($staff->getReplyTo()));
-        $this->assertSame('no-reply@cetome.com', $staff->getReturnPath()?->getAddress());
-        $this->assertSame('no-reply@cetome.com', $sent[0]->getEnvelope()->getSender()->getAddress());
-        $this->assertSame(['info@cetome.com'], $this->addresses($sent[0]->getEnvelope()->getRecipients()));
+        $this->assertSame('no-reply@example.test', $staff->getReturnPath()?->getAddress());
+        $this->assertSame('no-reply@example.test', $sent[0]->getEnvelope()->getSender()->getAddress());
+        $this->assertSame(['team@example.test'], $this->addresses($sent[0]->getEnvelope()->getRecipients()));
         $this->assertSame('Contact: Pricing / Web-based, Jane Maker', $staff->getSubject());
         $this->assertStringContainsString('What would it cost?', (string) $staff->getTextBody());
         $this->assertStringContainsString('Maker Ltd', (string) $staff->getHtmlBody());
@@ -369,5 +375,33 @@ class ContactFormTest extends TestCase
     {
         $this->get('/sitemap.xml')->assertOk()->assertSee('<loc>'.route('contact').'</loc>', false);
         $this->get('/robots.txt')->assertOk()->assertSee('Allow: /contact$');
+    }
+
+    public function test_support_is_in_the_account_menu(): void
+    {
+        $customer = $this->seedSampleData()['customer'];
+        $this->signIn($customer)->get(route('dashboard'))->assertOk()
+            ->assertSee(route('contact.topic', 'support'), false)->assertSee(__('nav.support'));
+    }
+
+    public function test_a_mail_server_refusing_leaves_the_message_queued_for_a_retry(): void
+    {
+        Queue::fake();
+        Mail::shouldReceive('to')->andThrow(new \RuntimeException('connection refused'));
+
+        $this->send()->assertRedirect(route('contact'))->assertSessionHas('contact_sent', true);
+
+        $this->assertNull(ContactMessage::sole()->sent_at);
+        Queue::assertPushed(SendContactMessage::class);
+    }
+
+    public function test_without_a_recipient_the_message_stays_in_the_console(): void
+    {
+        config(['redact.contact.to' => '']);
+
+        $this->send()->assertRedirect(route('contact'))->assertSessionHas('contact_sent', true);
+
+        $this->assertSame(1, ContactMessage::count());
+        $this->assertCount(0, $this->sent());
     }
 }

@@ -22,7 +22,7 @@ return [
         'load' => 'Load the demo',
         'open' => 'Open the demo',
         'exists' => 'Your organisation already has the demo.',
-        'read_only' => 'Demo: a fictitious product, read-only, not counted in your plan. Explore every step and download its documents.',
+        'read_only' => 'Demo: an example product, read-only, not counted in your plan. Explore every step and download its documents.',
         'remove' => 'Remove the demo',
         'remove_confirm' => 'Remove the demo product? You can load it again from the dashboard.',
         'removed' => 'The demo was removed.',

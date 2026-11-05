@@ -19,6 +19,9 @@ trait FakesStripe
     /** @var array<string, array<string, mixed>|callable> */
     protected array $stripeResponses = [];
 
+    /** @var list<string> subscriptions stubbed from the last webhook event (postStripeWebhook) */
+    protected array $stripeEchoed = [];
+
     protected function fakeStripe(): void
     {
         config([
@@ -102,6 +105,15 @@ trait FakesStripe
     /** A webhook request signed like Stripe does (Stripe-Signature: t=…,v1=HMAC-SHA256). */
     protected function postStripeWebhook(array $payload, ?string $secret = null): TestResponse
     {
+        // Subscription events are read again from Stripe (StripeWebhookController): unless a test
+        // says otherwise, Stripe holds what the event says.
+        $object = $payload['data']['object'] ?? [];
+        $route = 'GET /v1/subscriptions/'.($object['id'] ?? '');
+        if (str_starts_with((string) ($payload['type'] ?? ''), 'customer.subscription.') && isset($object['id'])
+            && (! isset($this->stripeResponses[$route]) || in_array($route, $this->stripeEchoed, true))) {
+            $this->stripeReturns($route, ['object' => 'subscription'] + $object);
+            $this->stripeEchoed[] = $route;
+        }
         $body = json_encode($payload);
         $time = time();
         $signature = hash_hmac('sha256', $time.'.'.$body, $secret ?? (string) config('cashier.webhook.secret'));

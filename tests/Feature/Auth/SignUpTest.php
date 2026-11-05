@@ -28,7 +28,6 @@ class SignUpTest extends TestCase
     private function form(array $overrides = []): array
     {
         return array_merge([
-            'name' => 'Grace Hopper',
             'email' => 'Grace@Example.test',
             'organisation' => 'Hopper Radio Ltd',
             'terms' => '1',
@@ -50,7 +49,7 @@ class SignUpTest extends TestCase
         $this->assertNull($user->email_verified_at);
         $this->assertNotNull($user->terms_accepted_at);
         $this->assertSame(config('redact.auth.terms_version'), $user->terms_version);
-        $this->assertTrue($user->wants_product_news);
+        $this->assertFalse($user->wants_product_news, 'No newsletter: nothing asks for it (owner 2026-11-05).');
 
         $organisation = $user->organisations()->firstOrFail();
         $this->assertSame('Hopper Radio Ltd', $organisation->name);
@@ -59,6 +58,27 @@ class SignUpTest extends TestCase
 
         Mail::assertSent(SignInMail::class, fn (SignInMail $mail) => $mail->hasTo('grace@example.test') && $mail->newAccount);
         $this->assertDatabaseHas('activity_log', ['log_name' => 'security', 'description' => 'sign-up']);
+    }
+
+    public function test_sign_up_asks_only_the_address_and_calls_the_account_by_it(): void
+    {
+        $this->get('/register')->assertOk()->assertDontSee('name="name"', false)->assertSee('name="email"', false);
+
+        $this->post('/register', $this->form(['organisation' => null]))->assertRedirect(route('login.code'));
+
+        $user = User::where('email', 'grace@example.test')->firstOrFail();
+        $this->assertFalse($user->hasName());
+        $this->assertSame('grace@example.test', $user->name);
+        $this->assertSame('grace@example.test', $user->organisations()->firstOrFail()->name);
+        Mail::assertSent(SignInMail::class, fn (SignInMail $mail) => str_contains($mail->render(), __('auth.mail.greeting_plain')) && ! str_contains($mail->render(), 'Hello grace'));
+
+        // A name typed later on the account page replaces the address.
+        $user->forceFill(['email_verified_at' => now()])->save();
+        $this->signedIn($user);
+        $this->get('/account')->assertOk()->assertSee('id="name" name="name"', false)->assertDontSee('value="grace@example.test"', false);
+        $this->put('/account', ['name' => 'Grace Hopper', 'locale' => 'en', 'timezone' => 'UTC'])->assertSessionHasNoErrors();
+        $this->assertSame('Grace Hopper', $user->refresh()->name);
+        $this->assertTrue($user->hasName());
     }
 
     public function test_an_existing_address_gets_a_sign_in_mail_and_the_same_answer(): void
@@ -77,9 +97,11 @@ class SignUpTest extends TestCase
         Mail::assertSent(SignInMail::class, fn (SignInMail $mail) => $mail->hasTo('grace@example.test') && ! $mail->newAccount);
     }
 
-    public function test_sign_up_requires_terms_and_the_proof_of_work(): void
+    public function test_sign_up_states_the_terms_and_requires_the_proof_of_work(): void
     {
-        $this->post('/register', $this->form(['terms' => null]))->assertSessionHasErrors('terms');
+        // No box: a line under the button says creating the account accepts the terms (still recorded).
+        $this->get('/register')->assertOk()->assertDontSee('name="terms"', false)->assertSee(__('auth.register.terms_line_before'))
+            ->assertSee(route('legal.terms'), false)->assertSee(route('legal.privacy'), false);
         $this->post('/register', $this->form(['altcha' => 'forged']))->assertSessionHasErrors('altcha');
         $this->assertSame(0, User::count());
         Mail::assertNothingSent();

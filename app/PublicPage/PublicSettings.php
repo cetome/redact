@@ -18,7 +18,7 @@ final class PublicSettings
 {
     /** The sections a manufacturer switches on or off, in page order, with their defaults. */
     public const SECTIONS = [
-        'assessment' => true, 'support' => true, 'contact' => true, 'documents' => true,
+        'logo' => false, 'assessment' => true, 'support' => true, 'contact' => true, 'documents' => true,
         'risks' => false, 'vex' => true, 'sbom' => false, 'hbom' => false,
     ];
 

@@ -19,10 +19,10 @@ its own licence. The full licence text of each package is in its own folder:
 vendor/<vendor>/<package>/ (Composer) and node_modules/<package>/ (npm) after
 installing dependencies, and, for the fonts, in resources/fonts/.
 Versions are those of composer.lock and package-lock.json at the time this
-file was generated (2026-10-31).
+file was generated (2026-11-04).
 
 ------------------------------------------------------------------------------
-1. PHP runtime dependencies (Composer "require", installed with the app) (121)
+1. PHP runtime dependencies (Composer "require", installed with the app) (122)
 ------------------------------------------------------------------------------
 
 [MIT]
@@ -161,6 +161,9 @@ file was generated (2026-10-31).
 
 [LGPL-3.0-or-later]
   dompdf/php-svg-lib 1.0.2
+
+[GPL-2.0-or-later]
+  enshrined/svg-sanitize 1.1.1
 
 [BSD-2-Clause]
   bacon/bacon-qr-code v3.1.1

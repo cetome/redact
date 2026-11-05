@@ -293,6 +293,9 @@
 
             <section class="pp-section" aria-labelledby="pp-maker">
                 <h2 class="pp-h2" id="pp-maker">{{ __('public_page.page.manufacturer') }}</h2>
+                @if ($page->shows('logo') && $product->organisation->logo_path)
+                    <img class="pp-logo" src="{{ $live ? route('verify.logo', $code) : route('organisations.logo', $product->organisation) }}" alt="{{ $maker['name'] }}" height="48">
+                @endif
                 <p class="pp-address"><b>{{ $maker['name'] }}</b>{{ collect([$maker['address'], $maker['country']])->filter()->map(fn ($l) => "
 ".$l)->implode('') }}</p>
                 @if ($maker['rep_name'])

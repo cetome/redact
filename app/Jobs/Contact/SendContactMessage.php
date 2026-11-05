@@ -35,7 +35,12 @@ class SendContactMessage implements ShouldQueue
             return;
         }
 
-        Mail::to((string) config('redact.contact.to'))->send(new ContactMessageMail($message));
+        // No recipient configured (REDACT_CONTACT_TO empty): kept in the console only.
+        $to = trim((string) config('redact.contact.to'));
+        if ($to === '') {
+            return;
+        }
+        Mail::to($to)->send(new ContactMessageMail($message));
         $message->forceFill(['sent_at' => now(), 'failure' => null])->save();
     }
 

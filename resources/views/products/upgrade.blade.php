@@ -1,50 +1,49 @@
 {{--
     New product when the organisation's plan has no product left (App\Billing\Plan):
-    Stripe Checkout for the first paid product, a confirmed extra unit on an existing
-    subscription, or "Talk to us" when billing is off. Nothing is lost: nothing was created.
+    a confirmed add-on unit on an existing subscription, or "Talk to us" when billing is off. Without a
+    subscription an admin goes to the subscribe page instead (ProductController::create). Nothing is lost: nothing was created.
 --}}
 @php
-    $price = \App\Billing\Plan::priceLabel();
+    // On a subscription: what one more product costs it. Otherwise: the featured plan, per month.
+    $price = $plan->hasActiveSubscription() ? $plan->extraPriceLabel() : \App\Billing\Plan::priceLabel();
+    $per = $plan->per();
     $state = $plan->subscriptionState();
+    $featured = app(\App\Billing\Catalogue::class)->featured();
 @endphp
 <x-layouts.app :title="__('plans.add.title')">
-    <x-ui.page-header :title="__('plans.add.title')" :subtitle="__('plans.add.lead', ['price' => $price])">
+    <x-ui.page-header :title="__('plans.add.title')" :subtitle="__('plans.add.lead', ['price' => $price, 'per' => $per])">
         <x-slot:eyebrow>{{ __('plans.add.organisation', ['name' => $organisation->name]) }}</x-slot:eyebrow>
     </x-ui.page-header>
 
     <div class="a-grid-main">
         <div class="a-stack min-w-0">
-            @if ($plan->canBuy() && $isAdmin && $plan->hasActiveSubscription())
+            @if ($plan->canBuy() && $isAdmin && $plan->hasActiveSubscription() && $plan->onlineMaximumReached())
+                {{-- The most products sold online (Plan::MAX_ONLINE_PRODUCTS): more is agreed with us. --}}
+                <section class="a-panel">
+                    <div class="a-panel-body a-stack gap-2!">
+                        <p class="a-plan-hint"><x-lucide-package aria-hidden="true" /><span>{{ __('plans.add.maximum', ['max' => \App\Billing\Plan::MAX_ONLINE_PRODUCTS]) }}</span></p>
+                    </div>
+                    <div class="a-panel-foot">
+                        <a href="{{ \App\Billing\Plan::contactUrl('pricing') }}" class="a-btn a-btn-primary" rel="noopener"><x-lucide-message-circle aria-hidden="true" />{{ __('plans.talk') }}</a>
+                    </div>
+                </section>
+            @elseif ($plan->canBuy() && $isAdmin && $plan->hasActiveSubscription())
                 {{-- A subscription exists: confirm the extra monthly price, then one more unit. --}}
                 <form method="POST" action="{{ route('billing.products.add', $organisation) }}" class="a-panel">
                     @csrf
                     <div class="a-panel-head"><h2 class="a-h3">{{ __('plans.add.confirm_title') }}</h2></div>
                     <div class="a-panel-body a-stack gap-3!">
-                        <p>{{ trans_choice('plans.add.confirm_text', $plan->paidSlots, ['price' => $price, 'count' => $plan->paidSlots]) }}</p>
+                        <p>{{ trans_choice('plans.add.confirm_text', $plan->paidSlots, ['price' => $price, 'per' => $per, 'count' => $plan->paidSlots]) }}</p>
                         <label class="a-check">
                             <input type="checkbox" name="confirm" value="1" required @error('confirm') aria-invalid="true" @enderror>
-                            <span>{{ __('plans.add.confirm_check', ['price' => $price]) }}</span>
+                            <span>{{ __('plans.add.confirm_check', ['price' => $price, 'per' => $per]) }}</span>
                         </label>
                         @error('confirm')<p class="a-error">{{ $message }}</p>@enderror
-                        @include('billing._withdrawal')
+                        @include('billing._business')
                     </div>
                     <div class="a-panel-foot">
                         <button type="submit" class="a-btn a-btn-primary"><x-lucide-plus aria-hidden="true" />{{ __('plans.add.confirm') }}</button>
                         <a href="{{ route('billing.show', $organisation) }}" class="a-btn a-btn-ghost">{{ __('plans.billing.title') }}</a>
-                    </div>
-                </form>
-            @elseif ($plan->canBuy() && $isAdmin)
-                {{-- No subscription yet (or it ended): Stripe Checkout, then back here with the product available. --}}
-                <form method="POST" action="{{ route('billing.checkout', $organisation) }}" class="a-panel">
-                    @csrf
-                    <div class="a-panel-head"><h2 class="a-h3">{{ __('plans.refusal.products_pay', ['price' => $price]) }}</h2></div>
-                    <div class="a-panel-body a-stack gap-3!">
-                        <p class="a-help">{{ __('plans.add.checkout_help') }}</p>
-                        @include('billing._withdrawal')
-                    </div>
-                    <div class="a-panel-foot">
-                        <button type="submit" class="a-btn a-btn-primary"><x-lucide-credit-card aria-hidden="true" />{{ __('plans.add.checkout') }}</button>
-                        <span class="a-help">{{ $price }} / {{ __('plans.periods.month') }}</span>
                     </div>
                 </form>
             @elseif ($state === 'past_due' && $isAdmin && \App\Billing\Plan::billingEnabled())
@@ -74,7 +73,7 @@
             <div class="a-panel-head"><h2 class="a-h3" id="includes-title">{{ __('plans.add.includes') }}</h2></div>
             <ul class="a-panel-body a-plan-features">
                 <li><x-lucide-users aria-hidden="true" />{{ __('plans.add.team') }}</li>
-                <li><x-lucide-sparkles aria-hidden="true" />{{ __('plans.add.ai', ['units' => (int) config('redact.plans.paid.ai_units')]) }}</li>
+                <li><x-lucide-sparkles aria-hidden="true" />{{ __('plans.add.ai', ['units' => $plan->definition->extraProductAiUnits ?? $featured->extraProductAiUnits ?? (int) config('redact.plans.paid.ai_units')]) }}</li>
                 <li><x-lucide-life-buoy aria-hidden="true" />{{ __('plans.add.support') }}</li>
                 <li><x-lucide-download aria-hidden="true" />{{ __('plans.add.rules') }}</li>
             </ul>

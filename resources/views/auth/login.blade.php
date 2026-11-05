@@ -1,47 +1,54 @@
-<x-layouts.guest :title="__('auth.login.title')">
-    <h1 class="c-h1">{{ __('auth.login.heading') }}</h1>
-    <p class="c-lead mt-4">{{ __('auth.login.lead') }}</p>
+{{--
+    Sign in (FAST's /login): the two tabs, then how to sign in, Passkey or E-mail code (the e-mail by
+    default, as FAST). The switch shows only where passkeys work (passkeyLogin "supported");
+    modules/login-method.js swaps the two panes.
+--}}
+<x-layouts.guest :bare="true" :title="__('auth.login.title')">
+    @include('auth._frame-top', ['tab' => 'login'])
 
-    <div class="c-card mt-8" x-data="passkeyLogin" data-error="{{ __('auth.passkeys.error') }}">
-        <div class="c-card-body space-y-6">
-            <form method="POST" action="{{ route('login.send') }}" class="space-y-6" novalidate>
+    <section class="c-container r-auth">
+        <div class="r-auth-card" x-data="passkeyLogin" data-error="{{ __('auth.passkeys.error') }}" data-login-methods>
+            @include('auth._tabs', ['tab' => 'login'])
+            <p class="r-auth-text">{{ __('auth.login.text') }}</p>
+
+            <div class="r-auth-method" role="tablist" aria-label="{{ __('auth.login.method') }}" x-show="supported">
+                <button type="button" class="r-auth-seg" role="tab" aria-selected="false" aria-controls="pane-passkey" data-method="passkey">{{ __('auth.login.tab_passkey') }}</button>
+                <button type="button" class="r-auth-seg is-active" role="tab" aria-selected="true" aria-controls="pane-email" data-method="email">{{ __('auth.login.tab_email') }}</button>
+            </div>
+
+            <div id="pane-passkey" role="tabpanel" data-method-pane="passkey" hidden>
+                @if ($rememberDays > 0)
+                    @include('auth._remember', ['rememberDays' => $rememberDays, 'id' => 'remember-passkey'])
+                @endif
+                <button type="button" class="c-btn c-btn-primary c-btn-block" x-on:click="signIn" x-bind:disabled="busy">{{ __('auth.login.passkey') }}</button>
+                <p class="r-auth-help">{{ __('auth.login.passkey_help') }}</p>
+                <p class="c-error mt-3" role="alert" x-show="error" x-text="error"></p>
+            </div>
+
+            <form method="POST" action="{{ route('login.send') }}" class="space-y-5" id="pane-email" role="tabpanel" data-method-pane="email" novalidate>
                 @csrf
                 <div class="c-field">
-                    <label for="email" class="c-label">{{ __('auth.fields.email') }}</label>
+                    <label for="email" class="c-label">{{ __('auth.login.email') }}</label>
                     <input id="email" name="email" type="email" class="c-input" required maxlength="191"
                         autocomplete="username webauthn" autofocus value="{{ old('email') }}"
-                        @error('email') aria-invalid="true" aria-describedby="email-error" @enderror>
+                        aria-describedby="email-help" @error('email') aria-invalid="true" @enderror>
+                    <p id="email-help" class="r-auth-help">{{ __('auth.login.email_help') }}</p>
                     @error('email')
-                        <p id="email-error" class="c-error">{{ $message }}</p>
+                        <p class="c-error">{{ $message }}</p>
                     @enderror
                 </div>
                 @if ($rememberDays > 0)
-                    {{-- One box for both ways in: the passkey button reads it too (passkeyLogin). --}}
-                    <label class="flex items-start gap-3">
-                        <input type="checkbox" name="remember" value="1" class="c-check mt-1" data-remember @checked(old('remember'))>
-                        <span>{{ __('auth.login.remember', ['days' => $rememberDays]) }}</span>
-                    </label>
+                    @include('auth._remember', ['rememberDays' => $rememberDays, 'id' => 'remember-email'])
                 @endif
-                <button type="submit" class="c-btn c-btn-primary c-btn-block">{{ __('auth.login.send') }}</button>
+                <button type="submit" class="c-btn c-btn-primary">{{ __('auth.login.send') }}</button>
             </form>
-
-            <div x-show="supported">
-                <p class="c-meta text-center mb-4">{{ __('auth.login.or') }}</p>
-                <button type="button" class="c-btn c-btn-outline c-btn-block" x-on:click="signIn" x-bind:disabled="busy">
-                    {{ __('auth.login.passkey') }}
-                </button>
-                <p class="c-error mt-3" role="alert" x-show="error" x-text="error"></p>
-            </div>
         </div>
-    </div>
 
-    <div class="mt-8 space-y-3">
-        @if ($pending)
-            <p><a href="{{ route('login.code') }}" class="c-link">{{ __('auth.login.have_code') }}</a></p>
-        @endif
-        @if (config('redact.auth.signup'))
-            <p class="c-text">{{ __('auth.login.no_account') }} <a href="{{ route('register') }}" class="c-link">{{ __('auth.login.create') }}</a></p>
-        @endif
-        <x-guest-try-link />
-    </div>
+        <div class="r-auth-after">
+            @if ($pending)
+                <p><a href="{{ route('login.code') }}" class="c-link">{{ __('auth.login.have_code') }}</a></p>
+            @endif
+            <x-guest-try-link />
+        </div>
+    </section>
 </x-layouts.guest>

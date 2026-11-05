@@ -40,11 +40,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/welcome/passkey', [PasskeySuggestionController::class, 'show'])->name('auth.passkey.suggest');
     Route::get('/welcome/passkey/skip', [PasskeySuggestionController::class, 'skip'])->name('auth.passkey.skip');
+    Route::post('/welcome/passkey/never', [PasskeySuggestionController::class, 'never'])->name('auth.passkey.never');
 
     Route::get('/account', [AccountController::class, 'show'])->name('account.show');
     Route::put('/account', [AccountController::class, 'update'])->name('account.update');
     // One tab of the account page (/account is the profile), and "Confirm it's you" coming back to a tab.
-    Route::get('/account/{tab}', [AccountController::class, 'show'])->name('account.tab')->whereIn('tab', ['security', 'sessions', 'data', 'delete']);
+    Route::get('/account/{tab}', [AccountController::class, 'show'])->name('account.tab')->whereIn('tab', ['security', 'sessions', 'accessibility', 'data', 'delete']);
+    Route::put('/account/accessibility', [AccountController::class, 'updateAccessibility'])->name('account.accessibility');
+    Route::put('/account/theme', [AccountController::class, 'updateTheme'])->name('account.theme')->middleware('throttle:60,1');
     Route::get('/account/confirm/{tab?}', [AccountController::class, 'reconfirmed'])->name('account.reconfirm')
         ->whereIn('tab', AccountController::TABS)->middleware('recent.auth');
     Route::post('/account/email', [AccountController::class, 'requestEmailChange'])->name('account.email')->middleware(['recent.auth', 'throttle:10,15']);

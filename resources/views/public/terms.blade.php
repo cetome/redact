@@ -1,13 +1,15 @@
 {{-- Terms and legal notice: the publisher and host first (legal notice), then the terms of use. Text in lang/*/terms.php (not legal.php: __('Legal') in the brand footer would load it on Windows). --}}
 @php
-    $email = config('redact.security_contact');
+    $email = trim((string) config('redact.security_contact'));
     $members = (int) config('redact.plans.free.team_members', 1);
     $fill = [
         ':hours' => e(\App\Guest\Sandbox::ttlHours()),
-        ':email' => '<a class="c-link" href="mailto:'.e($email).'">'.e($email).'</a>',
+        ':email' => $email !== '' ? '<a class="c-link" href="mailto:'.e($email).'">'.e($email).'</a>' : '<a class="c-link" href="'.e(route('contact')).'">'.e(route('contact')).'</a>',
         ':pgp' => '<a class="c-link" href="'.e(config('redact.security_pgp.url')).'">'.e(__('terms.links.pgp')).'</a>',
         ':fingerprint' => '<code>'.e(config('redact.security_pgp.fingerprint')).'</code>',
         ':price' => e(\App\Billing\Plan::priceLabel()),
+        ':plan_yearly' => e(app(\App\Billing\Catalogue::class)->label(app(\App\Billing\Catalogue::class)->featured()->key ?? 'paid', 'plan', 'year')),
+        ':more_yearly' => e(\App\Billing\Plan::priceLabel('year')),
         ':ai_units' => e((int) config('redact.plans.paid.ai_units', 500)),
         ':free_team' => e(trans_choice('public.pricing.plans.free.team', $members, ['members' => $members])),
         ':talk' => '<a class="c-link" href="'.e(\App\Billing\Plan::contactUrl('self-hosted')).'">'.e(__('terms.links.talk')).'</a>',

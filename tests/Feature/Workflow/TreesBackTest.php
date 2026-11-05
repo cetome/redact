@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Workflow;
 
+use App\Content\ContentPack;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Concerns\BuildsProducts;
 use Tests\TestCase;
@@ -60,5 +61,32 @@ class TreesBackTest extends TestCase
             ->assertDontSee('a-walk-question', false)
             ->getContent();
         $this->assertSame(1, substr_count($html, 'data-tree-diagram'), 'One tree on the page: it is the evaluation.');
+    }
+
+    public function test_the_parts_tabs_keep_their_order_at_dt(): void
+    {
+        $this->signIn($this->owner());
+        $pack = app(ContentPack::class);
+        // A requirement whose tree several parts share (the test pack's, or the real one's).
+        $standards = collect(array_keys($pack->standards()))->sort(SORT_NATURAL)->values();
+        $requirement = collect(array_keys($pack->requirements()))
+            ->first(fn ($r) => $standards->filter(fn ($s) => $pack->tree($s, $r) !== null)->count() > 1);
+        if ($requirement === null) {
+            $this->markTestSkipped('No tree shared across parts in this pack.');
+        }
+        $parts = $standards->filter(fn ($s) => $pack->tree($s, $requirement) !== null)->values()->all();
+
+        // The same order on every part: only the highlight moves.
+        foreach ($parts as $current) {
+            $html = $this->get(route('trees.show', [$current, $requirement]))->assertOk()->getContent();
+            $nav = substr($html, (int) strpos($html, 'class="a-seg"'));
+            $positions = array_map(fn ($p) => strpos($nav, $pack->standardName($p)), $parts);
+            $sorted = $positions;
+            sort($sorted);
+            $this->assertSame($sorted, $positions, 'Parts in the same order on '.$current);
+            $this->assertStringContainsString('aria-current="page">'.$pack->standardName($current), $nav);
+        }
+
+        $this->assertStringStartsWith(url('/dt/'), route('trees.show', [$parts[0], $requirement]));
     }
 }

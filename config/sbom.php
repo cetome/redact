@@ -43,7 +43,8 @@ return [
         // A job stops after this many seconds and queues itself again for the rest
         // (shared hosting: the scheduler's queue:work runs at most 50 s).
         'time_budget' => 35,
-        'user_agent' => env('REDACT_VULN_USER_AGENT', 'REDact/1.0 (+https://redact.example.com; security@example.com)'),
+        // Who asks (the services ask for a contact): .env, else the product and the site's address.
+        'user_agent' => env('REDACT_VULN_USER_AGENT') ?: 'REDact/1.0 (+'.rtrim((string) env('APP_URL', 'http://localhost'), '/').')',
         'timeout' => 20,
         // EUVD look-ups by CVE (EUVD id, EU exploited flag) per check, the rest stays without.
         'max_euvd_lookups' => 150,

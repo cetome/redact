@@ -86,10 +86,11 @@ class DecisionTreeController extends Controller
             'name' => $pack->standardName($standard),
             'tree' => $tree,
             'order' => $this->readingOrder($tree),
-            'others' => array_values(array_filter(
-                array_keys($pack->standards()),
-                fn ($s) => $s !== $standard && $pack->tree($s, $requirement) !== null,
-            )),
+            // Every part with this tree, always in the same order (1, 2, 3): real tabs, the current one
+            // highlighted, never moved first (owner 2026-11-04).
+            'parts' => collect(array_keys($pack->standards()))
+                ->filter(fn ($s) => $pack->tree($s, $requirement) !== null)
+                ->sort(SORT_NATURAL)->values()->all(),
             'back' => self::back(),
         ]);
     }

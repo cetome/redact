@@ -128,10 +128,10 @@ class PricingTest extends TestCase
         $this->assertStringNotContainsString(__('public.pricing.plans.paid.checkout'), $html);
         $this->get('/')->assertSee('href="'.route('contact.topic', 'pricing').'"', false);
 
-        // Billing on: the account button and the check-out line.
+        // Billing on: the subscribe page (a visitor creates an account on the way) and the check-out line.
         config(['cashier.key' => 'pk_test_fake', 'cashier.secret' => 'sk_test_fake', 'redact.billing.price' => 'price_x']);
         $html = $this->get(route('pricing'))->assertOk()->getContent();
-        $this->assertStringContainsString('href="'.route('register').'" class="c-btn c-btn-primary r-plan-cta"', $html);
+        $this->assertStringContainsString('href="'.route('subscribe').'" class="c-btn c-btn-primary r-plan-cta"', $html);
         $this->assertStringContainsString(__('public.pricing.plans.paid.checkout'), $html);
     }
 

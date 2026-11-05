@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
- * The consent given before a paid action (App\Billing\Billing::recordConsent): the person asks for
- * the service to start at once and acknowledges the EU consumer withdrawal rules (terms, "Consumers").
+ * The confirmation given before a paid action (App\Billing\Billing::recordConsent): the person
+ * subscribes for their business, not as a consumer (terms, "Businesses only").
  *
  * @property int $id
  * @property string $organisation_id

@@ -5,6 +5,7 @@ namespace App\Auth;
 use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Activitylog\Models\Activity;
 
 /**
@@ -43,9 +44,11 @@ class AccountDeleter
             }
 
             $user->delete();
+            Storage::disk('local')->deleteDirectory('users/'.$id);
 
             foreach ($soleOrganisations as $org) {
                 $org->delete();
+                Storage::disk('local')->deleteDirectory('organisations/'.$org->getKey());
             }
 
             Activity::query()

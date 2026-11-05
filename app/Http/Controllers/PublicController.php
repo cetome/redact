@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Assessment\Assessment;
 use App\Assessment\ScopingForm;
+use App\Billing\Catalogue;
 use App\Billing\Plan;
 use App\Content\ContentPack;
 use App\Guest\Sandbox;
@@ -106,9 +107,9 @@ class PublicController extends Controller
 
     public function securityTxt(): Response
     {
-        $contact = config('redact.security_contact');
+        $contact = trim((string) config('redact.security_contact'));
         $body = implode("\n", [
-            'Contact: mailto:'.$contact,
+            'Contact: '.($contact !== '' ? 'mailto:'.$contact : route('contact.topic', 'support')),
             'Encryption: '.config('redact.security_pgp.url'),
             'Encryption: openpgp4fpr:'.str_replace(' ', '', (string) config('redact.security_pgp.fingerprint')),
             'Expires: '.now()->addYear()->startOfMonth()->toIso8601ZuluString(),
@@ -217,21 +218,30 @@ class PublicController extends Controller
     }
 
     /**
-     * The offers, from the configuration (public/_plans on the home page and /pricing): the price of a
-     * paid product, the products the paid offer includes (the free ones plus the first paid one), the
-     * free and paid allowances, the contact and open-source links.
+     * The offers (public/_plans on the home page and /pricing), from the catalogue's featured plan
+     * (App\Billing\Catalogue): its monthly price (and the yearly one, when it has one or billing is
+     * not live yet), the products it includes, the price of each additional product, the free and
+     * paid allowances, the contact and open-source links.
      *
-     * @return array{price: string, included: int, free: array<string, mixed>, paid: array<string, mixed>, contactUrl: string, billing: bool, pricingContactUrl: string, openSourceUrl: string}
+     * @return array{paidName: string, price: string, more: string, yearly: ?string, moreYearly: string, included: int, free: array<string, mixed>, paid: array<string, mixed>, contactUrl: string, billing: bool, pricingContactUrl: string, openSourceUrl: string}
      */
     private function plans(): array
     {
         $free = (array) config('redact.plans.free');
+        $catalogue = app(Catalogue::class);
+        $featured = $catalogue->featured();
+        $key = $featured->key ?? Catalogue::DEFAULT;
+        $intervals = $catalogue->intervals($key);
 
         return [
-            'price' => Plan::priceLabel(),
-            'included' => (int) ($free['products'] ?? 1) + 1,
+            'paidName' => trim((string) ($featured?->names[app()->getLocale()] ?? '')) ?: (string) __('public.pricing.plans.paid.name'),
+            'price' => $catalogue->label($key, Catalogue::ITEM_PLAN, 'month'),
+            'more' => $catalogue->label($key, Catalogue::ITEM_EXTRA, 'month'),
+            'yearly' => $intervals === [] || in_array('year', $intervals, true) ? $catalogue->label($key, Catalogue::ITEM_PLAN, 'year') : null,
+            'moreYearly' => $catalogue->label($key, Catalogue::ITEM_EXTRA, 'year'),
+            'included' => $featured->products ?? ((int) ($free['products'] ?? 1) + 1),
             'free' => $free,
-            'paid' => (array) config('redact.plans.paid'),
+            'paid' => ['ai_units' => $featured->extraProductAiUnits ?? (int) config('redact.plans.paid.ai_units', 500)] + (array) config('redact.plans.paid'),
             'contactUrl' => Plan::contactUrl('self-hosted'),
             // Without Stripe there is no check-out: the paid offer is "Talk to us" (pricing topic).
             'billing' => Plan::billingEnabled(),

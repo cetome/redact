@@ -55,6 +55,7 @@ Route::middleware('throttle:120,1')->name('verify.')->group(function () {
     $lang = implode('|', array_keys(config('redact.locales')));
     Route::get('/verify/{code}', [PublicProductController::class, 'show'])->name('show')->where($code);
     Route::get('/verify/{code}/picture', [PublicProductController::class, 'picture'])->name('picture')->where($code);
+    Route::get('/verify/{code}/logo', [PublicProductController::class, 'logo'])->name('logo')->where($code);
     Route::get('/verify/{code}/{lang}', [PublicProductController::class, 'show'])->name('show.lang')->where($code + ['lang' => $lang]);
     Route::get('/verify/{code}/{version}', [PublicProductController::class, 'show'])->name('version')->where($code)->whereUlid('version');
     Route::get('/verify/{code}/{version}/{lang}', [PublicProductController::class, 'show'])->name('version.lang')->where($code + ['lang' => $lang])->whereUlid('version');

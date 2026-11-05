@@ -1,4 +1,4 @@
-// Contact form (/contact, public/contact.blade.php), as on cetome.com: the ALTCHA proof of work runs on
+// Contact form (/contact, public/contact.blade.php) and sign-up (auth/register.blade.php), as on cetome.com: the ALTCHA proof of work runs on
 // page load in an invisible widget, so sending needs no click on a captcha.
 //
 // - Send pressed before the proof is ready: the button says "Sending…" and the form goes as soon as

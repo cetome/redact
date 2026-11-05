@@ -1,10 +1,10 @@
 {
     "bomFormat": "CycloneDX",
     "specVersion": "1.6",
-    "serialNumber": "urn:uuid:c1756ce6-7584-5ccd-a7c2-232e9c50c1f2",
+    "serialNumber": "urn:uuid:1eda1156-6bb7-58b8-a026-64e189f47a40",
     "version": 1,
     "metadata": {
-        "timestamp": "2026-10-31T17:05:20Z",
+        "timestamp": "2026-11-04T18:46:04Z",
         "tools": {
             "components": [
                 {
@@ -35,7 +35,7 @@
             },
             {
                 "name": "cetome:vex:result",
-                "value": "No known vulnerability on 2026-10-31"
+                "value": "No known vulnerability on 2026-11-04"
             }
         ]
     },

@@ -102,15 +102,11 @@ class GuestController extends Controller
         $guest = $this->guest($request);
 
         $data = $request->validate([
-            'name' => ['required', 'string', 'max:120'],
             'email' => ['required', 'string', 'email', 'max:191'],
             'organisation' => ['nullable', 'string', 'max:160'],
-            'terms' => ['accepted'],
-            'product_news' => ['nullable', 'boolean'],
             'altcha' => ['required', 'string'],
         ], [
             'altcha.required' => __('auth.register.altcha_required'),
-            'terms.accepted' => __('auth.register.terms_required'),
         ]);
 
         $email = mb_strtolower(trim($data['email']));
@@ -142,16 +138,15 @@ class GuestController extends Controller
         $usable = $existing === null || ($existing->active && ! $existing->is_guest);
 
         $request->session()->put(self::CLAIM, [
-            'name' => trim($data['name']),
             'email' => $email,
             'organisation' => trim((string) ($data['organisation'] ?? '')),
-            'product_news' => (bool) ($data['product_news'] ?? false),
+            'product_news' => false,
         ]);
 
         $challenge = $challenges->start($request, 'guest_claim', $allowed && $usable ? $guest : null, $email, $email);
 
         if ($challenge !== null) {
-            SafeMail::send($email, new VerificationCodeMail(trim($data['name']), app()->getLocale(), $challenge['code'], 'guest_claim'));
+            SafeMail::send($email, new VerificationCodeMail('', app()->getLocale(), $challenge['code'], 'guest_claim'));
         }
 
         Timing::padSince($start, Timing::sendMs());
@@ -177,7 +172,7 @@ class GuestController extends Controller
         }
 
         $details = [
-            'name' => (string) $form['name'],
+            'name' => '',
             'email' => (string) $token->new_email,
             'organisation' => (string) ($form['organisation'] ?? ''),
             'product_news' => (bool) $form['product_news'],

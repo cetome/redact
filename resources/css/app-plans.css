@@ -36,4 +36,43 @@
 
   /* Console: plan form. */
   .a-plan-form { display: grid; gap: 0.75rem 1rem; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); }
+
+  /* Subscribe (billing/subscribe, FAST's /subscribe): monthly or yearly cards, the number of products,
+     the summary, then Stripe. The radio is invisible over the card, a corner tick shows the choice. */
+  .a-sub { display: grid; gap: 1.25rem; @media (width >= 64rem) { grid-template-columns: minmax(0, 1fr) 22rem; align-items: start; } }
+  .a-sub-cards { display: grid; gap: 0.75rem; @media (width >= 40rem) { grid-template-columns: 1fr 1fr; } }
+  .a-sub-card {
+    position: relative; display: flex; flex-direction: column; gap: 0.15rem;
+    border: 1px solid var(--c-line); border-radius: var(--radius-xl); background-color: var(--c-surface);
+    padding: 0.9rem 1rem; cursor: pointer; transition: border-color 120ms, box-shadow 120ms;
+    &:hover { border-color: var(--c-line-strong); }
+    &:has(input:checked) { border-color: var(--c-primary); box-shadow: 0 0 0 3px var(--a-info-bg); }
+    &:has(input:focus-visible) { outline: 2px solid var(--a-focus); outline-offset: 2px; }
+  }
+  .a-sub-card input { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  .a-sub-check {
+    position: absolute; top: 0.75rem; right: 0.75rem; display: grid; place-items: center; width: 1.3rem; height: 1.3rem;
+    border-radius: 50%; background-color: var(--c-primary); color: #fff; opacity: 0; transform: scale(0.7); transition: opacity 120ms, transform 120ms;
+  }
+  .a-sub-check svg { width: 0.85rem; height: 0.85rem; }
+  .a-sub-card:has(input:checked) .a-sub-check { opacity: 1; transform: scale(1); }
+  .a-sub-card-title { font-weight: 800; color: var(--c-ink); }
+  .a-sub-card-price { margin-top: 0.2rem; font-size: 1.5rem; font-weight: 900; line-height: 1.1; color: var(--c-primary); white-space: nowrap; }
+  .a-sub-card-price small { margin-left: 0.3rem; font-size: var(--text-label); font-weight: 600; color: var(--c-ink-muted); }
+  .a-sub-card-text { margin-top: 0.25rem; font-size: var(--text-label); color: var(--c-ink-muted); }
+  .a-sub-summary { border: 1px solid var(--c-line); border-radius: var(--radius-xl); background-color: var(--a-info-bg); padding: 0.9rem 1rem; }
+  .a-sub-lines { margin: 0; }
+  .a-sub-lines > div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.4rem 0; border-bottom: 1px solid var(--c-line); font-size: var(--text-sm); }
+  .a-sub-lines > div:last-child { border-bottom: 0; }
+  .a-sub-lines dt { margin: 0; color: var(--c-ink-muted); }
+  .a-sub-lines dd { margin: 0; font-weight: 600; color: var(--c-ink); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .a-sub-lines .a-sub-total dt { font-weight: 700; color: var(--c-ink); }
+  .a-sub-lines .a-sub-total dd { font-size: var(--text-base); font-weight: 800; color: var(--c-primary); }
+  /* "2 included + 3 additional at 100 € a month each: +300 € a month" under the number of products. */
+  .a-sub-breakdown { margin: 0; font-size: var(--text-sm); font-weight: 600; color: var(--c-primary); }
+  .a-sub-first { margin: 0.6rem 0 0; font-size: var(--text-sm); color: var(--c-ink); }
+  /* - [ 2 ] + (billing page, products to add, CRAted's counter). */
+  .a-stepper { display: flex; align-items: center; gap: 0.5rem; max-width: 12rem; }
+  .a-stepper .a-input { text-align: center; font-weight: 800; -moz-appearance: textfield; }
+  .a-stepper .a-input::-webkit-inner-spin-button, .a-stepper .a-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 }

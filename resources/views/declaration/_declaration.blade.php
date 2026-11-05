@@ -79,7 +79,7 @@
                         @else
                             <p class="a-decl-missing"><x-lucide-circle-alert aria-hidden="true" />{{ __('declaration.manufacturer.missing') }}</p>
                         @endif
-                        {{-- The demo: its fictitious manufacturer is said once, in the Manufacturer panel. --}}
+                        {{-- The demo: its example manufacturer is said once, in the Manufacturer panel. --}}
                         @unless ($data->isDemo())
                             <p class="a-decl-from"><x-lucide-building-2 aria-hidden="true" />{{ __('declaration.from_org', ['name' => $org->name]) }}
                                 <a href="#manufacturer" class="a-link-btn">{{ __('declaration.manufacturer.edit_link') }}</a></p>

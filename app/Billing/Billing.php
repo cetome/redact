@@ -12,9 +12,11 @@ use Laravel\Cashier\Checkout;
 use Laravel\Cashier\Subscription;
 
 /**
- * Stripe, through Laravel Cashier: one subscription per organisation ("products"), one unit
- * per paid product (price STRIPE_PRICE_PRODUCT_MONTHLY). No Stripe.js: Checkout and the
- * Customer Portal are redirects, so the CSP is unchanged. Every change is logged ("billing").
+ * Stripe, through Laravel Cashier: one subscription per organisation ("products"): the plan's
+ * price (App\Billing\Catalogue, monthly or yearly) and the add-on "Additional product", one unit
+ * per product beyond what the plan includes (or more units of the plan price when the plan has
+ * no add-on price). No Stripe.js: Checkout and the Customer Portal are redirects, so the CSP is
+ * unchanged. Every change is logged ("billing").
  */
 class Billing
 {
@@ -23,10 +25,7 @@ class Billing
         return (string) config('redact.billing.subscription', 'products');
     }
 
-    public function price(): string
-    {
-        return (string) config('redact.billing.price');
-    }
+    public function __construct(private readonly Catalogue $catalogue) {}
 
     public function subscription(Organisation $organisation): ?Subscription
     {
@@ -34,9 +33,9 @@ class Billing
     }
 
     /**
-     * Before any paid action: the person asked for the service to start at once and acknowledged
-     * the withdrawal rules (terms, "Consumers"). Stored as proof (billing_consents) with the terms
-     * version and a keyed hash of the IP address.
+     * Before any paid action: the person confirmed they subscribe for their business, not as a
+     * consumer (terms, "Businesses only"). Stored as proof (billing_consents) with the terms version
+     * and a keyed hash of the IP address.
      */
     public function recordConsent(Organisation $organisation, User $by, string $action, int $quantity, ?string $ip): BillingConsent
     {
@@ -51,13 +50,26 @@ class Billing
     }
 
     /**
-     * The first paid product: a Stripe Checkout session (subscription, quantity 1, Stripe Tax,
-     * billing address and tax ID for EU B2B VAT). Back on New product once paid.
+     * A plan, on $interval, for $quantity paid products: a Stripe Checkout session (Stripe Tax,
+     * billing address and tax ID for EU B2B VAT). Products beyond what the plan includes are
+     * add-on units. Back on New product once paid.
      */
-    public function checkout(Organisation $organisation, User $by, int $quantity = 1): Checkout
+    public function checkout(Organisation $organisation, User $by, int $quantity = 1, ?string $plan = null, string $interval = 'month'): Checkout
     {
-        $checkout = $organisation->newSubscription($this->type(), $this->price())
-            ->quantity(max(1, $quantity))
+        $definition = $this->catalogue->plan($plan) ?? $this->catalogue->featured();
+        $planPrice = $definition !== null ? $this->catalogue->price($definition->key, Catalogue::ITEM_PLAN, $interval) : null;
+        abort_if($definition === null || $planPrice === null, 404);
+        $extra = $definition->unlimited() ? 0 : max(0, $quantity - $definition->slotsBeyond((int) config('redact.plans.free.products', 1)));
+        $extraPrice = $this->catalogue->price($definition->key, Catalogue::ITEM_EXTRA, $interval);
+
+        $builder = $organisation->newSubscription($this->type(), $extra > 0 && $extraPrice !== null ? [$planPrice, $extraPrice] : [$planPrice]);
+        if ($extra > 0 && $extraPrice !== null) {
+            $builder->quantity(1, $planPrice)->quantity($extra, $extraPrice);
+        } else {
+            // Without an add-on price, each additional product is one more unit of the plan.
+            $builder->quantity(1 + $extra);
+        }
+        $checkout = $builder->withMetadata(['redact_plan' => $definition->key, 'redact_interval' => $interval])
             ->checkout([
                 // Stripe replaces {CHECKOUT_SESSION_ID} anywhere in the address: in the path, not URL-encoded.
                 'success_url' => str_replace('/CHECKOUT_SESSION_ID', '/{CHECKOUT_SESSION_ID}', route('billing.success', [$organisation, 'CHECKOUT_SESSION_ID'])),
@@ -68,7 +80,7 @@ class Billing
                 'locale' => Locales::detail('stripe'),
             ]);
 
-        $this->log($organisation, $by, 'checkout started', ['quantity' => max(1, $quantity)]);
+        $this->log($organisation, $by, 'checkout started', ['plan' => $definition->key, 'interval' => $interval, 'quantity' => max(1, $quantity)]);
 
         return $checkout;
     }
@@ -90,25 +102,54 @@ class Billing
 
         (new StripeSync)->subscriptionCreated($session->subscription->toArray());
         $this->log($organisation, $by, 'subscription started', ['subscription' => $session->subscription->id]);
+        $this->adoptNames($organisation, $session->customer_details?->toArray() ?? [], $by);
 
         return true;
     }
 
-    /** One more paid product on the existing subscription (prorated on the next invoice). */
+    /**
+     * The names typed in Checkout fill the ones REDact does not have yet (App\Billing\StripeNames).
+     *
+     * @param  array<string, mixed>  $details  the session's customer_details
+     */
+    public function adoptNames(Organisation $organisation, array $details, ?User $payer): void
+    {
+        $changed = app(StripeNames::class)->adopt($organisation, $details, $payer);
+        if ($changed !== []) {
+            $this->log($organisation, $payer, 'names from Stripe', $changed);
+        }
+    }
+
+    /**
+     * More paid products on the existing subscription (prorated on the next invoice): units of
+     * its add-on item (even on an older add-on price), else the plan's current add-on price on
+     * the subscription's interval, else more units of the plan price.
+     */
     public function addProduct(Organisation $organisation, User $by, int $count = 1): Subscription
     {
-        $subscription = $this->subscription($organisation);
+        $plan = Plan::fresh($organisation);
+        $subscription = $plan->subscription;
         abort_unless($subscription !== null && $subscription->active(), 404);
+        $count = max(1, $count);
 
-        $subscription->incrementQuantity(max(1, $count));
-        $this->log($organisation, $by, $count > 1 ? 'products reactivated' : 'product added', ['quantity' => $subscription->quantity]);
+        $extra = $this->item($subscription, Catalogue::ITEM_EXTRA);
+        $price = $this->catalogue->price($plan->key(), Catalogue::ITEM_EXTRA, $plan->interval ?? 'month');
+        if ($extra !== null) {
+            $subscription->incrementQuantity($count, $extra);
+        } elseif ($price !== null) {
+            $subscription->addPrice($price, $count);
+        } else {
+            $subscription->incrementQuantity($count, $this->single($subscription));
+        }
+        $this->log($organisation, $by, $count > 1 ? 'products reactivated' : 'product added', ['count' => $count, 'items' => $this->items($subscription)]);
 
         return $subscription;
     }
 
     /**
-     * One paid product fewer (a deleted paid product): the quantity goes down, or the subscription
-     * ends at the close of the period when it was the last one. Data is never touched here.
+     * One paid product fewer (a deleted paid product): one add-on unit or plan unit less, or the
+     * subscription ends at the close of the period when only the plan is left. Data is never
+     * touched here.
      */
     public function removeProduct(Organisation $organisation, User $by): void
     {
@@ -117,13 +158,66 @@ class Billing
             return;
         }
 
-        if ((int) $subscription->quantity > 1) {
-            $subscription->decrementQuantity();
-            $this->log($organisation, $by, 'product removed', ['quantity' => $subscription->quantity]);
+        $extra = $this->item($subscription, Catalogue::ITEM_EXTRA);
+        $quantity = fn (?string $price) => (int) ($subscription->items->firstWhere('stripe_price', $price)->quantity ?? $subscription->quantity);
+        if ($extra !== null && $quantity($extra) > 1) {
+            $subscription->decrementQuantity(1, $extra);
+        } elseif ($extra !== null) {
+            $subscription->removePrice($extra);
+        } elseif ($quantity($this->item($subscription, Catalogue::ITEM_PLAN)) > 1) {
+            $subscription->decrementQuantity(1, $this->single($subscription));
         } else {
             $subscription->cancel();
             $this->log($organisation, $by, 'subscription cancelled', ['ends_at' => $subscription->ends_at?->toIso8601String()]);
+
+            return;
         }
+        $this->log($organisation, $by, 'product removed', ['items' => $this->items($subscription->refresh())]);
+    }
+
+    /**
+     * The number of products the subscription pays for, the free one counted (billing page, as FAST):
+     * add-on units added until it matches. Only ever up (owner 2026-11-05): a total at or below what
+     * is paid for changes nothing, whatever the caller sends. Cancelling is on Stripe's portal.
+     * Stripe prorates the addition on the next invoice.
+     */
+    public function setProducts(Organisation $organisation, User $by, int $total): void
+    {
+        $plan = Plan::fresh($organisation);
+        $subscription = $plan->subscription;
+        abort_unless($subscription !== null && $subscription->active() && ! $subscription->onGracePeriod(), 404);
+        $target = $total - (int) config('redact.plans.free.products', 1);
+
+        if ($target > $plan->paidSlots) {
+            $this->addProduct($organisation, $by, $target - $plan->paidSlots);
+        }
+    }
+
+    /** The Stripe price of the subscription's item for $item (plan or add-on), null without one. */
+    private function item(Subscription $subscription, string $item): ?string
+    {
+        $prices = $subscription->items->isNotEmpty() ? $subscription->items->pluck('stripe_price')->all() : [$subscription->stripe_price];
+        foreach ($prices as $price) {
+            if ($this->catalogue->describe((string) $price)['item'] === $item) {
+                return (string) $price;
+            }
+        }
+
+        return null;
+    }
+
+    /** The plan item's price on a subscription with several items, null on a one-item subscription (Cashier's own). */
+    private function single(Subscription $subscription): ?string
+    {
+        return $subscription->items->count() > 1 ? $this->item($subscription, Catalogue::ITEM_PLAN) : null;
+    }
+
+    /** @return array<string, int> Stripe price => quantity, for the log */
+    private function items(Subscription $subscription): array
+    {
+        return $subscription->items->isNotEmpty()
+            ? $subscription->items->pluck('quantity', 'stripe_price')->map(fn ($quantity) => (int) $quantity)->all()
+            : [(string) $subscription->stripe_price => (int) $subscription->quantity];
     }
 
     /** @param  array<string, mixed>  $properties */

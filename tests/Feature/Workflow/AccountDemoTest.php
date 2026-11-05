@@ -22,7 +22,7 @@ use Tests\TestCase;
 /**
  * "Load the demo" for accounts (POST /demo, DemoController::account) on a copy of the fixture pack
  * with a tiny invented demo: the read-only demo product (products.is_demo, plan slot "demo"), one per
- * organisation, never counted by the plan, its declaration naming the demo's fictitious manufacturer.
+ * organisation, never counted by the plan, its declaration naming the demo's example manufacturer.
  * The cetome demo itself is checked with the real pack (ContentPackDemoTest).
  */
 class AccountDemoTest extends TestCase
@@ -151,7 +151,7 @@ class AccountDemoTest extends TestCase
         $this->post(route('versions.submit', $version))->assertNotFound();
     }
 
-    public function test_the_declaration_names_the_fictitious_manufacturer_and_is_marked_demo(): void
+    public function test_the_declaration_names_the_example_manufacturer_and_is_marked_demo(): void
     {
         $this->useFixtureDemo();
         $version = $this->loadDemo()->versions()->sole();

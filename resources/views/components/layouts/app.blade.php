@@ -47,11 +47,9 @@
             <x-brand.redact-logo />
         </a>
 
+        {{-- Inside a product: the product, then the version. "Products" itself is in the menu on the right. --}}
         <nav class="a-crumbs" aria-label="{{ __('common.breadcrumb') }}">
-            <a href="{{ route('dashboard') }}" @if (! $crumbProduct && request()->routeIs('dashboard')) aria-current="page" @endif
-               data-shortcut="g p" data-shortcut-label="{{ __('shortcuts.go.products') }}">{{ __('nav.products') }}</a>
             @if ($crumbProduct)
-                <span class="a-crumb-sep" aria-hidden="true">/</span>
                 <span class="inline-flex items-center gap-1 overflow-visible">
                     <a href="{{ $crumbProduct->homeUrl() }}" @if (! $wsVersion) aria-current="page" @endif>{{ $crumbProduct->name }}</a>
                     @if ($switch->isNotEmpty())
@@ -79,6 +77,9 @@
         </nav>
 
         <nav class="a-topnav" aria-label="{{ __('nav.main') }}">
+            <a href="{{ route('dashboard') }}" class="a-topnav-link" @if (request()->routeIs('dashboard')) aria-current="page" @endif
+               data-shortcut="g p" data-shortcut-label="{{ __('shortcuts.go.products') }}">
+                <x-lucide-layout-grid class="size-4" aria-hidden="true" />{{ __('nav.products') }}</a>
             <a href="{{ route('trees.index') }}" class="a-topnav-link" @if (request()->routeIs('trees.*')) aria-current="page" @endif
                data-shortcut="g t" data-shortcut-label="{{ __('shortcuts.go.trees') }}">
                 <x-lucide-git-fork class="size-4" aria-hidden="true" />{{ __('nav.trees') }}</a>
@@ -89,6 +90,11 @@
         </nav>
 
         <div class="a-topbar-actions">
+            @if (\App\Billing\Plan::showsUpgrade($user))
+                {{-- Phones: the icon only, so the account menu keeps its place. --}}
+                <a href="{{ route('subscribe') }}" class="a-btn a-btn-primary a-btn-sm" @if (request()->routeIs('billing.subscribe')) aria-current="page" @endif>
+                    <x-lucide-sparkles aria-hidden="true" /><span class="max-sm:sr-only">{{ __('plans.upgrade_to', ['plan' => __('public.pricing.plans.paid.name')]) }}</span></a>
+            @endif
             <span class="a-hint">
                 <button type="button" class="a-btn a-btn-ghost a-btn-icon a-kbd-hint" data-shortcuts-help aria-label="{{ __('shortcuts.button') }}" aria-describedby="shortcuts-tip">
                     <x-lucide-keyboard aria-hidden="true" />
@@ -127,7 +133,10 @@
             <nav aria-label="{{ __('ui.legal') }}">
                 <a href="{{ route('legal.terms') }}">{{ __('nav.terms') }}</a>
                 <a href="{{ route('legal.privacy') }}">{{ __('nav.privacy') }}</a>
-                <a href="{{ url('/.well-known/security.txt') }}">{{ __('nav.security') }}</a>
+                {{-- The security page (how to report an issue), as on the contact page; security.txt stays for scanners. --}}
+                @if (filled(config('redact.security_url')))
+                    <a href="{{ config('redact.security_url') }}" target="_blank" rel="noopener">{{ __('nav.security') }}</a>
+                @endif
             </nav>
         </div>
     </footer>
@@ -158,7 +167,7 @@
         </div>
         @if ($user && ! $user->is_guest)
             <x-slot:footer>
-                <a href="{{ route('account.show') }}" class="a-link-btn"><x-lucide-settings-2 aria-hidden="true" />{{ __('shortcuts.manage') }}</a>
+                <a href="{{ route('account.tab', 'accessibility') }}" class="a-link-btn"><x-lucide-settings-2 aria-hidden="true" />{{ __('shortcuts.manage') }}</a>
                 <button type="button" class="a-btn a-btn-outline a-btn-sm a-spacer" data-dialog-close>{{ __('common.close') }}</button>
             </x-slot:footer>
         @endif

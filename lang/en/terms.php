@@ -3,12 +3,12 @@
 /*
  * Terms and legal notice (/terms). Publisher and host as stated on cetome.com/legal/ (cetome, France).
  * Placeholders, filled by the view from the config: :hours = sandbox lifetime, :email = security contact
- * (mailto link), :price = price of one paid product, :ai_units = AI units a month per paid product,
+ * (mailto link), :price = price of one paid product, :plan_yearly / :more_yearly = the yearly prices, :ai_units = AI units a month per paid product,
  * :free_team = the free product's team ("Owner + 1 team member"), :talk = "talk to us" link (contact form,
  * self-hosted topic, like the pricing page).
  */
 return [
-    'version' => 'Version 2026-10-23',
+    'version' => 'Version 2026-11-04',
 
     'links' => [
         'pgp' => 'PGP key',
@@ -42,7 +42,7 @@ return [
         ]],
         'plans' => ['Plans', [
             'Free: your organisation\'s first product, free forever (:free_team), with the cetome rules, downloads and imports. No AI.',
-            'Paid: :price per month excluding VAT for 2 products (the free one plus one paid product), then :price per month for each additional product. Paid products include an unlimited team, support and the AI (:ai_units AI units a month per paid product, shared by the organisation).',
+            'Premium: :price per month excluding VAT for 2 products (the free one plus one paid product), then :price per month for each additional product, or, paid yearly, :plan_yearly per year for the 2 products and :more_yearly per year for each additional product. Paid products include an unlimited team, support and the AI (:ai_units AI units a month per paid product, shared by the organisation).',
             'Enterprise (self-hosted or dedicated, on request): under a separate contract, :talk.',
         ]],
         'billing' => ['Payment and invoices', [
@@ -55,8 +55,8 @@ return [
         'prices' => ['Price changes', [
             'We announce price changes by e-mail at least 30 days before they apply. You can cancel before then.',
         ]],
-        'consumers' => ['Consumers', [
-            'REDact is designed for businesses. If you subscribe as a consumer in the European Union, you may withdraw within 14 days of subscribing, without giving a reason, through the contact form. Before paying, you expressly ask us to start the service at once and acknowledge that you lose this right once the service has been fully performed: if you withdraw within the 14 days, you pay for the period used.',
+        'businesses' => ['Businesses only', [
+            'REDact is sold to businesses only. By subscribing, you confirm you act for your business, not as a consumer: the consumer right of withdrawal does not apply.',
         ]],
         'ai' => ['AI assistance', [
             'The AI is optional. Its output is always marked as AI and is only a proposal: nothing enters your assessment until a person accepts it. The AI never gives a verdict, and the manufacturer remains responsible for what it accepts. Your organisation can turn the AI off. Paid and Enterprise organisations may use their own model or key: their content then goes to the provider they chose, under their own contract with it.',
@@ -78,7 +78,7 @@ return [
             'The service is provided as is. REDact does not guarantee the conformity of your products, nor the decision of a notified body, a laboratory or a market surveillance authority. To the extent permitted by law, cetome is not liable for indirect damage, loss of business or regulatory sanctions, and its total liability is limited to the fees you paid for REDact in the 12 months before the claim.',
         ]],
         'law' => ['Changes, applicable law and courts', [
-            'We will tell you of material changes to these terms in advance. French law applies. Any dispute goes to the courts of Lyon, France, unless the law gives a consumer another court.',
+            'We will tell you of material changes to these terms in advance. French law applies. Any dispute goes to the courts of Lyon, France.',
         ]],
     ],
 ];

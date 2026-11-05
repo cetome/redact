@@ -44,13 +44,13 @@ class AccountTabsTest extends TestCase
         $this->signedIn($user);
 
         $profile = $this->get('/account')->assertOk()
-            ->assertSee('id="profile-heading"', false)->assertSee('name="shortcuts"', false)
+            ->assertSee('id="timezone"', false)->assertDontSee('name="shortcuts"', false)
             ->assertDontSee('id="passkeys-heading"', false)->assertDontSee('id="delete-heading"', false);
         $this->assertCurrentTab($profile->getContent(), 'profile');
 
         $security = $this->get('/account/security')->assertOk()
             ->assertSee('Work laptop')->assertSee('id="email-heading"', false)
-            ->assertDontSee('id="profile-heading"', false)
+            ->assertDontSee('id="timezone"', false)
             ->assertSee('<span class="a-tab-count">1</span>', false);
         $this->assertCurrentTab($security->getContent(), 'security');
 
@@ -64,17 +64,17 @@ class AccountTabsTest extends TestCase
         $this->signedIn($this->makeUser());
 
         $this->get('/account/nope')->assertNotFound();
-        $this->get('/account?tab[]=security')->assertOk()->assertSee('id="profile-heading"', false);
+        $this->get('/account?tab[]=security')->assertOk()->assertSee('id="timezone"', false);
     }
 
     public function test_the_profile_comes_back_to_its_tab_also_on_errors(): void
     {
         $this->signedIn($this->makeUser());
 
-        $this->put('/account', ['name' => 'Ada', 'locale' => 'en', 'timezone' => 'UTC', 'shortcuts' => '1'])
+        $this->put('/account', ['name' => 'Ada', 'locale' => 'en', 'timezone' => 'UTC'])
             ->assertRedirect($this->tab('profile'))->assertSessionHas('status');
 
-        $this->from($this->tab('profile'))->put('/account', ['name' => '', 'locale' => 'en', 'timezone' => 'UTC'])
+        $this->from($this->tab('profile'))->put('/account', ['name' => str_repeat('x', 121), 'locale' => 'en', 'timezone' => 'UTC'])
             ->assertRedirect($this->tab('profile'))->assertSessionHasErrors('name');
     }
 
@@ -133,21 +133,36 @@ class AccountTabsTest extends TestCase
             ->assertDontSee('data-shortcuts="off"', false)
             ->assertSee('id="shortcuts-help"', false)
             ->assertSee('data-shortcut="g p"', false)
-            ->assertSee('data-shortcuts-help', false);
+            ->assertSee('data-shortcuts-help', false)
+            ->assertSee(route('account.tab', 'accessibility'), false);
 
-        $form = ['name' => $user->name, 'locale' => 'en', 'timezone' => 'UTC'];
-        $this->put('/account', $form + ['shortcuts' => '0'])->assertRedirect($this->tab('profile'));
+        $this->get($this->tab('accessibility'))->assertOk()->assertSee('name="shortcuts"', false)->assertSee('data-shortcut="mod+s"', false);
+        $this->put(route('account.accessibility'), ['theme' => 'system', 'shortcuts' => '0'])->assertRedirect($this->tab('accessibility'));
         $this->assertFalse($user->fresh()->shortcuts_enabled);
         $this->get('/dashboard')->assertOk()->assertSee('data-shortcuts="off"', false);
 
-        // Absent: unchanged (older clients, other forms).
-        $this->put('/account', $form)->assertRedirect($this->tab('profile'));
-        $this->assertFalse($user->fresh()->shortcuts_enabled);
+        $this->put(route('account.accessibility'), ['theme' => 'system', 'shortcuts' => 'maybe'])->assertSessionHasErrors('shortcuts');
 
-        $this->put('/account', $form + ['shortcuts' => 'maybe'])->assertSessionHasErrors('shortcuts');
-
-        $this->put('/account', $form + ['shortcuts' => '1']);
+        $this->put(route('account.accessibility'), ['theme' => 'system', 'shortcuts' => '1']);
         $this->assertTrue($user->fresh()->shortcuts_enabled);
-        $this->get('/account')->assertOk()->assertSee('data-shortcut="mod+s"', false);
+    }
+
+    public function test_the_colour_theme_follows_the_account(): void
+    {
+        $user = $this->makeUser();
+        $this->assertSame('system', $user->fresh()->theme, 'The device by default.');
+        $this->signedIn($user);
+        $this->get('/dashboard')->assertOk()->assertSee('<meta name="redact-theme" content="system"', false);
+
+        $this->put(route('account.accessibility'), ['theme' => 'dark', 'shortcuts' => '1'])->assertRedirect($this->tab('accessibility'));
+        $this->assertSame('dark', $user->fresh()->theme);
+        $this->get('/dashboard')->assertOk()->assertSee('<meta name="redact-theme" content="dark"', false);
+        $this->get($this->tab('accessibility'))->assertOk()->assertSee('value="dark" checked', false);
+
+        // The light/dark button in the header saves it too.
+        $this->putJson(route('account.theme'), ['theme' => 'light'])->assertOk()->assertJson(['theme' => 'light']);
+        $this->assertSame('light', $user->fresh()->theme);
+        $this->putJson(route('account.theme'), ['theme' => 'pink'])->assertUnprocessable();
+        $this->put(route('account.accessibility'), ['theme' => 'pink', 'shortcuts' => '1'])->assertSessionHasErrors('theme');
     }
 }

@@ -9,6 +9,8 @@
         'admin.usage.index' => ['admin.usage.*', 'admin.nav.usage', 'chart-column'],
         'admin.contact.index' => ['admin.contact.*', 'contact.admin.nav', 'inbox'],
         'admin.ai.edit' => ['admin.ai.*', 'ai_settings.nav', 'sparkles'],
+        'admin.plans.index' => ['admin.plans.*', 'plan_catalogue.nav', 'tags'],
+        'admin.stripe.edit' => ['admin.stripe.*', 'stripe_settings.nav', 'credit-card'],
     ] as $route => [$pattern, $label, $icon])
         <a href="{{ route($route) }}" class="a-tab" @if (request()->routeIs($pattern)) aria-current="page" @endif>
             <x-dynamic-component :component="'lucide-'.$icon" class="size-4" aria-hidden="true" />{{ __($label) }}</a>

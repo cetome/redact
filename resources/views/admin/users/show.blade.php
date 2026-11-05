@@ -20,7 +20,6 @@
                         'admin.users.locale' => config('redact.locales.'.$user->locale, $user->locale),
                         'admin.users.timezone' => $user->timezone,
                         'admin.users.terms' => $user->terms_accepted_at ? $user->terms_accepted_at->isoFormat('D MMMM YYYY').' ('.$user->terms_version.')' : '—',
-                        'admin.users.product_news' => $user->wants_product_news ? __('common.yes') : __('common.no'),
                     ] as $label => $value)
                         <div>
                             <dt class="a-micro">{{ __($label) }}</dt>
@@ -89,6 +88,10 @@
             </div>
         </section>
     </div>
+
+    @if ($erase)
+        @include('admin.users._erase', ['erase' => $erase, 'user' => $user])
+    @endif
 
     <div class="mt-4 grid items-start gap-4 xl:grid-cols-2">
         {{-- Organisations and products --}}

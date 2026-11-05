@@ -31,10 +31,10 @@ use RuntimeException;
  * the same models the screens use. Without the file the demo is not offered (available()).
  *
  * Two ways in: a guest sandbox ("See a demo", the product is an ordinary sandbox product and the
- * fictitious manufacturer is set on the sandbox's own workspace, settings.demo_manufacturer, so
+ * example manufacturer is set on the sandbox's own workspace, settings.demo_manufacturer, so
  * ClaimSandbox never keeps it as a real legal identity), or an account's dashboard ("Load the demo":
  * products.is_demo, plan slot "demo", read-only, one per organisation; the organisation's legal
- * details are never touched, the declaration reads the fictitious manufacturer from here,
+ * details are never touched, the declaration reads the example manufacturer from here,
  * manufacturer()). Nothing is logged per row: one "demo loaded" entry in the version's history.
  */
 class DemoProduct
@@ -90,7 +90,7 @@ class DemoProduct
     }
 
     /**
-     * The demo's fictitious manufacturer in the current language (the declaration of a demo product),
+     * The demo's example manufacturer in the current language (the declaration of a demo product),
      * or null when the pack has no demo.
      *
      * @return array{name: string, address: string}|null

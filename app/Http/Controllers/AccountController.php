@@ -13,6 +13,7 @@ use App\Mail\Auth\EmailChangedMail;
 use App\Mail\Auth\VerificationCodeMail;
 use App\Models\User;
 use DateTimeZone;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,13 +25,16 @@ use Spatie\Activitylog\Models\Activity;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * The account page, in tabs (/account, /account/{tab}): profile and preferences, security (e-mail
- * address, passkeys), sessions, data export, deletion. Only the selected tab is rendered,
+ * The account page, in tabs (/account, /account/{tab}): profile, security (e-mail address,
+ * passkeys), sessions, accessibility (theme, keyboard shortcuts), data export, deletion. Only the selected tab is rendered,
  * and every form comes back to its own tab.
  */
 class AccountController extends Controller
 {
-    public const TABS = ['profile', 'security', 'sessions', 'data', 'delete'];
+    public const TABS = ['profile', 'security', 'sessions', 'accessibility', 'data', 'delete'];
+
+    /** Colour themes (Accessibility tab, theme-init.js): system follows the device. */
+    public const THEMES = ['system', 'light', 'dark'];
 
     /** The account page on one tab (unknown values fall back to the profile). */
     public static function tabUrl(string $tab): string
@@ -66,28 +70,47 @@ class AccountController extends Controller
         $user = $request->user();
 
         $data = $request->validate([
-            'name' => ['required', 'string', 'max:120'],
+            'name' => ['nullable', 'string', 'max:120'],
             'locale' => ['required', 'string', Rule::in(array_keys(config('redact.locales')))],
             'timezone' => ['required', 'string', Rule::in(DateTimeZone::listIdentifiers())],
             'product_news' => ['nullable', 'boolean'],
-            'shortcuts' => ['nullable', 'boolean'],
         ]);
 
         $user->fill([
-            'name' => trim($data['name']),
+            'name' => trim((string) ($data['name'] ?? '')),
             'locale' => $data['locale'],
             'timezone' => $data['timezone'],
-            'wants_product_news' => (bool) ($data['product_news'] ?? false),
         ]);
-        // The form always sends it (a hidden 0 before the checkbox): absent means unchanged.
-        if (array_key_exists('shortcuts', $data) && $data['shortcuts'] !== null) {
-            $user->shortcuts_enabled = (bool) $data['shortcuts'];
-        }
         $user->save();
 
         app()->setLocale($user->locale);
 
         return redirect()->to(self::tabUrl('profile'))->with('status', __('auth.account.saved'));
+    }
+
+    /** Accessibility tab: the colour theme and the keyboard shortcuts, for the account on every device. */
+    public function updateAccessibility(Request $request): RedirectResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+        $data = $request->validate([
+            'theme' => ['required', Rule::in(self::THEMES)],
+            'shortcuts' => ['required', 'boolean'],
+        ]);
+        $user->forceFill(['theme' => $data['theme'], 'shortcuts_enabled' => (bool) $data['shortcuts']])->save();
+
+        return redirect()->to(self::tabUrl('accessibility'))->with('status', __('auth.account.saved'));
+    }
+
+    /** The light/dark button in the header, signed in: the choice is the account's (JSON, no reload). */
+    public function updateTheme(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+        $data = $request->validate(['theme' => ['required', Rule::in(self::THEMES)]]);
+        $user->forceFill(['theme' => $data['theme']])->save();
+
+        return response()->json(['theme' => $user->theme]);
     }
 
     /** Goes through recent.auth, then back to the account page on the tab it came from (/confirm/{tab}). */

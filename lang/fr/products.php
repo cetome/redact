@@ -22,7 +22,7 @@ return [
         'load' => 'Charger la démo',
         'open' => 'Ouvrir la démo',
         'exists' => 'Votre organisation a déjà la démo.',
-        'read_only' => 'Démo : un produit fictif, en lecture seule, non compté dans votre offre. Explorez chaque étape et téléchargez ses documents.',
+        'read_only' => 'Démo : un produit d’exemple, en lecture seule, non compté dans votre offre. Explorez chaque étape et téléchargez ses documents.',
         'remove' => 'Retirer la démo',
         'remove_confirm' => 'Retirer le produit de démonstration ? Vous pourrez le charger à nouveau depuis le tableau de bord.',
         'removed' => 'La démo a été retirée.',

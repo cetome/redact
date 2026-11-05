@@ -16,11 +16,11 @@ return [
     'documents' => 'Uploading product documents needs an account. AI assistance comes with a paid plan.',
     'team' => 'Inviting colleagues and reviewers needs a free account. Your work comes with you.',
     'try_link' => 'Try without an account',
-    // "See a demo" (App\Guest\DemoProduct): a finished assessment of a fictitious product in a sandbox.
+    // "See a demo" (App\Guest\DemoProduct): a finished assessment of an example product in a sandbox.
     'demo' => [
         'button' => 'See a demo',
         'card' => 'A smart bulb, assessed end to end.',
-        'loaded' => 'Demo loaded: a fictitious smart bulb, ready to explore.',
+        'loaded' => 'Demo loaded: an example smart bulb, ready to explore.',
         'full' => 'Your sandbox already holds a product. Delete it to load the demo.',
     ],
     // First screen after "Start with this product" on the home page (a flash, once).

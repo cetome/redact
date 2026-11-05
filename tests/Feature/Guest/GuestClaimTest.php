@@ -37,7 +37,6 @@ class GuestClaimTest extends TestCase
     private function send(array $overrides = []): TestResponse
     {
         return $this->post(route('guest.claim.send'), array_merge([
-            'name' => 'Grace Hopper',
             'email' => 'Grace@Example.test',
             'organisation' => 'Hopper Radio Ltd',
             'terms' => '1',
@@ -66,7 +65,6 @@ class GuestClaimTest extends TestCase
             ->assertSee(__('guest.claim.existing'))
             ->assertSee('altcha-widget', false)
             ->assertSee(route('guest.altcha'), false);
-        $this->send(['terms' => null, 'altcha' => 'forged'])->assertSessionHasErrors('terms');
         $this->send(['altcha' => 'forged'])->assertSessionHasErrors('altcha');
         $this->send(['email' => 'me@guest.invalid'])->assertSessionHasErrors(['email' => __('guest.claim.reserved')]);
         Mail::assertNothingSent();
@@ -91,10 +89,12 @@ class GuestClaimTest extends TestCase
         $this->assertFalse($user->is_guest);
         $this->assertNull($user->guest_expires_at);
         $this->assertSame('grace@example.test', $user->email);
-        $this->assertSame('Grace Hopper', $user->name);
+        // Only the address is asked: the account is called by it until a name is typed.
+        $this->assertFalse($user->hasName());
+        $this->assertSame('grace@example.test', $user->name);
         $this->assertNotNull($user->email_verified_at);
         $this->assertNotNull($user->terms_accepted_at);
-        $this->assertTrue($user->wants_product_news);
+        $this->assertFalse($user->wants_product_news);
         $this->assertSame(SignIn::EMAIL_CODE, $user->last_login_method);
         $this->assertAuthenticatedAs($user);
 

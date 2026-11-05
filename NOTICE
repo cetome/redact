@@ -98,8 +98,8 @@ file was generated (2026-11-04).
   symfony/event-dispatcher v8.1.5
   symfony/event-dispatcher-contracts v3.7.1
   symfony/finder v8.1.10
-  symfony/http-foundation v8.1.10
-  symfony/http-kernel v8.1.10
+  symfony/http-foundation v8.1.11
+  symfony/http-kernel v8.1.11
   symfony/mailer v8.1.10
   symfony/mime v8.1.10
   symfony/polyfill-ctype v1.37.0
@@ -119,8 +119,8 @@ file was generated (2026-11-04).
   symfony/process v8.1.10
   symfony/property-access v8.1.4
   symfony/property-info v8.1.8
-  symfony/routing v8.1.10
-  symfony/serializer v8.1.9
+  symfony/routing v8.1.11
+  symfony/serializer v8.1.11
   symfony/service-contracts v3.7.3
   symfony/string v8.1.10
   symfony/translation v8.1.10

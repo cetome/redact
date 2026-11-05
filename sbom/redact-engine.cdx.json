@@ -1,10 +1,10 @@
 {
     "bomFormat": "CycloneDX",
     "specVersion": "1.6",
-    "serialNumber": "urn:uuid:a3f25fe8-324f-525f-99b7-b536b61926cf",
+    "serialNumber": "urn:uuid:c2cd3dc7-df92-57c3-83f9-e7e21449bd4e",
     "version": 1,
     "metadata": {
-        "timestamp": "2026-11-04T18:46:04Z",
+        "timestamp": "2026-11-05T16:22:46Z",
         "lifecycles": [
             {
                 "phase": "build"
@@ -2102,11 +2102,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/http-foundation@8.1.10",
+            "bom-ref": "pkg:composer/symfony/http-foundation@8.1.11",
             "group": "symfony",
             "name": "http-foundation",
-            "version": "8.1.10",
-            "purl": "pkg:composer/symfony/http-foundation@8.1.10",
+            "version": "8.1.11",
+            "purl": "pkg:composer/symfony/http-foundation@8.1.11",
             "licenses": [
                 {
                     "license": {
@@ -2127,11 +2127,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/http-kernel@8.1.10",
+            "bom-ref": "pkg:composer/symfony/http-kernel@8.1.11",
             "group": "symfony",
             "name": "http-kernel",
-            "version": "8.1.10",
-            "purl": "pkg:composer/symfony/http-kernel@8.1.10",
+            "version": "8.1.11",
+            "purl": "pkg:composer/symfony/http-kernel@8.1.11",
             "licenses": [
                 {
                     "license": {
@@ -2627,11 +2627,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/routing@8.1.10",
+            "bom-ref": "pkg:composer/symfony/routing@8.1.11",
             "group": "symfony",
             "name": "routing",
-            "version": "8.1.10",
-            "purl": "pkg:composer/symfony/routing@8.1.10",
+            "version": "8.1.11",
+            "purl": "pkg:composer/symfony/routing@8.1.11",
             "licenses": [
                 {
                     "license": {
@@ -2652,11 +2652,11 @@
         },
         {
             "type": "library",
-            "bom-ref": "pkg:composer/symfony/serializer@8.1.9",
+            "bom-ref": "pkg:composer/symfony/serializer@8.1.11",
             "group": "symfony",
             "name": "serializer",
-            "version": "8.1.9",
-            "purl": "pkg:composer/symfony/serializer@8.1.9",
+            "version": "8.1.11",
+            "purl": "pkg:composer/symfony/serializer@8.1.11",
             "licenses": [
                 {
                     "license": {
@@ -3344,7 +3344,7 @@
         {
             "ref": "pkg:composer/fruitcake/php-cors@1.4.0",
             "dependsOn": [
-                "pkg:composer/symfony/http-foundation@8.1.10"
+                "pkg:composer/symfony/http-foundation@8.1.11"
             ]
         },
         {
@@ -3392,7 +3392,7 @@
                 "pkg:composer/nesbot/carbon@3.15.1",
                 "pkg:composer/stripe/stripe-php@21.3.2",
                 "pkg:composer/symfony/console@8.1.10",
-                "pkg:composer/symfony/http-kernel@8.1.10",
+                "pkg:composer/symfony/http-kernel@8.1.11",
                 "pkg:composer/symfony/polyfill-intl-icu@1.43.0",
                 "pkg:composer/symfony/polyfill-php84@1.43.0"
             ]
@@ -3426,15 +3426,15 @@
                 "pkg:composer/symfony/console@8.1.10",
                 "pkg:composer/symfony/error-handler@8.1.10",
                 "pkg:composer/symfony/finder@8.1.10",
-                "pkg:composer/symfony/http-foundation@8.1.10",
-                "pkg:composer/symfony/http-kernel@8.1.10",
+                "pkg:composer/symfony/http-foundation@8.1.11",
+                "pkg:composer/symfony/http-kernel@8.1.11",
                 "pkg:composer/symfony/mailer@8.1.10",
                 "pkg:composer/symfony/mime@8.1.10",
                 "pkg:composer/symfony/polyfill-php84@1.43.0",
                 "pkg:composer/symfony/polyfill-php85@1.43.0",
                 "pkg:composer/symfony/polyfill-php86@1.43.0",
                 "pkg:composer/symfony/process@8.1.10",
-                "pkg:composer/symfony/routing@8.1.10",
+                "pkg:composer/symfony/routing@8.1.11",
                 "pkg:composer/symfony/uid@8.1.9",
                 "pkg:composer/symfony/var-dumper@8.1.10",
                 "pkg:composer/tijsverkoyen/css-to-inline-styles@2.4.0",
@@ -3789,20 +3789,20 @@
             "dependsOn": []
         },
         {
-            "ref": "pkg:composer/symfony/http-foundation@8.1.10",
+            "ref": "pkg:composer/symfony/http-foundation@8.1.11",
             "dependsOn": [
                 "pkg:composer/symfony/deprecation-contracts@3.7.1",
                 "pkg:composer/symfony/polyfill-mbstring@1.43.3"
             ]
         },
         {
-            "ref": "pkg:composer/symfony/http-kernel@8.1.10",
+            "ref": "pkg:composer/symfony/http-kernel@8.1.11",
             "dependsOn": [
                 "pkg:composer/psr/log@3.0.2",
                 "pkg:composer/symfony/deprecation-contracts@3.7.1",
                 "pkg:composer/symfony/error-handler@8.1.10",
                 "pkg:composer/symfony/event-dispatcher@8.1.5",
-                "pkg:composer/symfony/http-foundation@8.1.10",
+                "pkg:composer/symfony/http-foundation@8.1.11",
                 "pkg:composer/symfony/polyfill-ctype@1.37.0"
             ]
         },
@@ -3900,13 +3900,13 @@
             ]
         },
         {
-            "ref": "pkg:composer/symfony/routing@8.1.10",
+            "ref": "pkg:composer/symfony/routing@8.1.11",
             "dependsOn": [
                 "pkg:composer/symfony/deprecation-contracts@3.7.1"
             ]
         },
         {
-            "ref": "pkg:composer/symfony/serializer@8.1.9",
+            "ref": "pkg:composer/symfony/serializer@8.1.11",
             "dependsOn": [
                 "pkg:composer/symfony/deprecation-contracts@3.7.1",
                 "pkg:composer/symfony/polyfill-ctype@1.37.0"
@@ -3998,7 +3998,7 @@
                 "pkg:composer/symfony/deprecation-contracts@3.7.1",
                 "pkg:composer/symfony/property-access@8.1.4",
                 "pkg:composer/symfony/property-info@8.1.8",
-                "pkg:composer/symfony/serializer@8.1.9",
+                "pkg:composer/symfony/serializer@8.1.11",
                 "pkg:composer/symfony/uid@8.1.9",
                 "pkg:composer/web-auth/cose-lib@4.8.2"
             ]

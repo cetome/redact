@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-E-mail **security@cetome.com** with:
+Report it through **[cetome.com/security](https://cetome.com/security)** (how to reach us and our PGP key), with:
 
 - a description of the problem;
 - the affected component, file or URL;

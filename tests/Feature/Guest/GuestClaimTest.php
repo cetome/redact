@@ -40,7 +40,6 @@ class GuestClaimTest extends TestCase
             'email' => 'Grace@Example.test',
             'organisation' => 'Hopper Radio Ltd',
             'terms' => '1',
-            'product_news' => '1',
             'altcha' => 'ok',
         ], $overrides));
     }
@@ -94,7 +93,6 @@ class GuestClaimTest extends TestCase
         $this->assertSame('grace@example.test', $user->name);
         $this->assertNotNull($user->email_verified_at);
         $this->assertNotNull($user->terms_accepted_at);
-        $this->assertFalse($user->wants_product_news);
         $this->assertSame(SignIn::EMAIL_CODE, $user->last_login_method);
         $this->assertAuthenticatedAs($user);
 

@@ -48,7 +48,7 @@ class ClaimSandbox
     public function __construct(private readonly SandboxPurger $purger) {}
 
     /**
-     * @param  array{name: string, email: string, organisation: string, product_news: bool}  $data  organisation '' = named after the person
+     * @param  array{name: string, email: string, organisation: string}  $data  organisation '' = named after the person
      */
     public function convert(User $guest, array $data): User
     {
@@ -58,7 +58,6 @@ class ClaimSandbox
                 'email' => $data['email'],
                 'email_verified_at' => now(),
                 'organisation_name' => $data['organisation'] !== '' ? $data['organisation'] : null,
-                'wants_product_news' => $data['product_news'],
                 'terms_accepted_at' => now(),
                 'terms_version' => (string) config('redact.auth.terms_version'),
                 'is_guest' => false,
@@ -95,7 +94,7 @@ class ClaimSandbox
     }
 
     /**
-     * @param  array{name: string, email: string, organisation: string, product_news: bool}  $data  organisation '' = named after the person
+     * @param  array{name: string, email: string, organisation: string}  $data  organisation '' = named after the person
      */
     public function merge(User $guest, User $account, array $data): User
     {

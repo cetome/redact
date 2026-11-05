@@ -8,6 +8,7 @@
   .a-plan-line > svg { width: 0.95rem; height: 0.95rem; flex-shrink: 0; color: var(--c-ink-subtle); }
   .a-plan-line-name { font-weight: 700; color: var(--c-ink); }
   .a-plan-line-sep { color: var(--c-ink-subtle); }
+  .a-plan-line-last { display: inline-flex; gap: 0.4rem; white-space: nowrap; }
   /* Inside lists that style their links as rows (.a-checklist on the account page): stay a text link. */
   .a-plan-line a.a-link-btn { display: inline; padding: 0; font-size: inherit; font-weight: 700; color: var(--c-link); background: none; }
   .a-plan-line a.a-link-btn:hover { background: none; text-decoration: underline; }

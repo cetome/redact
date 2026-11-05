@@ -22,7 +22,10 @@
         <a href="{{ route('pricing') }}" class="c-nav-link" @if (request()->routeIs('pricing')) aria-current="page" @endif>{{ __('nav.pricing') }}</a>
         <a href="{{ route('templates') }}" class="c-nav-link" @if (request()->routeIs('templates')) aria-current="page" @endif>{{ __('templates.nav') }}</a>
         <x-slot:actions>
-            <x-ui.theme-toggle />
+            <div class="flex items-center gap-2">
+                <x-ui.locale-switch />
+                <x-ui.theme-toggle />
+            </div>
             {{-- A sandbox guest has no account yet: same buttons as a visitor ("Create an account" keeps the sandbox work). --}}
             @if (auth()->guest() || auth()->user()->is_guest)
                 <a href="{{ route('login') }}" class="c-btn c-btn-outline c-btn-sm">{{ __('nav.sign_in') }}</a>

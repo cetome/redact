@@ -1096,6 +1096,10 @@
     flex-direction: column;
     align-items: stretch;
   }
+  /* The language and theme switches share one row; the language menu opens below, to the left. */
+  .c-nav-mobile-panel .c-nav-actions > div { justify-content: flex-start; }
+  .c-nav-mobile-panel .c-nav-actions > div { align-items: flex-start; }
+  .c-nav-mobile-panel .c-nav-actions .a-menu-panel { position: static; margin-top: 0.5rem; box-shadow: none; }
 
   /* ---- Hero ------------------------------------------------------------------------------------ */
 

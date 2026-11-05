@@ -2,7 +2,7 @@
 
 // cetome console (staff only). British English, no semicolons in UI copy.
 return [
-    'title' => 'Console',
+    'title' => 'Admin console',
     'all' => 'All',
     'filter' => 'Filter',
     'reset' => 'Reset',
@@ -13,7 +13,7 @@ return [
     'export_csv' => 'Export CSV',
 
     'nav' => [
-        'label' => 'Console',
+        'label' => 'Admin console',
         'dashboard' => 'Overview',
         'users' => 'Users',
         'products' => 'Products',
@@ -119,7 +119,7 @@ return [
             'lead' => 'Deletes :email for good, with:',
             'organisation' => ':name: :count product, versions and files|:name: :count products, versions and files',
             'nothing' => 'No organisation of their own: only the account goes.',
-            'stripe' => 'Stripe: the customer is deleted and the subscription ends now. Stripe keeps the invoices and payments for the accounts.',
+            'stripe' => 'Stripe: the customer is deleted and the subscription ends now. Stripe keeps the invoices and payments for accounting.',
             'stripe_error' => 'Stripe could not be read: the last payment is unknown. Deleting without a refund still works.',
             'no_payment' => 'Nothing to refund: no active subscription, or its period is not paid yet.',
             'shared' => 'They leave the organisations shared with others, where their work stays.',
@@ -127,7 +127,7 @@ return [
             'last_admin' => 'They are the only admin of :organisation, shared with others: make another member admin first.',
             'email' => 'Type :email to confirm',
             'email_mismatch' => 'The address typed is not this account’s.',
-            'refund' => 'Delete and refund :amount (:days of :total days unused, of :paid paid :date)',
+            'refund' => 'Delete and refund :amount (:days of :total days unused, from :paid paid on :date)',
             'no_refund' => 'Delete without refund',
             'delete' => 'Delete the account',
             'confirm' => 'Delete :email and everything listed? This cannot be undone.',
@@ -160,7 +160,6 @@ return [
         'locale' => 'Language',
         'timezone' => 'Time zone',
         'terms' => 'Terms accepted',
-        'product_news' => 'Product news',
         'memberships' => 'Products and roles',
         'external' => 'external',
         'expires' => 'until :date',

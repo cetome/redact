@@ -128,7 +128,14 @@ class PlansTest extends TestCase
         $this->post(route('versions.store', $product), ['label' => '2.0'])->assertRedirect();
         $this->assertSame(2, $product->versions()->count());
 
-        $this->delete(route('products.destroy', $product))->assertRedirect(route('dashboard'));
+        // A Free customer does not delete products: a super-admin does, and the slot comes back.
+        $this->delete(route('products.destroy', $product))->assertNotFound();
+        $admin = User::factory()->create();
+        $admin->assignRole(Role::findOrCreate('staff', 'web'));
+        $admin->assignRole(Role::findOrCreate('super-admin', 'web'));
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
+        $this->signIn($admin, 'passkey')->delete(route('admin.products.destroy', $product))->assertRedirect();
+        $this->signIn($owner);
         $this->create($owner, 'Next')->assertRedirect();
         $this->assertSame(1, Product::query()->count());
     }
@@ -184,7 +191,7 @@ class PlansTest extends TestCase
         $this->assertSame(70, $plan->aiAllowance()['units']);
         $this->assertSame('month', $plan->aiAllowance()['period']);
         $this->assertTrue($plan->support());
-        $this->assertSame(__('plans.name.paid'), $plan->label());
+        $this->assertSame(__('plans.name.granted'), $plan->label(), 'Granted products are not a Premium plan.');
 
         // Staff take the granted product back: it becomes read-only, nothing is deleted.
         $organisation->forceFill(['limits' => null])->save();
@@ -323,7 +330,16 @@ class PlansTest extends TestCase
 
         $this->signIn($staff, 'passkey');
         $this->get(route('admin.organisations.index'))->assertOk()->assertSee('ACME');
-        $this->get(route('admin.organisations.show', $organisation))->assertOk()->assertSee(__('plans.admin.overrides'));
+        $this->get(route('admin.organisations.show', $organisation))->assertOk()->assertSee(__('plans.admin.overrides'))
+            ->assertSee(__('plans.admin.super_only'))->assertDontSee(__('plans.admin.save'));
+
+        // Granting a plan is for super-admins only (owner 2026-11-05), like Stripe and Plans and prices.
+        $this->put(route('admin.organisations.plan', $organisation), ['plan' => 'enterprise'])->assertNotFound();
+        $this->assertSame('free', $organisation->refresh()->plan);
+        $staff->assignRole(Role::findOrCreate('super-admin', 'web'));
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
+        $this->signIn($staff->fresh(), 'passkey');
+        $this->get(route('admin.organisations.show', $organisation))->assertOk()->assertSee(__('plans.admin.save'));
 
         $this->put(route('admin.organisations.plan', $organisation), [
             'plan' => 'enterprise', 'extra_products' => '2', 'team_members' => '', 'ai_units' => '1200', 'ai_period' => 'month', 'support' => 'yes',
@@ -384,5 +400,26 @@ class PlansTest extends TestCase
         // The hosted service before Stripe (REDACT_SELF_HOSTED=false): the free limits.
         config(['redact.self_hosted' => false]);
         $this->assertSame(1, Plan::fresh($organisation)->productLimit());
+    }
+
+    public function test_customers_delete_products_only_in_enterprise_or_self_hosted(): void
+    {
+        $owner = $this->owner();
+        $this->create($owner);
+        $product = Product::query()->sole();
+        $organisation = $product->organisation;
+
+        // Free (and Premium): no.
+        $this->assertFalse(ProductAccess::for($owner, $product)->canDelete());
+        // Enterprise: yes.
+        $organisation->forceFill(['plan' => 'enterprise'])->save();
+        app()->forgetInstance(Plan::class);
+        request()->attributes->remove('plan.'.$organisation->getKey());
+        $this->assertTrue(ProductAccess::for($owner, $product->fresh())->canDelete());
+        // Self-hosted: yes, whatever the plan.
+        $organisation->forceFill(['plan' => 'free'])->save();
+        request()->attributes->remove('plan.'.$organisation->getKey());
+        config(['redact.self_hosted' => true]);
+        $this->assertTrue(ProductAccess::for($owner, $product->fresh())->canDelete());
     }
 }

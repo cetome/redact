@@ -644,7 +644,7 @@ final class Plan
         return (bool) ($this->hasExtras() ? config('redact.plans.paid.support', true) : config('redact.plans.free.support', false));
     }
 
-    /** "Free plan", "Paid plan", "Enterprise plan", "Premium", "Self-hosted". */
+    /** "Free plan", "Free plan + granted products", a catalogue plan ("Premium plan", "Enterprise plan"), "Self-hosted". */
     public function label(): string
     {
         if (self::selfHosted() && $this->source !== self::SOURCE_CONTRACT) {
@@ -654,6 +654,6 @@ final class Plan
             return $this->definition->name();
         }
 
-        return __('plans.name.'.($this->hasExtras() ? 'paid' : 'free'));
+        return __('plans.name.'.($this->hasExtras() ? 'granted' : 'free'));
     }
 }

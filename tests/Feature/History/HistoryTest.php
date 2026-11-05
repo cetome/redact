@@ -349,7 +349,10 @@ class HistoryTest extends TestCase
         $this->signIn($staff)->get($this->url())->assertOk()->assertSee(__('common.support_access'));
 
         $organisation = $this->product->organisation;
-        $this->signIn($staff, 'passkey')->put(route('admin.organisations.plan', $organisation), ['plan' => 'enterprise'])->assertRedirect();
+        // A plan is granted by a super-admin (owner 2026-11-05).
+        $staff->assignRole(Role::findOrCreate('super-admin', 'web'));
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
+        $this->signIn($staff->fresh(), 'passkey')->put(route('admin.organisations.plan', $organisation), ['plan' => 'enterprise'])->assertRedirect();
 
         $page = $this->signIn($this->owner)->get($this->url())->assertOk();
         $page->assertSeeText('cetome support')->assertSeeText('Viewed Smart lock (read-only support access)')->assertDontSeeText('Sam Staff');
@@ -420,6 +423,8 @@ class HistoryTest extends TestCase
         $this->signIn($this->owner)->patch(route('team.update', [$this->product, $membership]), ['role' => 'reviewer'])->assertRedirect();
         $this->signIn($this->owner)->delete(route('team.destroy', [$this->product, $membership]))->assertRedirect();
         $spare = Product::create(['organisation_id' => $this->product->organisation_id, 'owner_id' => $this->owner->id, 'name' => 'Old hub']);
+        // Customers delete products in an Enterprise organisation (owner 2026-11-05).
+        $this->product->organisation->forceFill(['plan' => 'enterprise'])->save();
         $this->signIn($this->owner)->delete(route('products.destroy', $spare))->assertRedirect();
 
         $this->signIn($this->owner)->get($this->url())->assertOk()

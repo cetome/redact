@@ -22,7 +22,8 @@
             @csrf
             @method('PUT')
             <div class="a-panel-head"><h2 id="plan-heading" class="a-h3">{{ __('plans.admin.overrides') }}</h2></div>
-            <div class="a-panel-body a-stack gap-3!">
+            {{-- Super-admins only change a plan (OrganisationController::update): other staff read it. --}}
+            <fieldset class="a-panel-body a-stack gap-3! a-fieldset" @disabled(! $canGrant)>
                 <div class="grid gap-3 md:grid-cols-2">
                     <div class="a-field">
                         <label for="plan" class="a-label">{{ __('plans.admin.plan') }}</label>
@@ -76,10 +77,14 @@
                     </div>
                 </div>
                 <p class="a-help">{{ __('plans.admin.overrides_help') }}</p>
-            </div>
+            </fieldset>
             <div class="a-panel-foot">
+                @if (! $canGrant)
+                    <p class="a-help">{{ __('plans.admin.super_only') }}</p>
+                @else
                 <button type="submit" class="a-btn a-btn-primary a-btn-sm"><x-lucide-save aria-hidden="true" />{{ __('plans.admin.save') }}</button>
-                @if ($organisation->plan !== 'free' && $organisation->plan_ends_at !== null)
+                @endif
+                @if ($canGrant && $organisation->plan !== 'free' && $organisation->plan_ends_at !== null)
                     <button type="submit" form="end-trial" class="a-btn a-btn-outline a-btn-sm a-spacer"
                             x-data="confirmSubmit" data-confirm="{{ __('plans.admin.end_trial_confirm') }}" @click="check"><x-lucide-circle-x aria-hidden="true" />{{ __('plans.admin.end_trial') }}</button>
                 @endif
@@ -135,7 +140,7 @@
 
         @if ($end !== null)
             {{-- End the subscription now, the account kept (super-admin, OrganisationController::endSubscription). --}}
-            <form method="POST" action="{{ route('admin.organisations.subscription.end', $organisation) }}" class="a-panel xl:col-span-2" aria-labelledby="end-heading"
+            <form method="POST" action="{{ route('admin.organisations.subscription.end', $organisation) }}" data-recent-auth class="a-panel xl:col-span-2" aria-labelledby="end-heading"
                   x-data="confirmSubmit" data-confirm="{{ __('plans.admin.end.confirm') }}" @submit="check">
                 @csrf
                 @method('DELETE')
@@ -168,8 +173,9 @@
                     <tr>
                         <th scope="col">{{ __('admin.products.name') }}</th>
                         <th scope="col">{{ __('plans.admin.product_slot') }}</th>
-                        <th scope="col">{{ __('admin.products.owner') }}</th>
-                        <th scope="col">{{ __('plans.admin.created') }}</th>
+                        <th scope="col" class="max-md:hidden">{{ __('admin.products.owner') }}</th>
+                        <th scope="col" class="max-md:hidden">{{ __('plans.admin.created') }}</th>
+                        @if ($canGrant)<th scope="col"><span class="a-sr-only">{{ __('products.delete') }}</span></th>@endif
                     </tr>
                 </thead>
                 <tbody>
@@ -188,11 +194,24 @@
                                     <span class="a-badge a-badge-warning"><x-lucide-lock aria-hidden="true" />{{ __('plans.locked.badge') }}</span>
                                 @endif
                             </td>
-                            <td>{{ $product->owner?->email ?? '—' }}</td>
-                            <td class="is-nowrap a-muted">{{ $product->created_at?->isoFormat('D MMMM YYYY') }}</td>
+                            <td class="max-md:hidden">{{ $product->owner?->email ?? '—' }}</td>
+                            <td class="is-nowrap a-muted max-md:hidden">{{ $product->created_at?->isoFormat('D MMMM YYYY') }}</td>
+                            @if ($canGrant)
+                                <td class="is-nowrap w-px text-right">
+                                    @unless ($product->trashed())
+                                        {{-- Super-admin: delete it, its slot goes back to the plan. --}}
+                                        <form method="POST" action="{{ route('admin.products.destroy', $product) }}" data-recent-auth
+                                              x-data="confirmSubmit" data-confirm="{{ __('plans.admin.delete_product_confirm', ['name' => $product->name]) }}" @submit="check">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="a-btn a-btn-ghost a-btn-sm a-btn-icon a-row-delete" title="{{ __('products.delete') }}" aria-label="{{ __('products.delete') }}"><x-lucide-trash-2 aria-hidden="true" /><span class="a-sr-only">{{ __('products.delete') }}</span></button>
+                                        </form>
+                                    @endunless
+                                </td>
+                            @endif
                         </tr>
                     @empty
-                        <tr><td colspan="4" class="a-muted">{{ __('admin.products.none') }}</td></tr>
+                        <tr><td colspan="{{ $canGrant ? 5 : 4 }}" class="a-muted">{{ __('admin.products.none') }}</td></tr>
                     @endforelse
                 </tbody>
             </table>

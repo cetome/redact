@@ -41,7 +41,7 @@
                                 <td class="is-nowrap">{{ $date($passkey->last_used_at) }}</td>
                                 <td>
                                     @if ($recent)
-                                        <form method="POST" action="{{ route('account.passkeys.destroy', ['key' => $passkey->id]) }}"
+                                        <form method="POST" action="{{ route('account.passkeys.destroy', ['key' => $passkey->id]) }}" data-recent-auth
                                             x-data="confirmSubmit" data-confirm="{{ __('auth.passkeys.remove_confirm') }}" x-on:submit="check">
                                             @csrf
                                             @method('DELETE')
@@ -91,7 +91,7 @@
                 <p><a href="{{ route('account.email.confirm') }}" class="a-link-btn">{{ __('auth.email_change.enter_code') }}</a></p>
             @endif
             @if ($recent)
-                <form method="POST" action="{{ route('account.email') }}" class="a-stack gap-3!">
+                <form method="POST" action="{{ route('account.email') }}" class="a-stack gap-3!" data-recent-auth>
                     @csrf
                     <div class="a-field">
                         <label for="new-email" class="a-label">{{ __('auth.fields.new_email') }}</label>

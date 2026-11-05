@@ -89,8 +89,9 @@ MAIL_USERNAME=no-reply@example.com
 MAIL_PASSWORD=...
 MAIL_FROM_ADDRESS=no-reply@example.com
 MAIL_FROM_NAME="cetome REDact"
-REDACT_CONTACT_TO=info@example.com              # required: no address is in the code
+REDACT_CONTACT_TO=info@example.com              # empty: kept in the console only
 REDACT_SECURITY_CONTACT=security@example.com
+REDACT_SECURITY_URL=https://cetome.com/security
 ```
 
 A local MTA (postfix) only if the VPS address is in cetome.com's SPF record and postfix signs with

@@ -2,7 +2,7 @@
 
 // Console cetome (équipe cetome uniquement).
 return [
-    'title' => 'Console',
+    'title' => 'Console d’administration',
     'all' => 'Tous',
     'filter' => 'Filtrer',
     'reset' => 'Réinitialiser',
@@ -13,7 +13,7 @@ return [
     'export_csv' => 'Exporter en CSV',
 
     'nav' => [
-        'label' => 'Console',
+        'label' => 'Console d’administration',
         'dashboard' => 'Vue d’ensemble',
         'users' => 'Utilisateurs',
         'products' => 'Produits',
@@ -118,16 +118,16 @@ return [
             'title' => 'Supprimer le compte',
             'lead' => 'Supprime :email définitivement, avec :',
             'organisation' => ':name : :count produit, ses versions et fichiers|:name : :count produits, leurs versions et fichiers',
-            'nothing' => 'Aucune organisation à lui seul : seul le compte est supprimé.',
+            'nothing' => 'Aucune organisation qui lui soit propre : seul le compte est supprimé.',
             'stripe' => 'Stripe : le client est supprimé et l’abonnement prend fin immédiatement. Stripe garde les factures et les paiements pour la comptabilité.',
             'stripe_error' => 'Stripe n’a pas pu être lu : le dernier paiement est inconnu. La suppression sans remboursement reste possible.',
             'no_payment' => 'Rien à rembourser : aucun abonnement actif, ou sa période n’est pas encore payée.',
             'shared' => 'La personne quitte les organisations partagées avec d’autres, où son travail reste.',
             'owns_products' => 'La personne possède des produits dans :organisation, partagée avec d’autres : transférez-les d’abord.',
-            'last_admin' => 'La personne est la seule administratrice de :organisation, partagée avec d’autres : nommez d’abord un autre membre administrateur.',
+            'last_admin' => 'Personne d’autre n’administre :organisation, partagée avec d’autres : nommez d’abord un autre membre administrateur.',
             'email' => 'Saisissez :email pour confirmer',
             'email_mismatch' => 'L’adresse saisie n’est pas celle de ce compte.',
-            'refund' => 'Supprimer et rembourser :amount (:days jours non utilisés sur :total, sur :paid payés le :date)',
+            'refund' => 'Supprimer et rembourser :amount (:days jours inutilisés sur :total, d’un paiement de :paid le :date)',
             'no_refund' => 'Supprimer sans rembourser',
             'delete' => 'Supprimer le compte',
             'confirm' => 'Supprimer :email et tout ce qui est listé ? C’est définitif.',
@@ -160,7 +160,6 @@ return [
         'locale' => 'Langue',
         'timezone' => 'Fuseau horaire',
         'terms' => 'Conditions acceptées',
-        'product_news' => 'Actualités produit',
         'memberships' => 'Produits et rôles',
         'external' => 'externe',
         'expires' => 'jusqu’au :date',

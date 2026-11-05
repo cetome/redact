@@ -44,7 +44,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Carbon|null $guest_expires_at
  * @property-read int|null $products_count
  */
-#[Fillable(['name', 'email', 'organisation_name', 'locale', 'timezone', 'wants_product_news', 'shortcuts_enabled'])]
+#[Fillable(['name', 'email', 'organisation_name', 'locale', 'timezone', 'shortcuts_enabled'])]
 #[Hidden(['remember_token'])]
 class User extends Authenticatable implements HasLocalePreference, PasskeyUser
 {

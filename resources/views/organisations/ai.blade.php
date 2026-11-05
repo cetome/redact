@@ -58,7 +58,7 @@
             @endunless
             @unless ($allowed)
                 {{-- Free plan (or a subscription that ended): no AI at all, not even with an own key. --}}
-                <p class="a-help flex flex-wrap items-center gap-1.5" data-testid="ai-model-paid-only"><x-lucide-lock class="size-3.5" aria-hidden="true" />{{ __('plans.ai.paid_only') }}
+                <p class="a-help" data-testid="ai-model-paid-only"><x-lucide-lock class="mr-1 inline size-3.5 align-[-2px]" aria-hidden="true" />{{ __('plans.ai.paid_only') }}
                     @if ($upgradeUrl)
                         <a href="{{ $upgradeUrl }}" class="a-link-btn">{{ __('plans.ai.add_product') }}</a>
                     @endif

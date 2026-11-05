@@ -8,11 +8,12 @@
  * self-hosted topic, like the pricing page).
  */
 return [
-    'version' => 'Version 2026-11-04',
+    'version' => 'Version 2026-11-05',
 
     'links' => [
         'pgp' => 'PGP key',
         'talk' => 'talk to us',
+        'contact_form' => 'cetome (contact form)',
     ],
 
     'notice_title' => 'Legal notice',
@@ -46,7 +47,7 @@ return [
             'Enterprise (self-hosted or dedicated, on request): under a separate contract, :talk.',
         ]],
         'billing' => ['Payment and invoices', [
-            'Paid plans are billed monthly in advance through Stripe, our payment provider. A product added during a period is charged pro rata on the next invoice. Stripe adds the VAT that applies: EU businesses with a valid VAT number are invoiced under reverse charge. Invoices are on your billing page and in the Stripe customer portal.',
+            'Paid plans are billed in advance, monthly or yearly, through Stripe, our payment provider. A product added during a period is charged pro rata on the next invoice. Stripe adds the VAT that applies: businesses in another EU country with a valid VAT number are invoiced under reverse charge. Invoices are on your billing page and in the Stripe customer portal.',
         ]],
         'cancellation' => ['Cancellation and failed payments', [
             'An organisation admin can cancel at any time from the billing page. Cancellation takes effect at the end of the paid period. The current period is not refunded, unless the law requires it.',

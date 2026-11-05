@@ -68,6 +68,8 @@ Route::get('/products/{product}/history', [HistoryController::class, 'product'])
 Route::get('/products/{product}/history/before/{before}', [HistoryController::class, 'product'])->name('products.history.before')->whereNumber('before');
 Route::post('/products/{product}/history', [HistoryController::class, 'productFilter'])->name('products.history.filter');
 Route::get('/products/{product}/history.csv', [HistoryController::class, 'productCsv'])->name('products.history.csv')->middleware('throttle:5,1');
+// The organisation's address alone: its first page every member can open.
+Route::get('/organisations/{organisation}', fn (string $organisation) => redirect()->route('organisations.team', $organisation))->name('organisations.home');
 Route::get('/organisations/{organisation}/history', [HistoryController::class, 'organisation'])->name('organisations.history');
 Route::get('/organisations/{organisation}/history/before/{before}', [HistoryController::class, 'organisation'])->name('organisations.history.before')->whereNumber('before');
 Route::post('/organisations/{organisation}/history', [HistoryController::class, 'organisationFilter'])->name('organisations.history.filter');

@@ -143,7 +143,8 @@ class ProductPageTest extends TestCase
             ->assertSee('datasheet.md')
             ->assertSee(__('ai.documents.delete_tooltip'))
             ->assertSee('action="'.route('versions.import.store', $latest).'"', false)
-            ->assertSee(__('products.delete'));
+            // Free and Premium customers do not delete products (owner 2026-11-05): no Delete section.
+            ->assertDontSee(__('products.delete'));
 
         // The product version typed on the settings page goes to the latest version.
         $this->put(route('products.update', $first->product), [

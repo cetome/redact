@@ -140,7 +140,6 @@ class GuestController extends Controller
         $request->session()->put(self::CLAIM, [
             'email' => $email,
             'organisation' => trim((string) ($data['organisation'] ?? '')),
-            'product_news' => false,
         ]);
 
         $challenge = $challenges->start($request, 'guest_claim', $allowed && $usable ? $guest : null, $email, $email);
@@ -175,7 +174,6 @@ class GuestController extends Controller
             'name' => '',
             'email' => (string) $token->new_email,
             'organisation' => (string) ($form['organisation'] ?? ''),
-            'product_news' => (bool) $form['product_news'],
         ];
         $existing = User::query()->where('email', $details['email'])->first();
 

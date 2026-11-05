@@ -41,7 +41,7 @@ return [
         'secret_help' => 'A secret key, or a restricted key (rk_) with write access to Customers, Checkout Sessions, Subscriptions, Billing Portal, Products, Prices and Webhook Endpoints. Stored encrypted, never shown again. Leave empty to keep the saved key.',
         'saved' => 'Saved key :hint',
         'webhook_secret' => 'Webhook signing secret (optional)',
-        'webhook_secret_help' => 'Only for an endpoint made in the Stripe dashboard (whsec_…). Step 3 fills it in for you.',
+        'webhook_secret_help' => 'Only for an endpoint made in the Stripe dashboard (whsec_…). Step 2 fills it in for you.',
         'forget' => '{1} I am switching between sandbox and live: forget the Stripe customer and subscription of the organisation that has one|[2,*] I am switching between sandbox and live: forget the Stripe customers and subscriptions of the :count organisations that have one',
         'forget_help' => 'Only when you change from sandbox keys to live keys, or back. A sandbox customer does not exist in live (and the other way round), so REDact forgets it. The organisations, people and products stay. Their paid products become read-only until they subscribe again. Not needed to save new keys of the same mode.',
         'save' => 'Save',

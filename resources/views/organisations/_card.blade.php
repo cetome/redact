@@ -22,7 +22,7 @@
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="back" value="{{ route('organisations.settings', $organisation) }}">
-                <div class="a-field max-w-[28rem]">
+                <div class="a-field">
                     <label for="org-name" class="a-label">{{ __('organisation.name') }}</label>
                     <input id="org-name" name="name" class="a-input" required maxlength="160" value="{{ old('name', $organisation->name) }}" @error('name') aria-invalid="true" @enderror>
                     <p class="a-help">{{ __('organisation.name_help') }}</p>

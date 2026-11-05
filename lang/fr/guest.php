@@ -19,7 +19,7 @@ return [
     'demo' => [
         'button' => 'Voir une démo',
         'card' => 'Une ampoule connectée, évaluée de bout en bout.',
-        'loaded' => 'Démo chargée : un exemple d’ampoule connectée, prêt à explorer.',
+        'loaded' => 'Démo chargée : une ampoule connectée, notre produit d’exemple, prête à explorer.',
         'full' => 'Votre bac à sable contient déjà un produit. Supprimez-le pour charger la démo.',
     ],
     // Premier écran après « Commencer avec ce produit » sur l’accueil (un message flash, une fois).

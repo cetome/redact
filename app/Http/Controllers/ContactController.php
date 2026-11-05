@@ -43,7 +43,8 @@ class ContactController extends Controller
         $user = $this->account($request);
         $topic = (string) $request->route('topic', '');
 
-        return view('public.contact', [
+        // Signed in (Support in the account menu): the app's own page, same form (owner 2026-11-05).
+        return view($user !== null ? 'public.contact-app' : 'public.contact', [
             'topics' => ContactMessage::TOPICS,
             'topic' => in_array($topic, ContactMessage::TOPICS, true) ? $topic : '',
             'account' => $user,
@@ -87,7 +88,7 @@ class ContactController extends Controller
         ]);
 
         $data = $request->validate([
-            'name' => ['required', 'string', 'max:100', 'not_regex:#(https?://|www\.)#i'],
+            'name' => $account !== null ? ['required', 'string', 'max:100'] : ['required', 'string', 'max:100', 'not_regex:#(https?://|www\.)#i'],
             'email' => ['required', 'string', 'max:150', 'email:rfc'],
             'company' => ['nullable', 'string', 'max:150'],
             'topic' => ['required', 'string', Rule::in(ContactMessage::TOPICS)],

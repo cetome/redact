@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Auth\SignIn;
+use App\Support\BackUrl;
 use Closure;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
@@ -12,6 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
  * Sensitive actions (adding or removing a passkey, changing the e-mail
  * address, deleting the account) need a sign-in from the last few minutes.
  * REDact has no passwords, so this replaces Laravel's password.confirm.
+ * Forms marked data-recent-auth ask for the passkey on the page first (modules/recent-auth.js,
+ * the meta redact-recent): this redirect is the fallback (no passkey, e-mail code).
  */
 class RequireRecentAuth
 {
@@ -36,7 +39,9 @@ class RequireRecentAuth
         if ($request->isMethod('GET')) {
             $request->session()->put('url.intended', $request->fullUrl());
         } else {
-            $request->session()->put('url.intended', url()->previous(route('dashboard')));
+            // The page the form was sent from, on this site only (App\Support\BackUrl): never the session's
+            // last URL, which can be a picture.
+            $request->session()->put('url.intended', BackUrl::from($request, route('dashboard')));
             $request->session()->put(self::AGAIN, true);
         }
 

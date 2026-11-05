@@ -83,29 +83,28 @@
             <a href="{{ route('trees.index') }}" class="a-topnav-link" @if (request()->routeIs('trees.*')) aria-current="page" @endif
                data-shortcut="g t" data-shortcut-label="{{ __('shortcuts.go.trees') }}">
                 <x-lucide-git-fork class="size-4" aria-hidden="true" />{{ __('nav.trees') }}</a>
-            @if ($user?->isStaff())
-                <a href="{{ route('admin.dashboard') }}" class="a-topnav-link" @if (request()->routeIs('admin.*')) aria-current="page" @endif>
-                    <x-lucide-shield class="size-4" aria-hidden="true" />{{ __('nav.admin') }}</a>
-            @endif
         </nav>
 
         <div class="a-topbar-actions">
+            {{-- Phones: a Products button and the menu drawer (components/ui/mobile-menu). --}}
+            <x-ui.mobile-menu />
             @if (\App\Billing\Plan::showsUpgrade($user))
                 {{-- Phones: the icon only, so the account menu keeps its place. --}}
                 <a href="{{ route('subscribe') }}" class="a-btn a-btn-primary a-btn-sm" @if (request()->routeIs('billing.subscribe')) aria-current="page" @endif>
                     <x-lucide-sparkles aria-hidden="true" /><span class="max-sm:sr-only">{{ __('plans.upgrade_to', ['plan' => __('public.pricing.plans.paid.name')]) }}</span></a>
             @endif
-            <span class="a-hint">
+            <span class="a-hint a-desktop-only">
                 <button type="button" class="a-btn a-btn-ghost a-btn-icon a-kbd-hint" data-shortcuts-help aria-label="{{ __('shortcuts.button') }}" aria-describedby="shortcuts-tip">
                     <x-lucide-keyboard aria-hidden="true" />
                 </button>
                 <span class="a-hint-text" role="tooltip" id="shortcuts-tip">{{ __('shortcuts.button_tip') }} <kbd class="a-kbd">?</kbd></span>
             </span>
-            <x-ui.theme-toggle />
+            <x-ui.locale-switch class="a-desktop-only" />
+            <x-ui.theme-toggle class="a-desktop-only" />
             @if ($user?->is_guest)
                 <x-guest-actions />
             @else
-                <x-ui.user-menu />
+                <x-ui.user-menu class="a-desktop-only" />
             @endif
         </div>
     </header>

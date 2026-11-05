@@ -43,7 +43,20 @@
     <section class="c-section-band" id="compare">
         <div class="c-container">
             <h2 class="c-h2">{{ __('public.pricing.compare_title') }}</h2>
-            <div class="c-table-wrap mt-6">
+            {{-- Phones: one card per plan, the same rows (the table needs a wide screen). --}}
+            <div class="r-compare-cards mt-6 md:hidden">
+                @foreach (['open', 'free', 'paid', 'self'] as $i => $plan)
+                    <section class="r-compare-card" aria-labelledby="compare-{{ $plan }}">
+                        <h3 id="compare-{{ $plan }}" class="c-h3">{{ __('public.pricing.plans.'.$plan.'.name') }}</h3>
+                        <dl>
+                            @foreach ($rows as $row => $cells)
+                                <div><dt>{{ __('public.pricing.rows.'.$row) }}</dt><dd>{!! $cells[$i] !!}</dd></div>
+                            @endforeach
+                        </dl>
+                    </section>
+                @endforeach
+            </div>
+            <div class="c-table-wrap mt-6 max-md:hidden">
                 <table class="c-table r-compare">
                     <thead>
                         <tr>

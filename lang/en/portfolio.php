@@ -39,6 +39,5 @@ return [
     'no_work' => 'Nothing done in the last :days days.',
     'all_history' => 'Full history',
     'paid_title' => 'The portfolio comes with a paid plan',
-    'paid_text' => 'Every product and version of the organisation in one place: where each stands, the significant changes to decide, what is left to re-check, and who does what over time.',
     'link' => 'Portfolio',
 ];

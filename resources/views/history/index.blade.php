@@ -27,7 +27,7 @@
         <div class="a-alert a-alert-warning"><x-lucide-eye aria-hidden="true" /><span>{{ __('common.support_access') }}</span></div>
     @endif
 
-    <x-ui.page-header :title="__('history.title')">
+    <x-ui.page-header :title="__('history.title')" :subtitle="$isProduct ? null : __('history.lead_organisation')">
         <x-slot:eyebrow>
             @if ($isProduct)<a href="{{ $product->homeUrl() }}">{{ $product->name }}</a>@else{{ $organisation->name }}@endif
         </x-slot:eyebrow>

@@ -76,6 +76,7 @@ class OrganisationController extends AdminController
         }
 
         return view('admin.organisations.show', [
+            'canGrant' => $this->isSuperAdmin($request),
             'end' => $end,
             'organisation' => $organisation,
             'plan' => $plan,
@@ -87,6 +88,8 @@ class OrganisationController extends AdminController
 
     public function update(Request $request, Organisation $organisation, Catalogue $catalogue): RedirectResponse
     {
+        // Granting a plan is giving Premium (or more) for free: super-admins only, like Stripe and Plans.
+        $this->requireSuperAdmin($request);
         $data = $request->validate([
             'plan' => ['required', Rule::in(array_merge([Plan::FREE], array_keys($catalogue->plans())))],
             'plan_ends_at' => ['nullable', 'date_format:Y-m-d', 'after:today'],
@@ -127,6 +130,7 @@ class OrganisationController extends AdminController
     /** End a trial now: back to Free (paid products then follow the subscription, if any). */
     public function endTrial(Request $request, Organisation $organisation): RedirectResponse
     {
+        $this->requireSuperAdmin($request);
         abort_if($organisation->plan === Plan::FREE || $organisation->plan_ends_at === null, 404);
 
         $before = $this->state($organisation);

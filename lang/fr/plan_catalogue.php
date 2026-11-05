@@ -37,7 +37,7 @@ return [
         'extra_ai_help' => 'Vide : autant que l’offre.',
         'support' => 'Assistance incluse',
         'public' => 'Proposée sur la page des tarifs avec paiement en ligne',
-        'public_help' => 'Désactivé : « Nous contacter », attribuée par l’équipe sur l’organisation (un contrat ou un essai).',
+        'public_help' => 'Désactivée : « Nous contacter », attribuée par l’équipe à l’organisation (un contrat ou un essai).',
         'active' => 'Offre utilisée',
     ],
 

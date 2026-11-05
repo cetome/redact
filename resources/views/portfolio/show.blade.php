@@ -39,7 +39,7 @@
     @include('organisations._tabs', ['organisation' => $organisation, 'active' => 'portfolio', 'isAdmin' => true])
 
     @if (! $available)
-        <x-ui.empty icon="layout-dashboard" :title="__('portfolio.paid_title')" :text="__('portfolio.paid_text')">
+        <x-ui.empty icon="layout-dashboard" :title="__('portfolio.paid_title')">
             <a href="{{ $upgradeUrl }}" class="a-btn a-btn-primary"><x-lucide-circle-arrow-up aria-hidden="true" />{{ __('plans.upgrade') }}</a>
         </x-ui.empty>
     @else

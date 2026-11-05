@@ -76,12 +76,12 @@ class Organisation extends Model
         return $this->hasMany(Product::class);
     }
 
-    /** Stripe customer e-mail: the person who created the organisation, else its first admin. */
+    /** Stripe customer e-mail: the person who created the organisation while still a member, else its first admin. */
     public function stripeEmail(): ?string
     {
-        $creator = $this->created_by ? User::query()->find($this->created_by) : null;
+        $creator = $this->created_by ? $this->members()->whereKey($this->created_by)->value('email') : null;
 
-        return $creator->email ?? $this->members()->wherePivot('role', 'admin')->value('email');
+        return $creator ?? $this->members()->wherePivot('role', 'admin')->value('email');
     }
 
     public function hasMember(User $user): bool

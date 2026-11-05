@@ -7,6 +7,7 @@ use App\Models\Organisation;
 use App\Models\User;
 use Laravel\Cashier\Cashier;
 use Laravel\Cashier\Http\Controllers\WebhookController;
+use Laravel\Cashier\Http\Middleware\VerifyWebhookSignature;
 use Stripe\Exception\InvalidRequestException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,12 +21,29 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class StripeWebhookController extends WebhookController
 {
+    /**
+     * Always checks the Stripe-Signature (Cashier skips it when no secret is set): without a
+     * signing secret, every request is refused, so a forged "customer.deleted" can never land.
+     */
+    public function __construct()
+    {
+        $this->middleware(VerifyWebhookSignature::class);
+    }
+
     /** @param  array<string, mixed>  $payload */
     protected function handleCustomerSubscriptionCreated(array $payload): Response
     {
         $current = $this->current($payload);
+        if ($current === null) {
+            return $this->successMethod();
+        }
+        // Already cancelled at Stripe (a late or retried event): REDact's copy, if any, is marked ended,
+        // and none is created.
+        if (($current['data']['object']['status'] ?? null) === 'canceled') {
+            return parent::handleCustomerSubscriptionDeleted($current);
+        }
 
-        return $current === null ? $this->successMethod() : parent::handleCustomerSubscriptionCreated($current);
+        return parent::handleCustomerSubscriptionCreated($current);
     }
 
     /** @param  array<string, mixed>  $payload */
@@ -58,8 +76,10 @@ class StripeWebhookController extends WebhookController
         if ($organisation !== null) {
             $details = (array) ($session['customer_details'] ?? []);
             $email = mb_strtolower(trim((string) ($details['email'] ?? '')));
-            $payer = ($email !== '' ? $organisation->members()->whereRaw('lower(email) = ?', [$email])->first() : null)
-                ?? ($organisation->created_by ? User::query()->find($organisation->created_by) : null);
+            // Only a current member: never someone who has left the organisation.
+            $members = $organisation->members();
+            $payer = ($email !== '' ? (clone $members)->whereRaw('lower(email) = ?', [$email])->first() : null)
+                ?? ($organisation->created_by ? (clone $members)->whereKey($organisation->created_by)->first() : null);
             app(Billing::class)->adoptNames($organisation, $details, $payer instanceof User ? $payer : null);
         }
 

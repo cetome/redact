@@ -44,7 +44,7 @@ return [
         // Unverified accounts are deleted after this many days.
         'purge_unverified_days' => 7,
         // Version of the terms a new account accepts.
-        'terms_version' => '2026-11-04',
+        'terms_version' => '2026-11-05',
         // Minimum response times, so timing never reveals whether an account exists (ms).
         'pad_send_ms' => 1000,
         'pad_code_ms' => 300,

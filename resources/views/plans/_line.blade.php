@@ -32,11 +32,11 @@
     @endif
     {{-- Enterprise and a self-hosted install have nothing to upgrade: no link. --}}
     @unless ($plan->unlimited())
-        <span class="a-plan-line-sep" aria-hidden="true">·</span>
+        <span class="a-plan-line-last"><span class="a-plan-line-sep" aria-hidden="true">·</span>
         @if ($isAdmin && \App\Billing\Plan::billingEnabled())
             <a href="{{ route('billing.show', $organisation) }}" class="a-link-btn">{{ __('plans.line.billing') }}</a>
         @else
             <a href="{{ \App\Billing\Plan::contactUrl() }}" class="a-link-btn" rel="noopener">{{ __('plans.line.talk') }}</a>
-        @endif
+        @endif</span>
     @endunless
 </p>

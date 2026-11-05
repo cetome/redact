@@ -20,6 +20,9 @@ class StoredPicture
     /** The largest upload accepted, in kilobytes. */
     public const MAX_KB = 5120;
 
+    /** Larger images are refused before decoding (40 megapixels, about 160 MB of memory). */
+    public const MAX_PIXELS = 40_000_000;
+
     /** The largest SVG accepted (logos), in kilobytes. */
     public const SVG_MAX_KB = 1024;
 
@@ -81,6 +84,10 @@ class StoredPicture
         $info = @getimagesize($file->getRealPath());
         $type = $info[2] ?? null;
         if (! in_array($type, [IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_WEBP], true)) {
+            throw ValidationException::withMessages([$field => __('identification.image_invalid')]);
+        }
+        // A small file can still decode to a huge bitmap (decompression bomb): refused before decoding.
+        if ((int) ($info[0] ?? 0) * (int) ($info[1] ?? 0) > self::MAX_PIXELS) {
             throw ValidationException::withMessages([$field => __('identification.image_invalid')]);
         }
 

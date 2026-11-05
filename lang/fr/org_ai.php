@@ -5,7 +5,7 @@ return [
     'tab' => 'Paramètres',
     'title' => 'Paramètres',
     'intro' => 'Le fonctionnement de votre organisation dans REDact.',
-    'intro_ai' => 'Ce qui répond aux boutons d’IA de votre organisation.',
+    'intro_ai' => 'L’IA qui répond aux boutons d’IA de votre organisation.',
 
     'card' => 'Modèle d’IA',
     'lead_saas' => 'L’IA de cetome répond à chaque bouton d’IA, incluse dans votre offre payante. Votre organisation peut utiliser sa propre clé ou son propre modèle à la place : ses appels ne consomment alors pas vos unités d’IA. La clé est enregistrée chiffrée et n’est jamais réaffichée.',

@@ -28,12 +28,14 @@
 
         <div class="a-passkey-actions">
             <button type="button" class="a-btn a-btn-primary" x-on:click="add" x-bind:disabled="busy"><x-lucide-fingerprint aria-hidden="true" />{{ __('auth.passkeys.add') }}</button>
-            <a href="{{ $continueUrl }}" class="a-btn a-btn-ghost">{{ __('auth.suggest.skip') }}</a>
+            <div class="a-passkey-later">
+                <a href="{{ $continueUrl }}" class="a-btn a-btn-ghost">{{ __('auth.suggest.skip') }}</a>
+                <form method="POST" action="{{ route('auth.passkey.never') }}">
+                    @csrf
+                    <button type="submit" class="a-btn a-btn-ghost">{{ __('auth.suggest.never') }}</button>
+                </form>
+            </div>
         </div>
-        <form method="POST" action="{{ route('auth.passkey.never') }}" class="a-passkey-never">
-            @csrf
-            <button type="submit" class="a-link-btn">{{ __('auth.suggest.never') }}</button>
-        </form>
         <p class="a-error" role="alert" x-show="error" x-text="error"></p>
         <p class="a-help" x-show="unsupported">{{ __('auth.passkeys.unsupported') }}</p>
         <p class="a-passkey-note">{{ __('auth.suggest.later') }}</p>

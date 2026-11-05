@@ -43,14 +43,6 @@
                           x-data="confirmSubmit" data-confirm="{{ $demo ? __('products.demo.remove_confirm') : __('products.delete_confirm') }}" @submit="check">
                         @csrf
                         @method('DELETE')
-                        @if ($offerReduce)
-                            {{-- A paid product: the admin may also take one unit off the subscription (never automatic). --}}
-                            <label class="a-check mb-2">
-                                <input type="checkbox" name="reduce_subscription" value="1" aria-describedby="reduce-help">
-                                <span>{{ __('plans.billing.reduce', ['price' => \App\Billing\Plan::for($product->organisation)->extraPriceLabel(), 'per' => \App\Billing\Plan::for($product->organisation)->per()]) }}</span>
-                            </label>
-                            <p id="reduce-help" class="a-help mb-2">{{ __('plans.billing.reduce_help') }}</p>
-                        @endif
                         <button type="submit" class="a-btn a-btn-danger"><x-lucide-trash-2 aria-hidden="true" />{{ $demo ? __('products.demo.remove') : __('products.delete') }}</button>
                     </form>
                 </div>

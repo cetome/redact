@@ -22,9 +22,9 @@
         <x-slot:eyebrow>{{ __('admin.title') }}</x-slot:eyebrow>
     </x-ui.page-header>
 
-    <div class="grid items-start gap-4 xl:grid-cols-3">
-        {{-- What is in use now --}}
-        <section class="a-panel" aria-labelledby="stripe-status-heading">
+    <div class="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">
+        {{-- What is in use now: first on phones, a narrow column on the right on wide screens. --}}
+        <section class="a-panel xl:sticky xl:top-4 xl:order-last" aria-labelledby="stripe-status-heading">
             <div class="a-panel-head"><h2 id="stripe-status-heading" class="a-h3 flex items-center gap-2"><x-lucide-credit-card class="size-4 text-brand-blue" aria-hidden="true" />{{ __('stripe_settings.status.title') }}</h2></div>
             <dl class="a-panel-body a-dl">
                 <dt>{{ __('stripe_settings.status.state') }}</dt>
@@ -64,7 +64,7 @@
             </dl>
         </section>
 
-        <div class="a-stack gap-4! xl:col-span-2">
+        <div class="a-stack gap-4!">
             @unless ($canEdit)
                 <p class="a-help">{{ __('stripe_settings.read_only') }}</p>
             @endunless
@@ -125,7 +125,7 @@
                 @endif
             </form>
 
-            <div class="grid items-start gap-4 lg:grid-cols-2">
+            <div class="a-stack gap-4!">
                 {{-- 2. Webhook --}}
                 <form method="POST" action="{{ route('admin.stripe.webhook') }}" class="a-panel" aria-labelledby="stripe-webhook-heading">
                     @csrf

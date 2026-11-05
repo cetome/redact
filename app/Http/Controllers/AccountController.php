@@ -73,7 +73,6 @@ class AccountController extends Controller
             'name' => ['nullable', 'string', 'max:120'],
             'locale' => ['required', 'string', Rule::in(array_keys(config('redact.locales')))],
             'timezone' => ['required', 'string', Rule::in(DateTimeZone::listIdentifiers())],
-            'product_news' => ['nullable', 'boolean'],
         ]);
 
         $user->fill([
@@ -211,7 +210,7 @@ class AccountController extends Controller
             'exported_at' => now()->toIso8601String(),
             'profile' => $user->only([
                 'name', 'email', 'email_verified_at', 'organisation_name', 'locale', 'timezone',
-                'wants_product_news', 'terms_accepted_at', 'terms_version', 'last_login_at',
+                'terms_accepted_at', 'terms_version', 'last_login_at',
                 'last_login_method', 'created_at', 'updated_at',
             ]),
             'roles' => $user->getRoleNames()->values(),

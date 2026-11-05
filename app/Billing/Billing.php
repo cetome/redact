@@ -147,35 +147,6 @@ class Billing
     }
 
     /**
-     * One paid product fewer (a deleted paid product): one add-on unit or plan unit less, or the
-     * subscription ends at the close of the period when only the plan is left. Data is never
-     * touched here.
-     */
-    public function removeProduct(Organisation $organisation, User $by): void
-    {
-        $subscription = $this->subscription($organisation);
-        if ($subscription === null || ! $subscription->valid() || $subscription->onGracePeriod()) {
-            return;
-        }
-
-        $extra = $this->item($subscription, Catalogue::ITEM_EXTRA);
-        $quantity = fn (?string $price) => (int) ($subscription->items->firstWhere('stripe_price', $price)->quantity ?? $subscription->quantity);
-        if ($extra !== null && $quantity($extra) > 1) {
-            $subscription->decrementQuantity(1, $extra);
-        } elseif ($extra !== null) {
-            $subscription->removePrice($extra);
-        } elseif ($quantity($this->item($subscription, Catalogue::ITEM_PLAN)) > 1) {
-            $subscription->decrementQuantity(1, $this->single($subscription));
-        } else {
-            $subscription->cancel();
-            $this->log($organisation, $by, 'subscription cancelled', ['ends_at' => $subscription->ends_at?->toIso8601String()]);
-
-            return;
-        }
-        $this->log($organisation, $by, 'product removed', ['items' => $this->items($subscription->refresh())]);
-    }
-
-    /**
      * The number of products the subscription pays for, the free one counted (billing page, as FAST):
      * add-on units added until it matches. Only ever up (owner 2026-11-05): a total at or below what
      * is paid for changes nothing, whatever the caller sends. Cancelling is on Stripe's portal.

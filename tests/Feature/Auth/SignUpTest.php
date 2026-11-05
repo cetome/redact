@@ -31,7 +31,6 @@ class SignUpTest extends TestCase
             'email' => 'Grace@Example.test',
             'organisation' => 'Hopper Radio Ltd',
             'terms' => '1',
-            'product_news' => '1',
             'altcha' => 'ok',
         ], $overrides);
     }
@@ -49,7 +48,6 @@ class SignUpTest extends TestCase
         $this->assertNull($user->email_verified_at);
         $this->assertNotNull($user->terms_accepted_at);
         $this->assertSame(config('redact.auth.terms_version'), $user->terms_version);
-        $this->assertFalse($user->wants_product_news, 'No newsletter: nothing asks for it (owner 2026-11-05).');
 
         $organisation = $user->organisations()->firstOrFail();
         $this->assertSame('Hopper Radio Ltd', $organisation->name);

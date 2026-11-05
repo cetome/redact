@@ -36,6 +36,8 @@ Route::delete('/users/{user}', [UserController::class, 'erase'])->name('users.er
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/page/{page}', [ProductController::class, 'index'])->name('products.page')->whereNumber('page');
 Route::post('/products/filter', [ProductController::class, 'filter'])->name('products.filter');
+// Delete a customer's product (super-admin; customers only on self-hosted installs or in Enterprise).
+Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy')->middleware('recent.auth');
 
 Route::get('/organisations', [OrganisationController::class, 'index'])->name('organisations.index');
 Route::get('/organisations/page/{page}', [OrganisationController::class, 'index'])->name('organisations.page')->whereNumber('page');

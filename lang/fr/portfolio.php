@@ -39,6 +39,5 @@ return [
     'no_work' => 'Rien de fait ces :days derniers jours.',
     'all_history' => 'Tout l’historique',
     'paid_title' => 'Le portefeuille est inclus dans les offres payantes',
-    'paid_text' => 'Tous les produits et versions de l’organisation au même endroit : où en est chacun, les changements significatifs à décider, ce qui reste à revérifier, et qui fait quoi dans le temps.',
     'link' => 'Portefeuille',
 ];

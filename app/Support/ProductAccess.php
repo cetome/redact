@@ -29,6 +29,9 @@ use App\Models\User;
  * The demo product an account loads (products.is_demo, App\Guest\DemoProduct) is read-only for
  * everyone too (no edit, no team, no AI, no import): viewing and downloads stay, its owner and the
  * organisation's administrators remove it: `demo`.
+ * Deleting a product (owner 2026-11-05): its owner on a self-hosted install, in an Enterprise
+ * organisation or in a sandbox; anywhere else on the hosted service only a super-admin, from the
+ * console (Admin\ProductController::destroy). A deleted product gives its slot back.
  */
 final readonly class ProductAccess
 {
@@ -41,6 +44,8 @@ final readonly class ProductAccess
         public bool $demo = false,
         // Locked as a free product beyond the plan (not a subscription that ended): the banner differs.
         public bool $overPlan = false,
+        // The customer may delete their products: self-hosted, Enterprise or a sandbox.
+        public bool $customerDeletes = false,
     ) {}
 
     public static function for(User $user, Product $product): self
@@ -61,6 +66,7 @@ final readonly class ProductAccess
                 && Plan::for($product->organisation)->isLocked($product) ? $product->organisation_id : null,
             demo: (bool) $product->is_demo,
             overPlan: $product->plan_slot === Plan::SLOT_FREE,
+            customerDeletes: $user->is_guest || Plan::selfHosted() || Plan::for($product->organisation)->isEnterprise(),
         );
     }
 
@@ -131,7 +137,11 @@ final readonly class ProductAccess
 
     public function canDelete(): bool
     {
-        return $this->role === ProductRole::Owner || ($this->demo && $this->orgAdmin);
+        if ($this->demo) {
+            return $this->role === ProductRole::Owner || $this->orgAdmin;
+        }
+
+        return $this->role === ProductRole::Owner && $this->customerDeletes;
     }
 
     /**

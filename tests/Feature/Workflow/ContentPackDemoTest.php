@@ -134,7 +134,7 @@ class ContentPackDemoTest extends TestCase
         $this->get(route('versions.declaration', $version))->assertOk()->assertSee('Emotec')->assertSee('Camille Martin');
 
         // Downloads need an account: kept, the same product renders its reports, workbooks and declaration.
-        $account = app(ClaimSandbox::class)->convert($guest, ['name' => 'Grace', 'email' => 'grace@example.test', 'organisation' => '', 'product_news' => false]);
+        $account = app(ClaimSandbox::class)->convert($guest, ['name' => 'Grace', 'email' => 'grace@example.test', 'organisation' => '']);
         $this->signedIn($account);
         foreach ([['assessment', 'docx'], ['assessment', 'xlsx'], ['trees', 'docx'], ['trees', 'xlsx'], ['review', 'docx'], ['review', 'xlsx']] as [$kind, $format]) {
             $this->get(route('reports.download', ['version' => $version, 'kind' => $kind, 'format' => $format]))->assertOk();

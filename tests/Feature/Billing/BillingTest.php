@@ -16,6 +16,8 @@ use Illuminate\Testing\TestResponse;
 use Laravel\Cashier\Subscription;
 use PHPUnit\Framework\Attributes\After;
 use Spatie\Activitylog\Models\Activity;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 use Stripe\ApiRequestor;
 use Tests\Concerns\BuildsProducts;
 use Tests\Concerns\FakesStripe;
@@ -152,6 +154,27 @@ class BillingTest extends TestCase
         $this->assertSame(1, $this->organisation->subscriptions()->count());
     }
 
+    public function test_a_late_created_event_for_a_cancelled_subscription_never_gives_premium(): void
+    {
+        // Never stored here (e.g. the second subscription of a payer, ended at Stripe), Stripe now says canceled.
+        $this->stripeReturns('GET /v1/subscriptions/sub_test', ['object' => 'subscription', 'status' => 'canceled', 'canceled_at' => time()] + $this->stripeSubscription('cus_test', 1));
+        $this->postStripeWebhook(['id' => 'evt_late_created', 'type' => 'customer.subscription.created', 'data' => ['object' => $this->stripeSubscription('cus_test', 1)]])->assertOk();
+
+        $this->assertFalse(Plan::fresh($this->organisation)->hasActiveSubscription());
+    }
+
+    public function test_without_a_signing_secret_every_webhook_is_refused(): void
+    {
+        $this->subscribe(1);
+        config(['cashier.webhook.secret' => '']);
+
+        // A forged "customer.deleted" would otherwise unlink the organisation from Stripe.
+        $this->postJson('/stripe/webhook', ['id' => 'evt_forged', 'type' => 'customer.deleted', 'data' => ['object' => ['id' => 'cus_test']]])
+            ->assertForbidden();
+        $this->assertSame('cus_test', $this->organisation->fresh()->stripe_id);
+        $this->assertTrue(Plan::fresh($this->organisation)->hasActiveSubscription());
+    }
+
     public function test_the_names_typed_in_checkout_fill_the_missing_ones_only(): void
     {
         // An account known by its e-mail address, its organisation named after it.
@@ -255,10 +278,11 @@ class BillingTest extends TestCase
         $this->assertTrue(ProductAccess::for($this->owner, $free->product)->canEdit($free));
         $this->assertSame(2, Product::query()->count());
 
-        // Shown with the reason, and the settings page still allows deleting it.
+        // Shown with the reason. Its settings page is gone: a Premium customer does not delete products
+        // (owner 2026-11-05: only a super-admin, or the customer in Enterprise or self-hosted).
         $this->followingRedirects()->get(route('products.show', $paid->product))->assertOk()
             ->assertSee(__('plans.locked.banner'))->assertSee(__('plans.locked.reactivate'));
-        $this->get(route('products.edit', $paid->product))->assertOk()->assertSee(__('plans.locked.settings'))->assertSee(__('products.delete'));
+        $this->get(route('products.edit', $paid->product))->assertNotFound();
 
         // Editing and imports are refused with the reason (not a 404), the free product is untouched.
         $this->put(route('products.update', $paid->product), ['name' => 'Renamed'])->assertRedirect()->assertSessionHas('error', __('plans.locked.banner'));
@@ -334,26 +358,31 @@ class BillingTest extends TestCase
         $this->assertFalse(ProductAccess::for($this->owner, $paid->product)->canEdit($paid));
     }
 
-    public function test_deleting_a_paid_product_may_also_reduce_the_subscription(): void
+    public function test_deleting_a_paid_product_never_reduces_the_subscription(): void
     {
         $this->subscribe(2);
         $first = $this->paidProduct('Paid one');
         $second = $this->paidProduct('Paid two');
         $this->stripeReturns('POST /v1/subscriptions/sub_test', fn (array $params) => $this->stripeSubscription('cus_test', (int) $params['quantity']));
 
-        $this->get(route('products.edit', $first->product))->assertOk()->assertSee('Also reduce your subscription by one product');
+        // A Premium customer deletes nothing (owner 2026-11-05), and never reduces the subscription.
+        $this->get(route('products.edit', $first->product))->assertOk()
+            ->assertDontSee('name="reduce_subscription"', false)->assertDontSee(e(__('products.delete_confirm')), false);
+        $this->delete(route('products.destroy', $first->product))->assertNotFound();
 
-        // Without the box: the slot stays paid for and free for a new product.
-        $this->delete(route('products.destroy', $first->product))->assertRedirect(route('dashboard'));
+        // A super-admin deletes it from the console: the slot comes back, the subscription is untouched.
+        $admin = User::factory()->create();
+        $admin->assignRole(Role::findOrCreate('staff', 'web'));
+        $admin->assignRole(Role::findOrCreate('super-admin', 'web'));
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
+        $this->signIn($admin, 'passkey')->get(route('admin.organisations.show', $this->organisation))->assertOk()
+            ->assertSee(route('admin.products.destroy', $second->product), false);
+        $this->delete(route('admin.products.destroy', $second->product), ['reduce_subscription' => '1'])
+            ->assertRedirect(route('admin.organisations.show', $this->organisation));
+        $this->assertSoftDeleted($second->product);
         $this->assertSame([], $this->stripeCalls('POST', '/v1/subscriptions/sub_test'));
-        $this->assertSame(1, Plan::fresh($this->organisation)->unusedPaidSlots());
-
-        // With it: one unit less (nothing is deleted on Stripe's side).
-        $this->delete(route('products.destroy', $second->product), ['reduce_subscription' => '1'])
-            ->assertRedirect(route('dashboard'))->assertSessionHas('status', fn ($s) => str_contains($s, __('plans.billing.reduced')));
-        $this->assertEquals(1, $this->stripeCalls('POST', '/v1/subscriptions/sub_test')[0]['params']['quantity']);
-        $this->assertSame(1, (int) $this->organisation->subscription('products')->quantity);
-        $this->assertSame(1, Product::withTrashed()->where('name', 'Paid two')->count());
+        $this->assertSame(1, Plan::fresh($this->organisation)->unusedPaidSlots(), 'The slot is free for a new product.');
+        $this->assertSame(2, (int) $this->organisation->subscription('products')->quantity);
     }
 
     public function test_the_billing_page_shows_the_plan_invoices_and_opens_the_portal_for_admins_only(): void

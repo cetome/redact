@@ -19,7 +19,6 @@
                         @include('dashboard._demo')
                     @endif
                     <div class="a-plan-upgrade">
-                        <span class="a-help">{{ $plans->first()->productRefusal() }}</span>
                         <a href="{{ route('products.create') }}" class="a-btn a-btn-outline"><x-lucide-circle-arrow-up aria-hidden="true" />{{ __('plans.upgrade') }}</a>
                     </div>
                 </x-slot:actions>
@@ -138,11 +137,11 @@
                             <td class="max-sm:hidden">
                                 @if ($next && $latest->isEditable() && ! $product->is_demo)
                                     <a href="{{ $next['href'] }}" class="a-btn a-btn-outline a-btn-sm max-w-full">
-                                        <span class="truncate">{{ $next['label'] }}@if ($next['left']) · {{ __('ui.left', ['count' => $next['left']]) }}@endif</span>
+                                        <span class="truncate">{{ $next['label'] }}@if ($next['left']) · {{ trans_choice('ui.left', $next['left'], ['count' => $next['left']]) }}@endif</span>
                                         <x-lucide-arrow-right aria-hidden="true" />
                                     </a>
                                 @elseif ($latest)
-                                    <a href="{{ route('versions.show', $latest) }}" class="a-btn a-btn-ghost a-btn-sm">{{ __('ui.open') }}<x-lucide-arrow-right aria-hidden="true" /></a>
+                                    <a href="{{ route('versions.show', $latest) }}" class="a-btn a-btn-outline a-btn-sm">{{ __('ui.open') }}<x-lucide-arrow-right aria-hidden="true" /></a>
                                 @endif
                             </td>
                         </tr>

@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\App;
 use RuntimeException;
 
 /**
- * LOCAL USE ONLY: realistic data for demo@cetome.com so the screens are not empty.
+ * LOCAL USE ONLY: realistic data for demo@example.com so the screens are not empty.
  *
  *   php artisan db:seed --class=DemoSeeder
  *
@@ -45,7 +45,7 @@ class DemoSeeder extends Seeder
             throw new RuntimeException('DemoSeeder is for local use only.');
         }
 
-        $user = User::where('email', 'demo@cetome.com')->firstOrFail();
+        $user = User::where('email', 'demo@example.com')->firstOrFail();
         $organisation = $user->organisations()->first() ?? tap(Organisation::create(['name' => 'Emotec', 'created_by' => $user->id]),
             fn (Organisation $o) => $o->members()->attach($user->id, ['role' => 'admin']));
 

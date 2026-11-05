@@ -104,6 +104,8 @@
     font-size: var(--text-label);
     color: var(--c-ink-muted);
   }
+  /* Phones: the crumb keeps its distance from the buttons on the right. */
+  @media (width < 48rem) { .a-crumbs { margin-right: 0.5rem; } }
   .a-crumbs > * {
     min-width: 0;
     white-space: nowrap;
@@ -159,6 +161,41 @@
     margin-left: auto;
   }
 
+  /* The header: desktop controls from 64rem, the phone menu below (components/ui/mobile-menu). */
+  .a-desktop-only { @media (width < 64rem) { display: none !important; } }
+  .a-mobile { display: flex; align-items: center; gap: 0.25rem; @media (width >= 64rem) { display: none; } }
+  .a-mobile-products { gap: 0.4rem; &[aria-current] { color: var(--c-link); background-color: var(--a-info-bg); } }
+  .a-mobile-menu > summary { list-style: none; cursor: pointer; &::-webkit-details-marker { display: none; } }
+  .a-mobile-panel {
+    /* Under the sticky header, which is the containing block (it has a backdrop): the viewport's height minus the bar. */
+    position: absolute; top: 100%; left: 0; right: 0; height: calc(100dvh - var(--spacing-topbar)); z-index: 2200;
+    display: flex; flex-direction: column; background-color: var(--c-surface);
+  }
+  .a-mobile-open, .a-mobile-open body { overflow: hidden; }
+  .a-mobile-icon-close { display: none; }
+  .a-mobile-menu[open] > summary { .a-mobile-icon-open { display: none; } .a-mobile-icon-close { display: block; } }
+  .a-mobile-body { flex: 1; overflow: auto; display: grid; align-content: start; gap: 0.15rem; padding: 0.9rem 0.75rem; }
+  .a-mobile-row {
+    display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem 0.9rem; border-radius: var(--radius-lg);
+    font-size: var(--text-base); font-weight: 600; color: var(--c-ink); text-decoration: none;
+    & > svg:first-child { width: 1.25rem; height: 1.25rem; color: var(--c-ink-subtle); }
+    &.is-big { padding-block: 0.85rem; font-weight: 800; }
+    &[aria-current] { color: var(--c-link); background-color: var(--a-info-bg); & > svg:first-child { color: var(--c-link); } }
+    &:hover, &:focus-visible { background-color: var(--a-info-bg); outline: none; }
+  }
+  .a-mobile-chev { width: 1rem; height: 1rem; margin-left: auto; color: var(--c-ink-subtle); }
+  .a-mobile-label { margin: 0.2rem 0.9rem 0.3rem; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-ink-subtle); }
+  .a-mobile-account {
+    display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.25rem; padding: 0.75rem 0.9rem;
+    border: 1px solid var(--c-line); border-radius: var(--radius-xl); color: var(--c-ink); text-decoration: none;
+    & .a-avatar { width: 2.5rem; height: 2.5rem; font-size: 14px; }
+    &[aria-current], &:hover { border-color: var(--c-primary); }
+  }
+  .a-mobile-account-text { display: grid; min-width: 0; flex: 1; & strong { font-size: var(--text-base); } & span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--text-label); color: var(--c-ink-muted); } }
+  .a-mobile-foot { display: grid; gap: 0.6rem; padding: 0.75rem 0.75rem 1.1rem; border-top: 1px solid var(--c-line); background-color: var(--c-canvas-subtle); }
+  .a-mobile-switches { display: flex; gap: 0.5rem; & > details { flex: 1; } & .a-locale-btn { width: 100%; justify-content: center; } & > button { border: 1px solid var(--c-line); background-color: var(--c-surface); } }
+  .a-menu-up .a-menu-panel { top: auto; bottom: calc(100% + 0.4rem); right: auto; left: 0; min-width: 100%; }
+
   /* Dropdown menu without script: <details class="a-menu"><summary>…</summary><div class="a-menu-panel">… */
   .a-menu {
     position: relative;
@@ -180,6 +217,9 @@
     box-shadow: var(--a-shadow-pop);
   }
   .a-menu-panel-left { right: auto; left: 0; }
+  .a-menu-panel-narrow { min-width: 10rem; }
+  /* The language switch (components/ui/locale-switch): icon and the language's code. */
+  .a-locale-btn { gap: 0.3rem; cursor: pointer; & span { font-size: var(--text-label); letter-spacing: 0.04em; } }
   .a-menu-head {
     margin-bottom: 0.35rem;
     border-bottom: 1px solid var(--c-line);
@@ -703,8 +743,15 @@
     overflow-y: hidden;
     box-shadow: inset 0 -1px 0 var(--c-line);
     scrollbar-width: thin;
+    /* Phones: a tab is whole or hidden, the cut edges fade (tabs-scroll.js shows the selected one). */
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 1rem;
+    @media (width < 48rem) {
+      mask-image: linear-gradient(to right, transparent, #000 1rem, #000 calc(100% - 1rem), transparent);
+    }
   }
   .a-tab {
+    scroll-snap-align: start;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
@@ -884,6 +931,15 @@
   .a-btn-icon svg { width: 1.05rem; height: 1.05rem; }
   .a-btn-block { width: 100%; }
   /* A text button inside running text or a table cell. */
+  /* A link inside a sentence (alerts, tables). */
+  .a-link {
+    font-weight: 600;
+    color: var(--c-link);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    &:hover { text-decoration-thickness: 2px; }
+    &:focus-visible { outline: 2px solid var(--a-focus); outline-offset: 2px; border-radius: 2px; }
+  }
   .a-link-btn {
     border: 0;
     background: none;
@@ -1011,6 +1067,8 @@
      ---------------------------------------------------------------------------------------------- */
 
   .a-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem; }
+  /* A row's delete button (console tables): muted until hovered, then the danger colour. */
+  .a-row-delete { color: var(--c-ink-muted); &:hover, &:focus-visible { color: var(--color-red-700); background-color: color-mix(in srgb, var(--color-red-600) 10%, transparent); } }
   .a-chip {
     display: inline-flex;
     height: 1.5rem;
@@ -3635,7 +3693,7 @@
    ------------------------------------------------------------------------------------------------ */
 @layer components {
   .a-orgteam th[scope="row"] { min-width: 12rem; }
-  .a-orgteam-chip { gap: 0.4rem; }
+  .a-orgteam-chip { gap: 0.4rem; @media (width < 48rem) { height: auto; min-height: 1.5rem; padding-block: 0.15rem; white-space: normal; } }
   a.a-orgteam-chip { text-decoration: none; &:hover { border-color: var(--c-primary); color: var(--c-link); } }
   .a-orgteam-role { font-weight: 500; color: var(--c-ink-muted); }
   .a-orgteam-role::before { content: "·"; margin-right: 0.4rem; color: var(--c-ink-subtle); }

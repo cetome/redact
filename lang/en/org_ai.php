@@ -5,7 +5,7 @@ return [
     'tab' => 'Settings',
     'title' => 'Settings',
     'intro' => 'How your organisation works in REDact.',
-    'intro_ai' => 'What answers your organisation’s AI buttons.',
+    'intro_ai' => 'The AI that answers your organisation’s AI buttons.',
 
     'card' => 'AI model',
     'lead_saas' => 'cetome’s AI answers every AI button, included in your paid plan. Your organisation can bring its own key or its own model instead: its calls then never use your AI units. The key is stored encrypted and never shown again.',

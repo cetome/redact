@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeStartController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\PublicProductController;
 use App\Http\Controllers\TemplateController;
@@ -36,6 +37,8 @@ Route::get('/templates/{file}', [TemplateController::class, 'download'])->name('
 Route::get('/dl', [TemplateController::class, 'legacy'])->name('templates.legacy');
 // Contact form (App\Http\Controllers\ContactController: per-IP and per-address limits inside, invisible ALTCHA).
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+// The language switch in the headers: the account's language when signed in, else this visit's.
+Route::post('/locale', [LocaleController::class, 'update'])->name('locale.update')->middleware('throttle:30,1');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send')->middleware('throttle:30,60,contact-send');
 Route::get('/contact/altcha', [ContactController::class, 'challenge'])->name('contact.altcha')->middleware('throttle:30,1,contact-altcha');
 // The form with a topic chosen (pricing, privacy...: App\Models\ContactMessage::TOPICS).

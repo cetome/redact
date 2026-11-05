@@ -8,7 +8,7 @@
     </div>
     <div class="a-panel-body">
         @if ($recent)
-            <form method="POST" action="{{ route('account.destroy') }}" class="flex flex-wrap items-center gap-3"
+            <form method="POST" action="{{ route('account.destroy') }}" data-recent-auth class="flex flex-wrap items-center gap-3"
                 x-data="confirmSubmit" data-confirm="{{ __('auth.delete.confirm_dialog') }}" x-on:submit="check">
                 @csrf
                 @method('DELETE')

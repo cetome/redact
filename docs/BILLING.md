@@ -51,7 +51,7 @@ monthly price, one unit per paid product) billing is **off**.
 | First product | New product, free (`products.plan_slot = free`). |
 | Subscribe (no subscription) | The **subscribe page** (`/billing/{id}/subscribe`, as FAST's `/subscribe`): monthly or yearly, the number of products (the free one counted, up to 11, that is 10 000 € a year, more: talk to us), the total, the line "REDact is sold to businesses only: by paying, you confirm…" (no box to tick), then **Continue to secure payment** opens Stripe Checkout with the plan price and the add-on units (Stripe Tax, billing address and VAT number collected). Reached from **Premium** on the pricing page (`/subscribe`: a visitor creates an account first, the e-mail code brings them back to it, and the passkey is offered after the payment), **Upgrade to Premium** in the app bar (organisations on Free), and New product at the limit. Cancelled on Stripe: back to the subscribe page. Paid: New product. |
 | Another product, subscription active | "This adds 100 € per month (prorated)" (or per year): a confirmation box, then one more add-on unit on the subscription's interval (proration on the next invoice). |
-| Deleting a paid product | The delete form offers **Also reduce your subscription** (one add-on unit less, or cancellation at the end of the period when only the plan is left). Never automatic: without it the paid slot stays available for a new product. |
+| Deleting a paid product | The paid slot stays paid for and free for a new product. A customer never reduces the subscription (owner 2026-11-05): stopping is cancelling, in Stripe's customer portal. |
 | Trial (staff) | The plan applies until the end of the chosen day, without a card. Then, or when staff end it, back to Free: products beyond it become read-only, never deleted. A subscription takes over a trial. |
 | Payment failed | Stripe retries (Smart Retries). Products stay editable meanwhile, the billing page asks to update the payment method. |
 | Subscription cancelled or unpaid | Paid products become **read-only** (banner "Your subscription has ended: reactivate to edit"), never deleted, every download still works. The free product stays editable. Reactivating (portal or a new Checkout) makes them editable again. When the quantity shrinks, the newest paid products are the ones that become read-only. |
@@ -113,8 +113,9 @@ Cashier rejects any request whose `Stripe-Signature` does not match the secret (
   `4242 4242 4242 4242` (paid), `4000 0000 0000 3220` (3-D Secure), `4000 0000 0000 0341` (attaches,
   then fails at the next charge: test the failed payment and the read-only state). Any future
   expiry date, any CVC. A test VAT number such as `DE123456789` shows the reverse charge.
-- Add a third product (confirmation screen, quantity 2), delete one with "Also reduce your
-  subscription", cancel in the portal, then check the banner, the downloads and the reactivation.
+- Add a third product (confirmation screen, quantity 2), have a super-admin delete one from the
+  console (the allowance stays paid for), cancel in the portal, then check the banner, the
+  downloads and the reactivation.
 - Automated tests never call Stripe: `tests/Concerns/FakesStripe.php` stubs the stripe-php HTTP
   client and signs webhook payloads (`tests/Feature/Billing`).
 

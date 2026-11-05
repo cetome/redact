@@ -34,7 +34,6 @@ class AccountTest extends TestCase
             'name' => 'Ada Lovelace',
             'locale' => 'fr',
             'timezone' => 'Europe/London',
-            'product_news' => '1',
         ])->assertRedirect(route('account.show'));
         $this->assertTrue($user->fresh()->shortcuts_enabled);
 

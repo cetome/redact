@@ -200,6 +200,23 @@ class AccountEraseTest extends TestCase
         $this->assertCount(1, $this->stripeCalls('DELETE', '/v1/subscriptions/sub_buyer'));
     }
 
+    public function test_the_page_tells_the_browser_how_long_the_confirmation_lasts(): void
+    {
+        $this->paying();
+        $page = route('admin.organisations.show', $this->organisation);
+
+        // Just confirmed: about ten minutes left, the protected forms marked for the passkey in place.
+        $this->signIn($this->admin)->withSession(['auth.confirmed_at' => time()]);
+        $html = $this->get($page)->assertOk()->getContent();
+        $this->assertMatchesRegularExpression('/<meta name="redact-recent" content="(59\d|600)" data-window="600"/', $html);
+        $this->assertStringContainsString('data-recent-auth', $html);
+        $this->assertStringContainsString('data-options="'.route('passkey.confirm-options').'"', $html);
+
+        // Long ago: nothing left, the passkey is asked for on the page when the form is sent.
+        $this->withSession(['auth.confirmed_at' => 0, EnsureSessionIsValid::SIGNED_IN_AT => time() - 3600]);
+        $this->assertStringContainsString('<meta name="redact-recent" content="0"', $this->get($page)->getContent());
+    }
+
     public function test_a_stale_sign_in_confirms_then_returns_to_the_page_not_the_form_address(): void
     {
         $this->paying();

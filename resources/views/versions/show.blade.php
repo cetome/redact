@@ -34,7 +34,7 @@
             <span class="a-empty-icon"><x-lucide-arrow-right aria-hidden="true" /></span>
             <span class="min-w-0 flex-1">
                 <span class="a-micro block">{{ __('versions.next_step') }}</span>
-                <span class="block font-bold">{{ $next['label'] }}@if ($next['left']) <span class="a-muted font-semibold">· {{ __('ui.left', ['count' => $next['left']]) }}</span>@endif</span>
+                <span class="block font-bold">{{ $next['label'] }}@if ($next['left']) <span class="a-muted font-semibold">· {{ trans_choice('ui.left', $next['left'], ['count' => $next['left']]) }}</span>@endif</span>
             </span>
             <span class="a-btn a-btn-primary">{{ __('ui.continue') }}</span>
         </a>

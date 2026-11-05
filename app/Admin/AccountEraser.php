@@ -97,14 +97,17 @@ class AccountEraser
         // 1. Stripe: the refund, then the customer (its subscriptions end with it).
         $refunds = [];
         $customers = 0;
-        foreach ($organisations as $organisation) {
-            if (! $organisation->hasStripeId()) {
-                continue;
+        $paying = $organisations->filter(fn (Organisation $o) => $o->hasStripeId());
+        // Every refund first: one refused stops everything before any customer is deleted.
+        if ($refund) {
+            foreach ($paying as $organisation) {
+                if (($amount = $this->refunds->issue($organisation, $by)) !== null) {
+                    $refunds[] = $amount;
+                }
             }
+        }
+        foreach ($paying as $organisation) {
             $stripe = Cashier::stripe();
-            if ($refund && ($amount = $this->refunds->issue($organisation, $by)) !== null) {
-                $refunds[] = $amount;
-            }
             try {
                 $stripe->customers->delete((string) $organisation->stripe_id);
                 $customers++;

@@ -4,7 +4,7 @@
     $members = (int) config('redact.plans.free.team_members', 1);
     $fill = [
         ':hours' => e(\App\Guest\Sandbox::ttlHours()),
-        ':email' => $email !== '' ? '<a class="c-link" href="mailto:'.e($email).'">'.e($email).'</a>' : '<a class="c-link" href="'.e(route('contact')).'">'.e(route('contact')).'</a>',
+        ':email' => $email !== '' ? '<a class="c-link" href="mailto:'.e($email).'">'.e($email).'</a>' : '<a class="c-link" href="'.e(route('contact')).'">'.e(__('terms.links.contact_form')).'</a>',
         ':pgp' => '<a class="c-link" href="'.e(config('redact.security_pgp.url')).'">'.e(__('terms.links.pgp')).'</a>',
         ':fingerprint' => '<code>'.e(config('redact.security_pgp.fingerprint')).'</code>',
         ':price' => e(\App\Billing\Plan::priceLabel()),

@@ -19,7 +19,7 @@
                 <form method="POST" action="{{ route('account.update') }}" class="a-stack gap-4!">
                     @csrf
                     @method('PUT')
-                    <div class="a-field max-w-[28rem]">
+                    <div class="a-field">
                         <label for="name" class="a-label">{{ __('auth.fields.name') }}</label>
                         <input id="name" name="name" type="text" class="a-input" maxlength="120" autocomplete="name"
                             value="{{ old('name', $user->hasName() ? $user->name : '') }}" @error('name') aria-invalid="true" aria-describedby="name-error" @enderror>

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Actions\CreateProduct;
-use App\Billing\Billing;
 use App\Billing\Plan;
 use App\Guest\Sandbox;
 use App\Models\Organisation;
@@ -15,7 +14,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
-use Throwable;
 
 class ProductController extends Controller
 {
@@ -105,7 +103,6 @@ class ProductController extends Controller
             'product' => $product,
             'access' => $access,
             'latest' => $latest,
-            'offerReduce' => $this->offersReduce($request->user(), $product),
         ]);
     }
 
@@ -138,23 +135,12 @@ class ProductController extends Controller
         $this->allow('delete', $product);
 
         $user = $request->user();
-        $reduce = $request->boolean('reduce_subscription') && $this->offersReduce($user, $product);
 
         // A sandbox product and the demo are not kept for restoring: they go for good (the demo can be loaded again).
         $user->is_guest || $product->is_demo ? $product->forceDelete() : $product->delete();
+        // A paid product's slot stays paid for and free for a new product: a customer never reduces the
+        // subscription (owner 2026-11-05). Stopping is cancelling, in Stripe's portal.
         $status = $product->is_demo ? __('products.demo.removed') : __('products.deleted', ['name' => $product->name]);
-
-        // "Also reduce your subscription": only when the deletion leaves a paid slot unused.
-        $organisation = $product->organisation;
-        if ($reduce && Plan::fresh($organisation)->unusedPaidSlots() > 0) {
-            try {
-                app(Billing::class)->removeProduct($organisation, $user);
-                $status .= ' '.__('plans.billing.reduced');
-            } catch (Throwable $e) {
-                report($e);
-                $status .= ' '.__('plans.billing.reduce_failed');
-            }
-        }
 
         return redirect()->route('dashboard')->with('status', $status);
     }
@@ -167,14 +153,6 @@ class ProductController extends Controller
             'plan' => Plan::fresh($organisation),
             'isAdmin' => $organisation->isAdmin($user),
         ]);
-    }
-
-    /** Deleting a paid product may also take one unit off the subscription (an organisation admin decides). */
-    private function offersReduce(User $user, Product $product): bool
-    {
-        return $product->plan_slot === Plan::SLOT_PAID && ! $user->is_guest && Plan::billingEnabled()
-            && $product->organisation->isAdmin($user)
-            && Plan::for($product->organisation)->subscriptionState() === 'active';
     }
 
     /** A guest sandbox holds one product: say so, kindly, and point to an account. */

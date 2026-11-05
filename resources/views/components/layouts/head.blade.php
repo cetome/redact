@@ -63,6 +63,14 @@
     {{-- The account's theme (Account > Accessibility): theme-init.js applies it, the header button
          saves it. A sandbox (guest) has no account page: its theme stays in the browser. --}}
     <meta name="redact-theme" content="{{ auth()->user()->theme }}" data-url="{{ route('account.theme') }}">
+    @php
+        $recentWindow = (int) config('redact.auth.recent_auth') * 60;
+        $recentLeft = max(0, \App\Http\Middleware\RequireRecentAuth::lastProof(session()->driver()) + $recentWindow - time());
+    @endphp
+    {{-- "Confirm it's you" in place (modules/recent-auth.js): seconds left of the last confirmation, the window, passkeys or not. --}}
+    <meta name="redact-recent" content="{{ $recentLeft }}" data-window="{{ $recentWindow }}"
+        data-passkeys="{{ auth()->user()->passkeys()->exists() ? '1' : '0' }}"
+        data-options="{{ route('passkey.confirm-options') }}" data-submit="{{ route('passkey.confirm') }}">
 @endif
 <script src="{{ asset('js/theme-init.js') }}" nonce="{{ app('csp-nonce') }}"></script>
 @vite(['resources/css/app.css', 'resources/js/app.js'])

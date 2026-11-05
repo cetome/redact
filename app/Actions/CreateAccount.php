@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 class CreateAccount
 {
     /**
-     * @param  array{name?: string, email: string, organisation?: ?string, product_news?: bool, locale?: string}  $data
+     * @param  array{name?: string, email: string, organisation?: ?string, locale?: string}  $data
      */
     public function __invoke(array $data): User
     {
@@ -28,7 +28,6 @@ class CreateAccount
                 'email' => mb_strtolower($data['email']),
                 'organisation_name' => self::organisation($data) !== '' ? self::organisation($data) : null,
                 'locale' => $data['locale'] ?? config('app.locale'),
-                'wants_product_news' => (bool) ($data['product_news'] ?? false),
             ]);
             $user->forceFill([
                 'terms_accepted_at' => now(),

@@ -4,7 +4,10 @@ namespace App\Billing;
 
 use App\Models\Organisation;
 use App\Models\User;
+use Illuminate\Contracts\Cache\LockTimeoutException;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Cashier\Cashier;
+use RuntimeException;
 use Stripe\Charge;
 
 /**
@@ -73,21 +76,35 @@ class ProratedRefund
     /** Refunds the unused part now. Returns the amount refunded, or null when there is nothing to refund. */
     public function issue(Organisation $organisation, User $by): ?string
     {
-        $prorated = $this->compute($organisation);
-        if ($prorated === null) {
-            return null;
+        // One refund at a time per organisation (two tabs, or End the subscription and Delete the
+        // account at once), and an idempotency key per payment: Stripe never refunds it twice.
+        try {
+            return $this->locked($organisation, $by);
+        } catch (LockTimeoutException) {
+            throw new RuntimeException(__('plans.admin.end.busy'));
         }
-        Cashier::stripe()->refunds->create([
-            'charge' => $prorated['charge']->id,
-            'amount' => $prorated['cents'],
-            'reason' => 'requested_by_customer',
-            'metadata' => [
-                'redact_organisation' => (string) $organisation->getKey(), 'redact_by' => (string) $by->getKey(),
-                'redact_unused_days' => $prorated['days'].'/'.$prorated['total'],
-            ],
-        ]);
+    }
 
-        return StripeSettings::label($prorated['cents'], (string) $prorated['charge']->currency);
+    /** The refund itself, under the organisation's lock. */
+    private function locked(Organisation $organisation, User $by): ?string
+    {
+        return Cache::lock('redact-refund:'.$organisation->getKey(), 60)->block(20, function () use ($organisation, $by): ?string {
+            $prorated = $this->compute($organisation);
+            if ($prorated === null) {
+                return null;
+            }
+            Cashier::stripe()->refunds->create([
+                'charge' => $prorated['charge']->id,
+                'amount' => $prorated['cents'],
+                'reason' => 'requested_by_customer',
+                'metadata' => [
+                    'redact_organisation' => (string) $organisation->getKey(), 'redact_by' => (string) $by->getKey(),
+                    'redact_unused_days' => $prorated['days'].'/'.$prorated['total'],
+                ],
+            ], ['idempotency_key' => 'redact-refund-'.$prorated['charge']->id]);
+
+            return StripeSettings::label($prorated['cents'], (string) $prorated['charge']->currency);
+        });
     }
 
     /**

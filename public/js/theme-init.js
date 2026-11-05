@@ -20,9 +20,17 @@
     apply();
     if (device.addEventListener) {
         device.addEventListener('change', function () {
-            if (theme !== 'light' && theme !== 'dark') {
-                apply();
+            // The choice now (the header button may have changed it since the page loaded).
+            var current = meta ? meta.getAttribute('content') : null;
+            if (!meta) {
+                try {
+                    current = localStorage.getItem('theme');
+                } catch (e) {
+                    current = null;
+                }
             }
+            theme = current;
+            apply();
         });
     }
 })();

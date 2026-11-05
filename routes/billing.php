@@ -21,7 +21,7 @@ Route::prefix('/billing/{organisation}')->name('billing.')->group(function () {
     Route::get('/success/{session?}', [BillingController::class, 'success'])->name('success')->where('session', '[A-Za-z0-9_]{1,255}');
     Route::get('/cancelled', [BillingController::class, 'cancelled'])->name('cancelled');
     Route::post('/products', [BillingController::class, 'addProduct'])->name('products.add')->middleware('throttle:10,10');
-    // The number of products on the subscription, up or down (billing page, as FAST).
+    // The number of products on the subscription, up only (never fewer from the billing page) (billing page, as FAST).
     Route::put('/products', [BillingController::class, 'setProducts'])->name('products.set')->middleware('throttle:10,10');
     Route::post('/reactivate', [BillingController::class, 'reactivate'])->name('reactivate')->middleware('throttle:10,10');
     Route::post('/portal', [BillingController::class, 'portal'])->name('portal')->middleware('throttle:20,10');

@@ -31,7 +31,7 @@
                 <span>{{ implode(' ', $erase['blockers']) }}</span>
             </div>
         @else
-            <form method="POST" action="{{ route('admin.users.erase', $user) }}" class="a-stack gap-3!" x-data="confirmSubmit"
+            <form method="POST" action="{{ route('admin.users.erase', $user) }}" class="a-stack gap-3!" data-recent-auth x-data="confirmSubmit"
                   data-confirm="{{ __('admin.users.erase.confirm', ['email' => $user->email]) }}" @submit="check">
                 @csrf
                 @method('DELETE')

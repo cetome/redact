@@ -92,8 +92,9 @@ MAIL_USERNAME=no-reply@example.com
 MAIL_PASSWORD=...
 MAIL_FROM_ADDRESS=no-reply@example.com
 MAIL_FROM_NAME="cetome REDact"
-REDACT_CONTACT_TO=info@example.com  # contact form messages (required: no address is in the code)
+REDACT_CONTACT_TO=info@example.com  # contact form messages (empty: kept in the console only)
 REDACT_SECURITY_CONTACT=security@example.com  # security.txt, terms, account e-mails
+REDACT_SECURITY_URL=https://cetome.com/security  # how to report a security issue (contact page, footers)
 
 PASSKEYS_USER_HANDLE_SECRET=<64 random characters, never change it>
 ALTCHA_HMAC_KEY=<64 random characters>

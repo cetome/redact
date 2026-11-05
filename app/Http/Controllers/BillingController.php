@@ -258,6 +258,10 @@ class BillingController extends Controller
         $plan = Plan::fresh($organisation);
         $count = $plan->lockedPaidCount();
         abort_unless($plan->canBuy() && $count > 0, 404);
+        // Never past what is sold online (owner: 11 products, then "Talk to us").
+        if ($plan->freeSlots + $plan->paidSlots + $count > self::MAX_PRODUCTS) {
+            return redirect()->route('billing.show', $organisation)->with('error', __('plans.add.maximum', ['max' => self::MAX_PRODUCTS]));
+        }
         if ($plan->hasActiveSubscription()) {
             $request->validate(['confirm' => ['accepted']], ['confirm.accepted' => __('plans.billing.confirm_required')]);
         }

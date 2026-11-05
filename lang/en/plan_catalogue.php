@@ -37,7 +37,7 @@ return [
         'extra_ai_help' => 'Empty: as many as the plan.',
         'support' => 'Support included',
         'public' => 'Offered on the pricing page with online payment',
-        'public_help' => 'Off: "Talk to us", set by staff on the organisation (a contract or a trial).',
+        'public_help' => 'Off: “Talk to us”, set by staff on the organisation (a contract or a trial).',
         'active' => 'Plan in use',
     ],
 

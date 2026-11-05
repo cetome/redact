@@ -16,5 +16,5 @@ return [
     'continue' => 'Continuer',
     'next' => 'Suivant',
     'open' => 'Ouvrir',
-    'left' => ':count restant(s)',
+    'left' => '{1} :count restant|[2,*] :count restants',
 ];

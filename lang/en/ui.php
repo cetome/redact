@@ -16,5 +16,5 @@ return [
     'continue' => 'Continue',
     'next' => 'Next',
     'open' => 'Open',
-    'left' => ':count left',
+    'left' => '{1} :count left|[2,*] :count left',
 ];

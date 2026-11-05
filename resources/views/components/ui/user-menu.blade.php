@@ -8,7 +8,7 @@
     $user = auth()->user();
     $initials = collect(preg_split('/\s+/', trim((string) $user?->name)) ?: [])->filter()->take(2)->map(fn ($w) => mb_strtoupper(mb_substr($w, 0, 1)))->implode('') ?: '?';
 @endphp
-<details class="a-menu">
+<details {{ $attributes->class(['a-menu']) }}>
     <summary class="a-user-btn" aria-label="{{ __('nav.account') }}">
         @if ($user?->picture_path)
             <img class="a-avatar a-avatar-img" src="{{ route('people.picture', $user) }}" alt="" aria-hidden="true">
@@ -43,9 +43,9 @@
         @endif
         {{-- Support: the contact form, its topic chosen, the sender the account. --}}
         <a class="a-menu-item" href="{{ route('contact.topic', 'support') }}"><x-lucide-life-buoy aria-hidden="true" /> {{ __('nav.support') }}</a>
-        <a class="a-menu-item a-menu-only-mobile" href="{{ route('trees.index') }}"><x-lucide-git-fork aria-hidden="true" /> {{ __('nav.trees') }}</a>
+        {{-- cetome staff: the admin console (owner 2026-11-05: in this menu, not the top bar). --}}
         @if ($user?->isStaff())
-            <a class="a-menu-item a-menu-only-mobile" href="{{ route('admin.dashboard') }}"><x-lucide-shield aria-hidden="true" /> {{ __('nav.admin') }}</a>
+            <a class="a-menu-item" href="{{ route('admin.dashboard') }}" @if (request()->routeIs('admin.*')) aria-current="page" @endif><x-lucide-shield aria-hidden="true" /> {{ __('nav.admin') }}</a>
         @endif
         <div class="a-menu-sep"></div>
         <form method="POST" action="{{ route('logout') }}">

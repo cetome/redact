@@ -4,6 +4,7 @@
 return [
     'title' => 'Historique',
     'link' => 'Historique',
+    'lead_organisation' => 'Qui a modifié quoi, et quand, dans toute l’organisation.',
     'support' => 'support cetome',
     'system' => 'REDact',
     'someone' => 'quelqu’un',

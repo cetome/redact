@@ -151,7 +151,7 @@ return [
                 'name' => 'Free',
                 'tag' => 'Web-based',
                 'price' => '0 €',
-                'unit' => 'no card asked',
+                'unit' => 'no card needed',
                 'products' => ':count product, forever|:count products, forever',
                 'points' => ['cetome rules for RED cyber', 'Downloads and imports'],
                 'team' => 'Owner + :members team member|Owner + :members team members',
@@ -168,7 +168,7 @@ return [
                 'points' => ['Unlimited team on paid products', 'Support'],
                 'checkout' => 'Self check-out, cancel anytime',
                 'cta' => 'Get started',
-                'cta_account' => 'Upgrade',
+                'cta_account' => 'Upgrade to Premium',
             ],
             'self' => [
                 'name' => 'Self-hosted with cetome rules',

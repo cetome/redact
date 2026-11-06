@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Auth\ClientKey;
 use App\Auth\ContactAltcha;
+use App\Events\Conversion;
 use App\Http\Middleware\LogRequest;
 use App\Jobs\Contact\SendContactMessage;
 use App\Models\ContactMessage;
@@ -128,6 +129,8 @@ class ContactController extends Controller
             'ip_hash' => LogRequest::hashIp($request->ip()),
             'user_agent' => self::line($request->userAgent(), 255) ?: null,
         ]);
+
+        Conversion::dispatch(Conversion::CONTACT_SENT, $account, null, ['topic' => $data['topic']]);
 
         // At once, as cetome.com's mail(); the queue only when the mail server refuses.
         try {

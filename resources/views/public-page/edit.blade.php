@@ -245,7 +245,7 @@
                     @csrf
                     <div class="a-field">
                         <label class="a-label" for="pub-file">{{ __('public_page.documents.add') }}</label>
-                        <input type="file" id="pub-file" name="document" class="a-input a-file" required accept=".{{ implode(',.', array_keys(\App\Documents\DocumentStore::KINDS)) }}">
+                        <x-ui.file-input id="pub-file" name="document" required accept=".{{ implode(',.', array_keys(\App\Documents\DocumentStore::KINDS)) }}" />
                         @error('document')<p class="a-error">{{ $message }}</p>@enderror
                     </div>
                     <div class="a-field">

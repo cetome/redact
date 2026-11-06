@@ -50,8 +50,8 @@
         {{-- Inside a product: the product, then the version. "Products" itself is in the menu on the right. --}}
         <nav class="a-crumbs" aria-label="{{ __('common.breadcrumb') }}">
             @if ($crumbProduct)
-                <span class="inline-flex items-center gap-1 overflow-visible">
-                    <a href="{{ $crumbProduct->homeUrl() }}" @if (! $wsVersion) aria-current="page" @endif>{{ $crumbProduct->name }}</a>
+                <span class="a-crumb-product">
+                    <a href="{{ $crumbProduct->homeUrl() }}" @if (! $wsVersion) aria-current="page" @endif data-crumb-name title="{{ $crumbProduct->name }}">{{ $crumbProduct->name }}</a>
                     @if ($switch->isNotEmpty())
                         <details class="a-menu">
                             <summary class="a-close size-6!" aria-label="{{ __('ui.switch_product') }}"><x-lucide-chevrons-up-down class="size-3.5!" aria-hidden="true" /></summary>
@@ -72,7 +72,7 @@
             @endif
             @if ($wsVersion)
                 <span class="a-crumb-sep" aria-hidden="true">/</span>
-                <a href="{{ route('versions.show', $wsVersion) }}" aria-current="page">{{ __('versions.version') }} {{ $wsVersion->label }}</a>
+                <a class="a-crumb-version" href="{{ route('versions.show', $wsVersion) }}" aria-current="page">{{ __('versions.version') }} {{ $wsVersion->label }}</a>
             @endif
         </nav>
 
@@ -171,5 +171,6 @@
             </x-slot:footer>
         @endif
     </x-ui.drawer>
+    @includeIf('hosted.body')
 </body>
 </html>

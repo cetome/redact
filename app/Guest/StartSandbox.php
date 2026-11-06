@@ -2,6 +2,7 @@
 
 namespace App\Guest;
 
+use App\Events\Conversion;
 use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,7 @@ class StartSandbox
 {
     public function __invoke(string $locale): User
     {
-        return DB::transaction(function () use ($locale) {
+        $user = DB::transaction(function () use ($locale) {
             $user = new User([
                 'name' => __('guest.name'),
                 'email' => Sandbox::newEmail(),
@@ -33,5 +34,8 @@ class StartSandbox
 
             return $user->refresh();
         });
+        Conversion::dispatch(Conversion::SANDBOX_STARTED, $user);
+
+        return $user;
     }
 }

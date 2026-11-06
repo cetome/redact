@@ -10,6 +10,7 @@ use App\Auth\SecurityLog;
 use App\Auth\SignIn;
 use App\Auth\SignInMailer;
 use App\Auth\Timing;
+use App\Events\Conversion;
 use App\Guest\ClaimSandbox;
 use App\Guest\OpenSandbox;
 use App\Guest\Sandbox;
@@ -187,6 +188,7 @@ class GuestController extends Controller
 
             $request->session()->forget(self::CLAIM);
             SecurityLog::log('guest sandbox kept', $user, ['path' => 'converted'], $user);
+            Conversion::dispatch(Conversion::ACCOUNT_CREATED, $user, null, ['from' => 'sandbox']);
             $signIn->complete($request, $user, SignIn::EMAIL_CODE);
             $request->session()->put(SignIn::SUGGEST_PASSKEY, true);
 

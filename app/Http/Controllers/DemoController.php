@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Conversion;
 use App\Guest\DemoProduct;
 use App\Guest\OpenSandbox;
 use App\Guest\Sandbox;
@@ -49,6 +50,7 @@ class DemoController extends Controller
 
         $version = $demo->load($user);
         activity(Sandbox::LOG)->causedBy($user)->log('demo loaded');
+        Conversion::dispatch(Conversion::DEMO_LOADED, $user, null, ['guest' => true]);
 
         return redirect()->route('versions.show', $version)->with('next', __('guest.demo.loaded'));
     }
@@ -65,6 +67,7 @@ class DemoController extends Controller
         }
 
         $version = $demo->load($user, $organisation);
+        Conversion::dispatch(Conversion::DEMO_LOADED, $user);
 
         return redirect()->route('versions.show', $version); // the read-only notice says it all, no flash
     }

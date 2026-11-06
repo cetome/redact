@@ -94,7 +94,7 @@
   .a-topbar-brand .c-logo {
     width: 6.75rem;
   }
-  /* Breadcrumb in the bar: "Products / Smart lock / 2.0". Collapses to the last part on phones. */
+  /* Breadcrumb in the bar: "Smart lock / Version 2.0". Phones keep the product only (the page title says the version). */
   .a-crumbs {
     display: flex;
     min-width: 0;
@@ -124,12 +124,30 @@
     font-weight: 700;
     color: var(--c-ink);
   }
+  /* The product and its switcher: the name is cut with "…" (phones: a tap reveals it, crumb.js). */
+  .a-crumb-product { display: inline-flex; min-width: 0; align-items: center; gap: 0.25rem; overflow: visible; }
+  .a-crumb-product > a { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .a-crumb-product > details { flex-shrink: 0; }
+  @media (width < 64rem) {
+    .a-crumb-product > a.is-open {
+      position: absolute; left: 1rem; right: 1rem; top: calc(100% - 0.25rem); max-width: none; z-index: 2300;
+      padding: 0.6rem 0.8rem; border: 1px solid var(--c-line); border-radius: var(--radius-lg);
+      background-color: var(--c-surface); box-shadow: var(--a-shadow-pop); white-space: normal; overflow: visible; color: var(--c-ink);
+    }
+  }
+  /* A file field (components/ui/file-input): the button, then the chosen name. */
+  .a-filepick { display: inline-flex; min-width: 0; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  .a-filepick-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--text-label); color: var(--c-ink-muted); }
+  .a-filepick.has-file .a-filepick-name { color: var(--c-ink); font-weight: 600; }
+  .a-filepick input:focus-visible + label { outline: 2px solid var(--a-focus); outline-offset: 2px; }
   .a-crumb-sep {
     flex-shrink: 0;
     color: var(--c-line-strong);
   }
   @media (width < 48rem) {
-    .a-crumbs > :not(:last-child) { display: none !important; }
+    .a-crumbs > .a-crumb-sep, .a-crumbs > .a-crumb-version { display: none !important; }
+    .a-crumb-product { flex: 1; }
+    .a-crumb-product > details { display: none; } /* The Products button is beside it. */
   }
   .a-topnav {
     display: none;

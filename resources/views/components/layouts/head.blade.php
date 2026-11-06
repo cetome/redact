@@ -74,3 +74,5 @@
 @endif
 <script src="{{ asset('js/theme-init.js') }}" nonce="{{ app('csp-nonce') }}"></script>
 @vite(['resources/css/app.css', 'resources/js/app.js'])
+{{-- A hosted install's own additions to the head, when it has some. --}}
+@includeIf('hosted.head')

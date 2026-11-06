@@ -2,7 +2,7 @@
 
 return [
     'owner' => [
-        'label' => 'Propriétaire du produit',
+        'label' => 'Propriétaire',
         'help' => 'A créé le produit et dispose de tous les droits.',
     ],
     'contributor' => [

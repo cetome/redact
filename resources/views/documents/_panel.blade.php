@@ -48,9 +48,8 @@
             @csrf
             <label class="a-label" for="document-upload-{{ $version->id }}">{{ __('ai.documents.add') }}</label>
             <span class="flex flex-wrap items-center gap-2">
-                <input id="document-upload-{{ $version->id }}" type="file" name="files[]" multiple required
-                       accept=".pdf,.docx,.xlsx,.xlsm,.csv,.txt,.md,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv,text/plain,text/markdown"
-                       class="block min-w-0 flex-1 text-sm text-ink-muted file:mr-3 file:h-7 file:cursor-pointer file:rounded-md file:border file:border-line-strong file:bg-surface file:px-3 file:text-[10px] file:font-extrabold file:uppercase file:tracking-[0.12em] file:text-ink">
+                <x-ui.file-input id="document-upload-{{ $version->id }}" name="files[]" :multiple="true" required
+                       accept=".pdf,.docx,.xlsx,.xlsm,.csv,.txt,.md,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv,text/plain,text/markdown" class="min-w-0 flex-1" />
                 {{-- Where it goes in the technical file (RED Annex V), optional (Declaration step). --}}
                 @include('declaration._category-select', ['name' => 'category', 'id' => 'document-category-'.$version->id, 'value' => old('category')])
                 <button type="submit" class="a-btn a-btn-outline a-btn-sm"><x-lucide-upload aria-hidden="true" />{{ __('ai.documents.upload') }}</button>

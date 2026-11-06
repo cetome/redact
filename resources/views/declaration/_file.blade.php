@@ -100,7 +100,7 @@
             <form method="POST" action="{{ route('versions.documents.store', $version) }}" enctype="multipart/form-data" class="a-tf-upload-form">
                 @csrf
                 <label class="a-label" for="tf-upload">{{ __('ai.documents.add') }}</label>
-                <input id="tf-upload" type="file" name="document" required class="a-file min-w-0 flex-1">
+                <x-ui.file-input id="tf-upload" name="document" required class="min-w-0 flex-1" />
                 @include('declaration._category-select', ['name' => 'category', 'id' => 'tf-upload-category', 'value' => old('category')])
                 <button type="submit" class="a-btn a-btn-outline a-btn-sm"><x-lucide-upload aria-hidden="true" />{{ __('ai.documents.upload') }}</button>
                 @error('document')<p class="a-error a-span-all">{{ $message }}</p>@enderror

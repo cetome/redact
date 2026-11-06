@@ -45,5 +45,7 @@
                 @endif
             </section>
         @endforeach
+        {{-- A hosted install's own section (what it adds to the service), when it has one. --}}
+        @includeIf('hosted.privacy')
     </article>
 </x-layouts.guest>

@@ -56,7 +56,7 @@
                             <label class="a-check ml-auto"><input type="checkbox" name="remove_file" value="1"> {{ __('declaration.certificate.remove_file') }}</label>
                         </p>
                     @endif
-                    <input id="cert-file" type="file" name="certificate_file" accept=".pdf,application/pdf" class="a-file">
+                    <x-ui.file-input id="cert-file" name="certificate_file" accept=".pdf,application/pdf" />
                     @error('certificate_file')<p class="a-error">{{ $message }}</p>@enderror
                     @error('document')<p class="a-error">{{ $message }}</p>@enderror
                 </div>

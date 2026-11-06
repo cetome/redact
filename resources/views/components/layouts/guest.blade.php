@@ -50,5 +50,6 @@
 
     <x-layouts.footer />
     @include('guest._open-form')
+    @includeIf('hosted.body')
 </body>
 </html>

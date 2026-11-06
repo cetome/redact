@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Events\Conversion;
 use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,7 @@ class CreateAccount
      */
     public function __invoke(array $data): User
     {
-        return DB::transaction(function () use ($data) {
+        $user = DB::transaction(function () use ($data) {
             $user = new User([
                 'name' => trim((string) ($data['name'] ?? '')),
                 'email' => mb_strtolower($data['email']),
@@ -46,6 +47,9 @@ class CreateAccount
             // Database defaults (active, session_epoch, ...) into the model.
             return $user->refresh();
         });
+        Conversion::dispatch(Conversion::ACCOUNT_CREATED, $user);
+
+        return $user;
     }
 
     /** The name of a new organisation: the one given, else the person's name. */

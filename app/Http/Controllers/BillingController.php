@@ -6,6 +6,7 @@ use App\Auth\SignIn;
 use App\Billing\Billing;
 use App\Billing\Catalogue;
 use App\Billing\Plan;
+use App\Events\Conversion;
 use App\Models\Organisation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -151,7 +152,10 @@ class BillingController extends Controller
         $this->consent($request, $organisation, $billing, 'checkout', $quantity);
 
         try {
-            return $billing->checkout($organisation, $request->user(), $quantity, $chosen, $interval)->redirect();
+            $checkout = $billing->checkout($organisation, $request->user(), $quantity, $chosen, $interval);
+            Conversion::dispatch(Conversion::UPGRADE_STARTED, $request->user(), null, ['plan' => $chosen, 'interval' => $interval, 'products' => $total]);
+
+            return $checkout->redirect();
         } catch (Throwable $e) {
             report($e);
 
@@ -163,14 +167,23 @@ class BillingController extends Controller
     {
         $this->authorizeAdmin($request, $organisation);
 
+        $paid = false;
         try {
-            $billing->completeCheckout($organisation, (string) ($request->route('session') ?? $request->query('session_id')), $request->user());
+            $paid = $billing->completeCheckout($organisation, (string) ($request->route('session') ?? $request->query('session_id')), $request->user());
         } catch (Throwable $e) {
             // The webhook stores the subscription anyway: nothing is lost.
             report($e);
         }
 
         $plan = Plan::fresh($organisation);
+        if ($paid) {
+            // What the subscription bills per period (plan and add-ons), as the step's revenue.
+            $catalogue = app(Catalogue::class);
+            $interval = $plan->interval ?? 'month';
+            $cents = (int) ($catalogue->amount($plan->key(), Catalogue::ITEM_PLAN, $interval) ?? 0)
+                + $plan->extraUnits * (int) ($catalogue->amount($plan->key(), Catalogue::ITEM_EXTRA, $interval) ?? 0);
+            Conversion::dispatch(Conversion::SUBSCRIPTION_STARTED, $request->user(), $cents > 0 ? $cents / 100 : null, ['plan' => $plan->key(), 'interval' => $interval]);
+        }
         [$next, $status] = $plan->locked === [] && ! $plan->productLimitReached()
             ? [route('products.create'), __('plans.billing.paid')]
             : [route('billing.show', $organisation), $plan->locked === [] && $plan->subscription?->valid() ? __('plans.billing.reactivated') : __('plans.billing.pending')];

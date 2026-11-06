@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Content\ContentPack;
 use App\History\ActivityScope;
+use App\Hosted\HostedServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Events\LocaleUpdated;
 use Illuminate\Support\Facades\Event;
@@ -22,6 +23,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // A hosted install's own extras (App\Hosted, outside the engine's public tree), when present.
+        if (class_exists(HostedServiceProvider::class)) {
+            $this->app->register(HostedServiceProvider::class);
+        }
+
         $this->app->singleton(ContentPack::class, function () {
             $path = rtrim((string) config('redact.content_path'), '/\\');
             if ($path === '') {

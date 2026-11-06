@@ -8,6 +8,7 @@ use App\Assessment\ScopingForm;
 use App\Assessment\VersionFactory;
 use App\Billing\Plan;
 use App\Billing\PlanLimitReached;
+use App\Events\Conversion;
 use App\Models\Organisation;
 use App\Models\Product;
 use App\Models\ProductVersion;
@@ -39,7 +40,7 @@ class CreateProduct
      */
     public function __invoke(User $user, array $data): ProductVersion
     {
-        return DB::transaction(function () use ($user, $data) {
+        $version = DB::transaction(function () use ($user, $data) {
             // The plan limit, for every caller: serialise creations in one organisation (two requests
             // cannot both take the last slot), then take the free, a granted or a paid slot.
             $organisation = Organisation::query()->whereKey($data['organisation_id'])->lockForUpdate()->firstOrFail();
@@ -68,6 +69,9 @@ class CreateProduct
 
             return $version;
         });
+        Conversion::dispatch(Conversion::PRODUCT_CREATED, $user, null, ['guest' => (bool) $user->is_guest]);
+
+        return $version;
     }
 
     /**

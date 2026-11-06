@@ -60,8 +60,7 @@
             @else
                 <span class="flex min-w-0 flex-wrap items-center gap-2">
                     <label class="a-micro" for="identification-file">{{ __('identification.import.label') }}</label>
-                    <input id="identification-file" type="file" name="file" form="identification-import" required accept=".xlsx,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
-                           class="block max-w-60 min-w-0 text-xs text-ink-muted file:mr-2 file:h-7 file:cursor-pointer file:rounded-md file:border file:border-line-strong file:bg-surface file:px-2 file:text-[10px] file:font-extrabold file:uppercase file:tracking-[0.12em] file:text-ink">
+                    <x-ui.file-input id="identification-file" name="file" form="identification-import" required accept=".xlsx,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv" />
                     <button type="submit" form="identification-import" class="a-btn a-btn-outline a-btn-sm" title="{{ __('identification.import.tooltip') }}"><x-lucide-file-spreadsheet aria-hidden="true" />{{ __('identification.import.button') }}</button>
                     <a href="{{ route('versions.identification.template', $version) }}" class="a-link-btn text-xs" download>{{ __('identification.import.template') }}</a>
                 </span>

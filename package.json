@@ -10,7 +10,7 @@
     "devDependencies": {
         "@alpinejs/csp": "^3.17.5",
         "@laravel/passkeys": "^0.4.0",
-        "@tailwindcss/vite": "^4.3.4",
+        "@tailwindcss/vite": "^4.3.5",
         "altcha": "^3.5.0",
         "chart.js": "^4.6.1",
         "concurrently": "^10.0.3",
